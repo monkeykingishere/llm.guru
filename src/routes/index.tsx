@@ -74,17 +74,17 @@ const MODULES = [
     accent: "from-indigo-500 to-violet-500",
   },
   {
-    to: "/curriculum",
+    to: "/learn/neural-network",
     icon: Network,
     title: "Neural Networks",
     desc: "Build intuition for how billions of parameters cooperate.",
     accent: "from-amber-400 to-rose-500",
   },
   {
-    to: "/curriculum",
+    to: "/learn/prediction",
     icon: Cpu,
-    title: "Training & Scale",
-    desc: "Loss landscapes, scaling laws, and the cost of intelligence.",
+    title: "Prediction",
+    desc: "Watch a generation happen, token by token, distribution by distribution.",
     accent: "from-emerald-400 to-sky-500",
   },
 ] as const;
