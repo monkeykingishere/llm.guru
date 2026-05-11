@@ -366,13 +366,13 @@ function VisionDemo() {
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   <div className="rounded-lg ring-1 ring-white/10 overflow-hidden bg-black/40">
                     <canvas
-                      ref={(el) => (convCanvases.current[key] = el)}
+                      ref={(el) => { convCanvases.current[key] = el; }}
                       className="h-full w-full aspect-square [image-rendering:pixelated]"
                     />
                   </div>
                   <div className="rounded-lg ring-1 ring-white/10 overflow-hidden bg-black/40">
                     <canvas
-                      ref={(el) => (pooledCanvases.current[key] = el)}
+                      ref={(el) => { pooledCanvases.current[key] = el; }}
                       className="h-full w-full aspect-square [image-rendering:pixelated]"
                     />
                   </div>

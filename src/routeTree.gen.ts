@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LearnVisionRouteImport } from './routes/learn.vision'
 import { Route as LearnTransformerRouteImport } from './routes/learn.transformer'
 import { Route as LearnTokenizationRouteImport } from './routes/learn.tokenization'
 import { Route as LearnPredictionRouteImport } from './routes/learn.prediction'
@@ -27,6 +28,11 @@ const CurriculumRoute = CurriculumRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnVisionRoute = LearnVisionRouteImport.update({
+  id: '/learn/vision',
+  path: '/learn/vision',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnTransformerRoute = LearnTransformerRouteImport.update({
@@ -75,6 +81,7 @@ export interface FileRoutesByFullPath {
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/transformer': typeof LearnTransformerRoute
+  '/learn/vision': typeof LearnVisionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -86,6 +93,7 @@ export interface FileRoutesByTo {
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/transformer': typeof LearnTransformerRoute
+  '/learn/vision': typeof LearnVisionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -98,6 +106,7 @@ export interface FileRoutesById {
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/transformer': typeof LearnTransformerRoute
+  '/learn/vision': typeof LearnVisionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -111,6 +120,7 @@ export interface FileRouteTypes {
     | '/learn/prediction'
     | '/learn/tokenization'
     | '/learn/transformer'
+    | '/learn/vision'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -122,6 +132,7 @@ export interface FileRouteTypes {
     | '/learn/prediction'
     | '/learn/tokenization'
     | '/learn/transformer'
+    | '/learn/vision'
   id:
     | '__root__'
     | '/'
@@ -133,6 +144,7 @@ export interface FileRouteTypes {
     | '/learn/prediction'
     | '/learn/tokenization'
     | '/learn/transformer'
+    | '/learn/vision'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -145,6 +157,7 @@ export interface RootRouteChildren {
   LearnPredictionRoute: typeof LearnPredictionRoute
   LearnTokenizationRoute: typeof LearnTokenizationRoute
   LearnTransformerRoute: typeof LearnTransformerRoute
+  LearnVisionRoute: typeof LearnVisionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -161,6 +174,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/vision': {
+      id: '/learn/vision'
+      path: '/learn/vision'
+      fullPath: '/learn/vision'
+      preLoaderRoute: typeof LearnVisionRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/transformer': {
@@ -225,6 +245,7 @@ const rootRouteChildren: RootRouteChildren = {
   LearnPredictionRoute: LearnPredictionRoute,
   LearnTokenizationRoute: LearnTokenizationRoute,
   LearnTransformerRoute: LearnTransformerRoute,
+  LearnVisionRoute: LearnVisionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
