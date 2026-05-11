@@ -9,13 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LearnTransformerRouteImport } from './routes/learn.transformer'
 import { Route as LearnTokenizationRouteImport } from './routes/learn.tokenization'
 import { Route as LearnEmbeddingsRouteImport } from './routes/learn.embeddings'
+import { Route as LearnAttentionRouteImport } from './routes/learn.attention'
 
+const CurriculumRoute = CurriculumRouteImport.update({
+  id: '/curriculum',
+  path: '/curriculum',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnTransformerRoute = LearnTransformerRouteImport.update({
+  id: '/learn/transformer',
+  path: '/learn/transformer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnTokenizationRoute = LearnTokenizationRouteImport.update({
@@ -28,44 +41,94 @@ const LearnEmbeddingsRoute = LearnEmbeddingsRouteImport.update({
   path: '/learn/embeddings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnAttentionRoute = LearnAttentionRouteImport.update({
+  id: '/learn/attention',
+  path: '/learn/attention',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/curriculum': typeof CurriculumRoute
+  '/learn/attention': typeof LearnAttentionRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
+  '/learn/transformer': typeof LearnTransformerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/curriculum': typeof CurriculumRoute
+  '/learn/attention': typeof LearnAttentionRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
+  '/learn/transformer': typeof LearnTransformerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/curriculum': typeof CurriculumRoute
+  '/learn/attention': typeof LearnAttentionRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
+  '/learn/transformer': typeof LearnTransformerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/learn/embeddings' | '/learn/tokenization'
+  fullPaths:
+    | '/'
+    | '/curriculum'
+    | '/learn/attention'
+    | '/learn/embeddings'
+    | '/learn/tokenization'
+    | '/learn/transformer'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/learn/embeddings' | '/learn/tokenization'
-  id: '__root__' | '/' | '/learn/embeddings' | '/learn/tokenization'
+  to:
+    | '/'
+    | '/curriculum'
+    | '/learn/attention'
+    | '/learn/embeddings'
+    | '/learn/tokenization'
+    | '/learn/transformer'
+  id:
+    | '__root__'
+    | '/'
+    | '/curriculum'
+    | '/learn/attention'
+    | '/learn/embeddings'
+    | '/learn/tokenization'
+    | '/learn/transformer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CurriculumRoute: typeof CurriculumRoute
+  LearnAttentionRoute: typeof LearnAttentionRoute
   LearnEmbeddingsRoute: typeof LearnEmbeddingsRoute
   LearnTokenizationRoute: typeof LearnTokenizationRoute
+  LearnTransformerRoute: typeof LearnTransformerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/curriculum': {
+      id: '/curriculum'
+      path: '/curriculum'
+      fullPath: '/curriculum'
+      preLoaderRoute: typeof CurriculumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/transformer': {
+      id: '/learn/transformer'
+      path: '/learn/transformer'
+      fullPath: '/learn/transformer'
+      preLoaderRoute: typeof LearnTransformerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/tokenization': {
@@ -82,13 +145,23 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnEmbeddingsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/attention': {
+      id: '/learn/attention'
+      path: '/learn/attention'
+      fullPath: '/learn/attention'
+      preLoaderRoute: typeof LearnAttentionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CurriculumRoute: CurriculumRoute,
+  LearnAttentionRoute: LearnAttentionRoute,
   LearnEmbeddingsRoute: LearnEmbeddingsRoute,
   LearnTokenizationRoute: LearnTokenizationRoute,
+  LearnTransformerRoute: LearnTransformerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
