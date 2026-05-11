@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as LearnTokenizationRouteImport } from './routes/learn.tokenization'
+import { Route as LearnEmbeddingsRouteImport } from './routes/learn.embeddings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnTokenizationRoute = LearnTokenizationRouteImport.update({
+  id: '/learn/tokenization',
+  path: '/learn/tokenization',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnEmbeddingsRoute = LearnEmbeddingsRouteImport.update({
+  id: '/learn/embeddings',
+  path: '/learn/embeddings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/learn/embeddings': typeof LearnEmbeddingsRoute
+  '/learn/tokenization': typeof LearnTokenizationRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/learn/embeddings': typeof LearnEmbeddingsRoute
+  '/learn/tokenization': typeof LearnTokenizationRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/learn/embeddings': typeof LearnEmbeddingsRoute
+  '/learn/tokenization': typeof LearnTokenizationRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/learn/embeddings' | '/learn/tokenization'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/learn/embeddings' | '/learn/tokenization'
+  id: '__root__' | '/' | '/learn/embeddings' | '/learn/tokenization'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LearnEmbeddingsRoute: typeof LearnEmbeddingsRoute
+  LearnTokenizationRoute: typeof LearnTokenizationRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,12 +68,38 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/tokenization': {
+      id: '/learn/tokenization'
+      path: '/learn/tokenization'
+      fullPath: '/learn/tokenization'
+      preLoaderRoute: typeof LearnTokenizationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/embeddings': {
+      id: '/learn/embeddings'
+      path: '/learn/embeddings'
+      fullPath: '/learn/embeddings'
+      preLoaderRoute: typeof LearnEmbeddingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LearnEmbeddingsRoute: LearnEmbeddingsRoute,
+  LearnTokenizationRoute: LearnTokenizationRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
