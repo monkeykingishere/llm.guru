@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Brain, Github, Sparkles } from "lucide-react";
+import { Brain, GitBranch, Sparkles } from "lucide-react";
 
 export function SiteFooter() {
   return (
@@ -82,7 +82,7 @@ export function SiteFooter() {
                   href="#"
                   className="inline-flex items-center gap-1.5 text-foreground/80 hover:text-foreground"
                 >
-                  <Github className="h-3.5 w-3.5" /> Source
+                  <GitBranch className="h-3.5 w-3.5" /> Source
                 </a>
               </li>
             </ul>
