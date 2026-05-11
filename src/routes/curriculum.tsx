@@ -56,7 +56,7 @@ const ITEMS: Item[] = [
   { n: "03", title: "Embeddings", desc: "Meaning becomes geometry — fly through a 3D semantic space.", icon: Telescope, to: "/learn/embeddings", status: "ready" },
   { n: "04", title: "Positional Encoding", desc: "Teaching a permutation-invariant model about order.", icon: ScanLine, to: "/learn/positional-encoding", status: "ready" },
   { n: "05", title: "Neural Networks", desc: "From a single neuron to billions, with intuition intact.", icon: Network, to: "/learn/neural-network", status: "ready" },
-  { n: "06", title: "Vision & Multimodal", desc: "When pixels and text share the same latent space.", icon: Eye, status: "soon" },
+  { n: "06", title: "Vision & Multimodal", desc: "When pixels and text share the same latent space.", icon: Eye, to: "/learn/vision", status: "ready" },
   { n: "07", title: "Transformer Architecture", desc: "The stack of blocks that changed everything.", icon: Layers, to: "/learn/transformer", status: "ready" },
   { n: "08", title: "Attention Mechanism", desc: "Soft, learned routing between every pair of tokens.", icon: Activity, to: "/learn/attention", status: "ready" },
   { n: "09", title: "Context Window", desc: "Why models forget, and how we stretch their memory.", icon: GitBranch, status: "soon" },

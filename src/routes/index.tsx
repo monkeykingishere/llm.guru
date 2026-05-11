@@ -87,6 +87,13 @@ const MODULES = [
     desc: "Watch a generation happen, token by token, distribution by distribution.",
     accent: "from-emerald-400 to-sky-500",
   },
+  {
+    to: "/learn/vision",
+    icon: Eye,
+    title: "Vision & Multimodal",
+    desc: "Drop an image and watch a CNN strip it into the latent a transformer can read.",
+    accent: "from-cyan-400 to-violet-500",
+  },
 ] as const;
 
 function Index() {
