@@ -61,7 +61,7 @@ const ITEMS: Item[] = [
   { n: "08", title: "Attention Mechanism", desc: "Soft, learned routing between every pair of tokens.", icon: Activity, to: "/learn/attention", status: "ready" },
   { n: "09", title: "Context Window", desc: "Why models forget, and how we stretch their memory.", icon: GitBranch, status: "soon" },
   { n: "10", title: "Prediction Process", desc: "Watch a generation happen, token by token.", icon: Wand2, to: "/learn/prediction", status: "ready" },
-  { n: "11", title: "Training Process", desc: "Loss landscapes, gradients, and lots of GPUs.", icon: Cpu, status: "soon" },
+  { n: "11", title: "Training Process", desc: "Loss landscapes, gradients, and lots of GPUs.", icon: Cpu, to: "/learn/training-process", status: "ready" },
   { n: "12", title: "Fine-Tuning", desc: "Bending a base model toward a specific shape.", icon: Sparkles, status: "soon" },
   { n: "13", title: "Parameters & Scaling", desc: "What changes when you go from 1B to 1T.", icon: Gauge, status: "soon" },
   { n: "14", title: "Limitations", desc: "The honest list — hallucinations, math, and the rest.", icon: Goal, status: "soon" },

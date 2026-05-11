@@ -1,0 +1,23 @@
+@keyframes animate-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.7; }
+}
+
+.animate-pulse {
+  animation: animate-pulse 3s ease-in-out infinite;
+}
+
+.animate-on-mount {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.animate-on-mount.animate-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.step-indicator-gradient {
+  background: linear-gradient(to bottom, var(--step-color), transparent);
+}

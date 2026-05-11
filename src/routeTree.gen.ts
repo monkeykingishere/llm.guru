@@ -13,6 +13,7 @@ import { Route as CurriculumRouteImport } from './routes/curriculum'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LearnVisionRouteImport } from './routes/learn.vision'
 import { Route as LearnTransformerRouteImport } from './routes/learn.transformer'
+import { Route as LearnTrainingProcessRouteImport } from './routes/learn.training-process'
 import { Route as LearnTokenizationRouteImport } from './routes/learn.tokenization'
 import { Route as LearnPredictionRouteImport } from './routes/learn.prediction'
 import { Route as LearnPositionalEncodingRouteImport } from './routes/learn.positional-encoding'
@@ -38,6 +39,11 @@ const LearnVisionRoute = LearnVisionRouteImport.update({
 const LearnTransformerRoute = LearnTransformerRouteImport.update({
   id: '/learn/transformer',
   path: '/learn/transformer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnTrainingProcessRoute = LearnTrainingProcessRouteImport.update({
+  id: '/learn/training-process',
+  path: '/learn/training-process',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnTokenizationRoute = LearnTokenizationRouteImport.update({
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/learn/positional-encoding': typeof LearnPositionalEncodingRoute
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
+  '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
   '/learn/vision': typeof LearnVisionRoute
 }
@@ -92,6 +99,7 @@ export interface FileRoutesByTo {
   '/learn/positional-encoding': typeof LearnPositionalEncodingRoute
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
+  '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
   '/learn/vision': typeof LearnVisionRoute
 }
@@ -105,6 +113,7 @@ export interface FileRoutesById {
   '/learn/positional-encoding': typeof LearnPositionalEncodingRoute
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
+  '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
   '/learn/vision': typeof LearnVisionRoute
 }
@@ -119,6 +128,7 @@ export interface FileRouteTypes {
     | '/learn/positional-encoding'
     | '/learn/prediction'
     | '/learn/tokenization'
+    | '/learn/training-process'
     | '/learn/transformer'
     | '/learn/vision'
   fileRoutesByTo: FileRoutesByTo
@@ -131,6 +141,7 @@ export interface FileRouteTypes {
     | '/learn/positional-encoding'
     | '/learn/prediction'
     | '/learn/tokenization'
+    | '/learn/training-process'
     | '/learn/transformer'
     | '/learn/vision'
   id:
@@ -143,6 +154,7 @@ export interface FileRouteTypes {
     | '/learn/positional-encoding'
     | '/learn/prediction'
     | '/learn/tokenization'
+    | '/learn/training-process'
     | '/learn/transformer'
     | '/learn/vision'
   fileRoutesById: FileRoutesById
@@ -156,6 +168,7 @@ export interface RootRouteChildren {
   LearnPositionalEncodingRoute: typeof LearnPositionalEncodingRoute
   LearnPredictionRoute: typeof LearnPredictionRoute
   LearnTokenizationRoute: typeof LearnTokenizationRoute
+  LearnTrainingProcessRoute: typeof LearnTrainingProcessRoute
   LearnTransformerRoute: typeof LearnTransformerRoute
   LearnVisionRoute: typeof LearnVisionRoute
 }
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/learn/transformer'
       fullPath: '/learn/transformer'
       preLoaderRoute: typeof LearnTransformerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/training-process': {
+      id: '/learn/training-process'
+      path: '/learn/training-process'
+      fullPath: '/learn/training-process'
+      preLoaderRoute: typeof LearnTrainingProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/tokenization': {
@@ -244,9 +264,20 @@ const rootRouteChildren: RootRouteChildren = {
   LearnPositionalEncodingRoute: LearnPositionalEncodingRoute,
   LearnPredictionRoute: LearnPredictionRoute,
   LearnTokenizationRoute: LearnTokenizationRoute,
+  LearnTrainingProcessRoute: LearnTrainingProcessRoute,
   LearnTransformerRoute: LearnTransformerRoute,
   LearnVisionRoute: LearnVisionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

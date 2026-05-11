@@ -24,7 +24,7 @@ const HeroScene = lazy(() =>
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Latent — An interactive atlas of how LLMs work" },
+      { title: "LLMGuru — An interactive guide of how LLMs work" },
       {
         name: "description",
         content:

@@ -46,11 +46,11 @@ export function SiteHeader() {
               </div>
             </div>
             <div className="flex flex-col leading-none">
-              <span className="font-semibold tracking-tight text-foreground">
-                Latent
-              </span>
-              <span className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                LLM Atlas
+              {/* <span className="font-semibold tracking-tight text-foreground">
+                LLMGuru
+              </span> */}
+              <span className="text-[15px] uppercase tracking-[0.18em] text-muted-foreground">
+                 LLMGuru
               </span>
             </div>
           </Link>

@@ -13,7 +13,7 @@ export function SiteFooter() {
                 <Brain className="h-5 w-5 text-white" strokeWidth={2.5} />
               </div>
               <span className="font-semibold tracking-tight text-lg">
-                Latent
+                LLMGuru
               </span>
             </div>
             <p className="mt-4 max-w-md text-sm text-muted-foreground leading-relaxed">
