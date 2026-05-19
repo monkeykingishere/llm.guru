@@ -51,7 +51,7 @@ type Item = {
 };
 
 const ITEMS: Item[] = [
-  { n: "01", title: "Introduction to LLMs", desc: "What they are, what they aren't, and why the world cares.", icon: Brain, status: "soon" },
+  { n: "01", title: "Introduction to LLMs", desc: "What they are, what they aren't, and why the world cares.", icon: Brain, to: "/learn/introduction", status: "ready" },
   { n: "02", title: "Tokenization", desc: "Text becomes the discrete atoms a model can reason over.", icon: Binary, to: "/learn/tokenization", status: "ready" },
   { n: "03", title: "Embeddings", desc: "Meaning becomes geometry — fly through a 3D semantic space.", icon: Telescope, to: "/learn/embeddings", status: "ready" },
   { n: "04", title: "Positional Encoding", desc: "Teaching a permutation-invariant model about order.", icon: ScanLine, to: "/learn/positional-encoding", status: "ready" },
@@ -59,13 +59,13 @@ const ITEMS: Item[] = [
   { n: "06", title: "Vision & Multimodal", desc: "When pixels and text share the same latent space.", icon: Eye, to: "/learn/vision", status: "ready" },
   { n: "07", title: "Transformer Architecture", desc: "The stack of blocks that changed everything.", icon: Layers, to: "/learn/transformer", status: "ready" },
   { n: "08", title: "Attention Mechanism", desc: "Soft, learned routing between every pair of tokens.", icon: Activity, to: "/learn/attention", status: "ready" },
-  { n: "09", title: "Context Window", desc: "Why models forget, and how we stretch their memory.", icon: GitBranch, status: "soon" },
+  { n: "09", title: "Context Window", desc: "Why models forget, and how we stretch their memory.", icon: GitBranch, to: "/learn/context-window", status: "ready" },
   { n: "10", title: "Prediction Process", desc: "Watch a generation happen, token by token.", icon: Wand2, to: "/learn/prediction", status: "ready" },
   { n: "11", title: "Training Process", desc: "Loss landscapes, gradients, and lots of GPUs.", icon: Cpu, to: "/learn/training-process", status: "ready" },
-  { n: "12", title: "Fine-Tuning", desc: "Bending a base model toward a specific shape.", icon: Sparkles, status: "soon" },
-  { n: "13", title: "Parameters & Scaling", desc: "What changes when you go from 1B to 1T.", icon: Gauge, status: "soon" },
-  { n: "14", title: "Limitations", desc: "The honest list — hallucinations, math, and the rest.", icon: Goal, status: "soon" },
-  { n: "15", title: "Safety & Ethics", desc: "Building systems that deserve the trust they ask for.", icon: ShieldCheck, status: "soon" },
+  { n: "12", title: "Fine-Tuning", desc: "Bending a base model toward a specific shape.", icon: Sparkles, to: "/learn/fine-tuning", status: "ready" },
+  { n: "13", title: "Parameters & Scaling", desc: "What changes when you go from 1B to 1T.", icon: Gauge, to: "/learn/scaling", status: "ready" },
+  { n: "14", title: "Limitations", desc: "The honest list — hallucinations, math, and the rest.", icon: Goal, to: "/learn/limitations", status: "ready" },
+  { n: "15", title: "Safety & Ethics", desc: "Building systems that deserve the trust they ask for.", icon: ShieldCheck, to: "/learn/safety", status: "ready" },
 ];
 
 function Page() {

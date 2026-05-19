@@ -15,10 +15,16 @@ import { Route as LearnVisionRouteImport } from './routes/learn.vision'
 import { Route as LearnTransformerRouteImport } from './routes/learn.transformer'
 import { Route as LearnTrainingProcessRouteImport } from './routes/learn.training-process'
 import { Route as LearnTokenizationRouteImport } from './routes/learn.tokenization'
+import { Route as LearnScalingRouteImport } from './routes/learn.scaling'
+import { Route as LearnSafetyRouteImport } from './routes/learn.safety'
 import { Route as LearnPredictionRouteImport } from './routes/learn.prediction'
 import { Route as LearnPositionalEncodingRouteImport } from './routes/learn.positional-encoding'
 import { Route as LearnNeuralNetworkRouteImport } from './routes/learn.neural-network'
+import { Route as LearnLimitationsRouteImport } from './routes/learn.limitations'
+import { Route as LearnIntroductionRouteImport } from './routes/learn.introduction'
+import { Route as LearnFineTuningRouteImport } from './routes/learn.fine-tuning'
 import { Route as LearnEmbeddingsRouteImport } from './routes/learn.embeddings'
+import { Route as LearnContextWindowRouteImport } from './routes/learn.context-window'
 import { Route as LearnAttentionRouteImport } from './routes/learn.attention'
 
 const CurriculumRoute = CurriculumRouteImport.update({
@@ -51,6 +57,16 @@ const LearnTokenizationRoute = LearnTokenizationRouteImport.update({
   path: '/learn/tokenization',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnScalingRoute = LearnScalingRouteImport.update({
+  id: '/learn/scaling',
+  path: '/learn/scaling',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnSafetyRoute = LearnSafetyRouteImport.update({
+  id: '/learn/safety',
+  path: '/learn/safety',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnPredictionRoute = LearnPredictionRouteImport.update({
   id: '/learn/prediction',
   path: '/learn/prediction',
@@ -66,9 +82,29 @@ const LearnNeuralNetworkRoute = LearnNeuralNetworkRouteImport.update({
   path: '/learn/neural-network',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnLimitationsRoute = LearnLimitationsRouteImport.update({
+  id: '/learn/limitations',
+  path: '/learn/limitations',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnIntroductionRoute = LearnIntroductionRouteImport.update({
+  id: '/learn/introduction',
+  path: '/learn/introduction',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnFineTuningRoute = LearnFineTuningRouteImport.update({
+  id: '/learn/fine-tuning',
+  path: '/learn/fine-tuning',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnEmbeddingsRoute = LearnEmbeddingsRouteImport.update({
   id: '/learn/embeddings',
   path: '/learn/embeddings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnContextWindowRoute = LearnContextWindowRouteImport.update({
+  id: '/learn/context-window',
+  path: '/learn/context-window',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnAttentionRoute = LearnAttentionRouteImport.update({
@@ -81,10 +117,16 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/curriculum': typeof CurriculumRoute
   '/learn/attention': typeof LearnAttentionRoute
+  '/learn/context-window': typeof LearnContextWindowRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
+  '/learn/fine-tuning': typeof LearnFineTuningRoute
+  '/learn/introduction': typeof LearnIntroductionRoute
+  '/learn/limitations': typeof LearnLimitationsRoute
   '/learn/neural-network': typeof LearnNeuralNetworkRoute
   '/learn/positional-encoding': typeof LearnPositionalEncodingRoute
   '/learn/prediction': typeof LearnPredictionRoute
+  '/learn/safety': typeof LearnSafetyRoute
+  '/learn/scaling': typeof LearnScalingRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
@@ -94,10 +136,16 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/curriculum': typeof CurriculumRoute
   '/learn/attention': typeof LearnAttentionRoute
+  '/learn/context-window': typeof LearnContextWindowRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
+  '/learn/fine-tuning': typeof LearnFineTuningRoute
+  '/learn/introduction': typeof LearnIntroductionRoute
+  '/learn/limitations': typeof LearnLimitationsRoute
   '/learn/neural-network': typeof LearnNeuralNetworkRoute
   '/learn/positional-encoding': typeof LearnPositionalEncodingRoute
   '/learn/prediction': typeof LearnPredictionRoute
+  '/learn/safety': typeof LearnSafetyRoute
+  '/learn/scaling': typeof LearnScalingRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
@@ -108,10 +156,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/curriculum': typeof CurriculumRoute
   '/learn/attention': typeof LearnAttentionRoute
+  '/learn/context-window': typeof LearnContextWindowRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
+  '/learn/fine-tuning': typeof LearnFineTuningRoute
+  '/learn/introduction': typeof LearnIntroductionRoute
+  '/learn/limitations': typeof LearnLimitationsRoute
   '/learn/neural-network': typeof LearnNeuralNetworkRoute
   '/learn/positional-encoding': typeof LearnPositionalEncodingRoute
   '/learn/prediction': typeof LearnPredictionRoute
+  '/learn/safety': typeof LearnSafetyRoute
+  '/learn/scaling': typeof LearnScalingRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
@@ -123,10 +177,16 @@ export interface FileRouteTypes {
     | '/'
     | '/curriculum'
     | '/learn/attention'
+    | '/learn/context-window'
     | '/learn/embeddings'
+    | '/learn/fine-tuning'
+    | '/learn/introduction'
+    | '/learn/limitations'
     | '/learn/neural-network'
     | '/learn/positional-encoding'
     | '/learn/prediction'
+    | '/learn/safety'
+    | '/learn/scaling'
     | '/learn/tokenization'
     | '/learn/training-process'
     | '/learn/transformer'
@@ -136,10 +196,16 @@ export interface FileRouteTypes {
     | '/'
     | '/curriculum'
     | '/learn/attention'
+    | '/learn/context-window'
     | '/learn/embeddings'
+    | '/learn/fine-tuning'
+    | '/learn/introduction'
+    | '/learn/limitations'
     | '/learn/neural-network'
     | '/learn/positional-encoding'
     | '/learn/prediction'
+    | '/learn/safety'
+    | '/learn/scaling'
     | '/learn/tokenization'
     | '/learn/training-process'
     | '/learn/transformer'
@@ -149,10 +215,16 @@ export interface FileRouteTypes {
     | '/'
     | '/curriculum'
     | '/learn/attention'
+    | '/learn/context-window'
     | '/learn/embeddings'
+    | '/learn/fine-tuning'
+    | '/learn/introduction'
+    | '/learn/limitations'
     | '/learn/neural-network'
     | '/learn/positional-encoding'
     | '/learn/prediction'
+    | '/learn/safety'
+    | '/learn/scaling'
     | '/learn/tokenization'
     | '/learn/training-process'
     | '/learn/transformer'
@@ -163,10 +235,16 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CurriculumRoute: typeof CurriculumRoute
   LearnAttentionRoute: typeof LearnAttentionRoute
+  LearnContextWindowRoute: typeof LearnContextWindowRoute
   LearnEmbeddingsRoute: typeof LearnEmbeddingsRoute
+  LearnFineTuningRoute: typeof LearnFineTuningRoute
+  LearnIntroductionRoute: typeof LearnIntroductionRoute
+  LearnLimitationsRoute: typeof LearnLimitationsRoute
   LearnNeuralNetworkRoute: typeof LearnNeuralNetworkRoute
   LearnPositionalEncodingRoute: typeof LearnPositionalEncodingRoute
   LearnPredictionRoute: typeof LearnPredictionRoute
+  LearnSafetyRoute: typeof LearnSafetyRoute
+  LearnScalingRoute: typeof LearnScalingRoute
   LearnTokenizationRoute: typeof LearnTokenizationRoute
   LearnTrainingProcessRoute: typeof LearnTrainingProcessRoute
   LearnTransformerRoute: typeof LearnTransformerRoute
@@ -217,6 +295,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnTokenizationRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/scaling': {
+      id: '/learn/scaling'
+      path: '/learn/scaling'
+      fullPath: '/learn/scaling'
+      preLoaderRoute: typeof LearnScalingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/safety': {
+      id: '/learn/safety'
+      path: '/learn/safety'
+      fullPath: '/learn/safety'
+      preLoaderRoute: typeof LearnSafetyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/prediction': {
       id: '/learn/prediction'
       path: '/learn/prediction'
@@ -238,11 +330,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnNeuralNetworkRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/limitations': {
+      id: '/learn/limitations'
+      path: '/learn/limitations'
+      fullPath: '/learn/limitations'
+      preLoaderRoute: typeof LearnLimitationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/introduction': {
+      id: '/learn/introduction'
+      path: '/learn/introduction'
+      fullPath: '/learn/introduction'
+      preLoaderRoute: typeof LearnIntroductionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/fine-tuning': {
+      id: '/learn/fine-tuning'
+      path: '/learn/fine-tuning'
+      fullPath: '/learn/fine-tuning'
+      preLoaderRoute: typeof LearnFineTuningRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/embeddings': {
       id: '/learn/embeddings'
       path: '/learn/embeddings'
       fullPath: '/learn/embeddings'
       preLoaderRoute: typeof LearnEmbeddingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/context-window': {
+      id: '/learn/context-window'
+      path: '/learn/context-window'
+      fullPath: '/learn/context-window'
+      preLoaderRoute: typeof LearnContextWindowRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/attention': {
@@ -259,10 +379,16 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CurriculumRoute: CurriculumRoute,
   LearnAttentionRoute: LearnAttentionRoute,
+  LearnContextWindowRoute: LearnContextWindowRoute,
   LearnEmbeddingsRoute: LearnEmbeddingsRoute,
+  LearnFineTuningRoute: LearnFineTuningRoute,
+  LearnIntroductionRoute: LearnIntroductionRoute,
+  LearnLimitationsRoute: LearnLimitationsRoute,
   LearnNeuralNetworkRoute: LearnNeuralNetworkRoute,
   LearnPositionalEncodingRoute: LearnPositionalEncodingRoute,
   LearnPredictionRoute: LearnPredictionRoute,
+  LearnSafetyRoute: LearnSafetyRoute,
+  LearnScalingRoute: LearnScalingRoute,
   LearnTokenizationRoute: LearnTokenizationRoute,
   LearnTrainingProcessRoute: LearnTrainingProcessRoute,
   LearnTransformerRoute: LearnTransformerRoute,
@@ -271,13 +397,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
