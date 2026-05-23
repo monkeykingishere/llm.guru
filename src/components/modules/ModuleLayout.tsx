@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 
+const easeSmooth = [0.22, 1, 0.36, 1] as const;
+
 export function ModuleLayout({
   eyebrow,
   title,
@@ -27,8 +29,8 @@ export function ModuleLayout({
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs uppercase tracking-[0.18em] text-muted-foreground"
+          transition={{ duration: 0.5, ease: easeSmooth }}
+          className="inline-flex transform-gpu items-center gap-2 rounded-full glass px-3 py-1 text-xs uppercase tracking-[0.18em] text-muted-foreground"
         >
           <span className="h-1.5 w-1.5 rounded-full bg-aurora" />
           {eyebrow}
@@ -36,24 +38,22 @@ export function ModuleLayout({
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-5 text-5xl sm:text-6xl font-semibold tracking-tight"
+          transition={{ duration: 0.65, ease: easeSmooth }}
+          className="mt-5 transform-gpu text-5xl sm:text-6xl font-semibold tracking-tight"
         >
           {title}
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.65, delay: 0.05 }}
-          className="mt-5 max-w-2xl text-lg text-muted-foreground leading-relaxed"
+          transition={{ duration: 0.65, delay: 0.05, ease: easeSmooth }}
+          className="mt-5 max-w-2xl transform-gpu text-lg text-muted-foreground leading-relaxed"
         >
           {description}
         </motion.p>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-6 pb-20">
-        {children}
-      </section>
+      <section className="relative mx-auto max-w-6xl px-6 pb-20">{children}</section>
 
       <section className="relative mx-auto max-w-6xl px-6 pb-24">
         <div className="grid gap-4 sm:grid-cols-2">
@@ -65,9 +65,7 @@ export function ModuleLayout({
               <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 <ArrowLeft className="h-3.5 w-3.5" /> Previous
               </div>
-              <div className="mt-2 text-lg font-medium group-hover:text-gradient">
-                {prev.label}
-              </div>
+              <div className="mt-2 text-lg font-medium group-hover:text-gradient">{prev.label}</div>
             </Link>
           ) : (
             <div />
@@ -80,9 +78,7 @@ export function ModuleLayout({
               <div className="flex items-center justify-end gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 Next <ArrowRight className="h-3.5 w-3.5" />
               </div>
-              <div className="mt-2 text-lg font-medium group-hover:text-gradient">
-                {next.label}
-              </div>
+              <div className="mt-2 text-lg font-medium group-hover:text-gradient">{next.label}</div>
             </Link>
           )}
         </div>

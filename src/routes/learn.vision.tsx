@@ -17,8 +17,7 @@ export const Route = createFileRoute("/learn/vision")({
       { property: "og:title", content: "Vision & Multimodal — Latent" },
       {
         property: "og:description",
-        content:
-          "Interactive CNN feature-map visualizer and live text→image cross-attention demo.",
+        content: "Interactive CNN feature-map visualizer and live text→image cross-attention demo.",
       },
     ],
   }),
@@ -276,9 +275,7 @@ function VisionDemo() {
       const x = (i % cols) * cell;
       const y = Math.floor(i / cols) * cell;
       const v = latent[i];
-      ctx.fillStyle = `oklch(${0.3 + v * 0.55} ${0.12 + v * 0.18} ${
-        260 + v * 80
-      })`;
+      ctx.fillStyle = `oklch(${0.3 + v * 0.55} ${0.12 + v * 0.18} ${260 + v * 80})`;
       ctx.fillRect(x + 1, y + 1, cell - 2, cell - 2);
     }
   }, [latent]);
@@ -311,9 +308,8 @@ function VisionDemo() {
               A tiny CNN, fully in your browser
             </h3>
             <p className="mt-1 text-sm text-muted-foreground max-w-2xl">
-              Six learned-style filters scan your image. Each produces a feature
-              map. We ReLU, max-pool, and flatten — the result is a 96-dim
-              latent vector a transformer can read.
+              Six learned-style filters scan your image. Each produces a feature map. We ReLU,
+              max-pool, and flatten — the result is a 96-dim latent vector a transformer can read.
             </p>
           </div>
           <label className="group inline-flex cursor-pointer items-center gap-2 rounded-2xl bg-aurora px-4 py-2.5 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.66_0.21_285/0.9)] hover:shadow-[0_14px_60px_-10px_oklch(0.66_0.21_285/1)] transition-all">
@@ -334,10 +330,7 @@ function VisionDemo() {
         <div className="mt-8 grid gap-8 lg:grid-cols-[auto,1fr] items-start">
           <div className="flex flex-col items-center gap-3">
             <div className="rounded-2xl ring-1 ring-white/10 overflow-hidden bg-black/40">
-              <canvas
-                ref={inputCanvas}
-                className="h-48 w-48 [image-rendering:pixelated]"
-              />
+              <canvas ref={inputCanvas} className="h-48 w-48 [image-rendering:pixelated]" />
             </div>
             <div className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.18em] text-muted-foreground">
               <ImageIcon className="h-3 w-3" />
@@ -366,13 +359,17 @@ function VisionDemo() {
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   <div className="rounded-lg ring-1 ring-white/10 overflow-hidden bg-black/40">
                     <canvas
-                      ref={(el) => { convCanvases.current[key] = el; }}
+                      ref={(el) => {
+                        convCanvases.current[key] = el;
+                      }}
                       className="h-full w-full aspect-square [image-rendering:pixelated]"
                     />
                   </div>
                   <div className="rounded-lg ring-1 ring-white/10 overflow-hidden bg-black/40">
                     <canvas
-                      ref={(el) => { pooledCanvases.current[key] = el; }}
+                      ref={(el) => {
+                        pooledCanvases.current[key] = el;
+                      }}
                       className="h-full w-full aspect-square [image-rendering:pixelated]"
                     />
                   </div>
@@ -525,7 +522,8 @@ function CrossAttentionDemo() {
   }, [tokens, active]);
 
   const attn = useMemo(
-    () => (tokens[active] ? attentionFor(tokens[active]) : new Array(PATCH_GRID * PATCH_GRID).fill(0)),
+    () =>
+      tokens[active] ? attentionFor(tokens[active]) : new Array(PATCH_GRID * PATCH_GRID).fill(0),
     [tokens, active],
   );
 
@@ -546,9 +544,8 @@ function CrossAttentionDemo() {
             Words look at the parts of the picture they describe
           </h3>
           <p className="mt-1 text-sm text-muted-foreground max-w-2xl">
-            Type a caption. Each token attends across a 6×6 grid of image
-            patches. Brighter cells = higher attention weight. This is the
-            mechanism behind CLIP, LLaVA, and GPT-4V.
+            Type a caption. Each token attends across a 6×6 grid of image patches. Brighter cells =
+            higher attention weight. This is the mechanism behind CLIP, LLaVA, and GPT-4V.
           </p>
         </div>
       </div>
@@ -580,9 +577,7 @@ function CrossAttentionDemo() {
               </button>
             ))}
             {tokens.length === 0 && (
-              <span className="text-sm text-muted-foreground">
-                type something to tokenize…
-              </span>
+              <span className="text-sm text-muted-foreground">type something to tokenize…</span>
             )}
           </div>
 
@@ -600,9 +595,7 @@ function CrossAttentionDemo() {
                     <span className="font-mono text-xs text-muted-foreground w-14">
                       patch {String(i).padStart(2, "0")}
                     </span>
-                    <span className="text-sm flex-1">
-                      {PATCH_LABELS[i % PATCH_LABELS.length]}
-                    </span>
+                    <span className="text-sm flex-1">{PATCH_LABELS[i % PATCH_LABELS.length]}</span>
                     <div className="relative h-1.5 w-32 rounded-full bg-white/5 overflow-hidden">
                       <div
                         className="absolute inset-y-0 left-0 bg-aurora"

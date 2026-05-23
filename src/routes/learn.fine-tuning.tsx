@@ -8,9 +8,16 @@ export const Route = createFileRoute("/learn/fine-tuning")({
   head: () => ({
     meta: [
       { title: "Fine-Tuning — Latent" },
-      { name: "description", content: "From a generalist base model to a specialist — SFT, LoRA, and DPO explained with an interactive cost calculator." },
+      {
+        name: "description",
+        content:
+          "From a generalist base model to a specialist — SFT, LoRA, and DPO explained with an interactive cost calculator.",
+      },
       { property: "og:title", content: "Fine-Tuning" },
-      { property: "og:description", content: "Bend a base model to a specific shape without breaking it." },
+      {
+        property: "og:description",
+        content: "Bend a base model to a specific shape without breaking it.",
+      },
     ],
   }),
   component: Page,
@@ -65,7 +72,10 @@ function Page() {
 
   // Toy cost model
   const trainableB = base * m.params;
-  const gpuHours = Math.max(0.5, (examples / 1000) * epochs * Math.sqrt(base) * (m.params === 1 ? 4 : 0.4));
+  const gpuHours = Math.max(
+    0.5,
+    (examples / 1000) * epochs * Math.sqrt(base) * (m.params === 1 ? 4 : 0.4),
+  );
   const cost = gpuHours * 2.5; // $/h H100
 
   return (
@@ -90,13 +100,19 @@ function Page() {
               method === opt.id ? "ring-2 ring-white/30 bg-white/[0.05]" : ""
             }`}
           >
-            <div className={`absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br ${opt.color} opacity-25 blur-2xl`} />
+            <div
+              className={`absolute -top-10 -right-10 h-32 w-32 rounded-full bg-gradient-to-br ${opt.color} opacity-25 blur-2xl`}
+            />
             <div className="relative flex items-center justify-between">
-              <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{opt.badge}</span>
+              <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                {opt.badge}
+              </span>
               <Wand2 className="h-4 w-4 text-muted-foreground group-hover:text-foreground transition-colors" />
             </div>
             <h3 className="relative mt-3 text-lg font-semibold">{opt.name}</h3>
-            <p className="relative mt-1.5 text-sm text-muted-foreground leading-relaxed">{opt.body}</p>
+            <p className="relative mt-1.5 text-sm text-muted-foreground leading-relaxed">
+              {opt.body}
+            </p>
           </motion.button>
         ))}
       </div>
@@ -124,7 +140,8 @@ function Page() {
               />
             </label>
             <label className="block text-xs text-muted-foreground">
-              Training examples: <span className="text-foreground">{examples.toLocaleString()}</span>
+              Training examples:{" "}
+              <span className="text-foreground">{examples.toLocaleString()}</span>
               <input
                 type="range"
                 min={200}
@@ -151,7 +168,10 @@ function Page() {
 
         <div className="grid gap-4">
           {[
-            { label: "Trainable parameters", value: `${trainableB < 0.1 ? (trainableB * 1000).toFixed(1) + "M" : trainableB.toFixed(1) + "B"}` },
+            {
+              label: "Trainable parameters",
+              value: `${trainableB < 0.1 ? (trainableB * 1000).toFixed(1) + "M" : trainableB.toFixed(1) + "B"}`,
+            },
             { label: "Estimated GPU-hours (H100)", value: gpuHours.toFixed(1) + "h" },
             { label: "Approx. compute cost", value: "$" + cost.toFixed(0) },
             { label: "Expected quality retention", value: `${Math.round(m.quality * 100)}%` },
@@ -175,13 +195,31 @@ function Page() {
         <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
           <GraduationCap className="h-3.5 w-3.5" /> The fine-tuning flow
         </div>
-        <h3 className="mt-3 text-2xl font-semibold tracking-tight">From base to bespoke in five steps.</h3>
+        <h3 className="mt-3 text-2xl font-semibold tracking-tight">
+          From base to bespoke in five steps.
+        </h3>
         <div className="mt-6 grid gap-4 md:grid-cols-5">
           {[
-            { n: "01", t: "Curate", d: "Gather hundreds to thousands of clean prompt/response pairs." },
-            { n: "02", t: "Format", d: "Convert to a consistent template the model already understands." },
-            { n: "03", t: "Train", d: "Run SFT or LoRA with a small learning rate and few epochs." },
-            { n: "04", t: "Evaluate", d: "Holdout set + human spot-check. Watch for capability loss." },
+            {
+              n: "01",
+              t: "Curate",
+              d: "Gather hundreds to thousands of clean prompt/response pairs.",
+            },
+            {
+              n: "02",
+              t: "Format",
+              d: "Convert to a consistent template the model already understands.",
+            },
+            {
+              n: "03",
+              t: "Train",
+              d: "Run SFT or LoRA with a small learning rate and few epochs.",
+            },
+            {
+              n: "04",
+              t: "Evaluate",
+              d: "Holdout set + human spot-check. Watch for capability loss.",
+            },
             { n: "05", t: "Align", d: "Optional DPO pass to push toward preferred behaviors." },
           ].map((s, i) => (
             <motion.div
@@ -203,7 +241,9 @@ function Page() {
       <div className="mt-12 glass-strong rounded-3xl p-8 flex items-start gap-4">
         <Layers className="h-5 w-5 text-aurora mt-1" />
         <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
-          A good rule of thumb: start with prompting, escalate to RAG when you need knowledge, and only fine-tune when you need a new <em>behavior</em>. Fine-tuning teaches style; retrieval teaches facts.
+          A good rule of thumb: start with prompting, escalate to RAG when you need knowledge, and
+          only fine-tune when you need a new <em>behavior</em>. Fine-tuning teaches style; retrieval
+          teaches facts.
         </p>
       </div>
     </ModuleLayout>

@@ -52,6 +52,11 @@ const STEEL_BLUE = "from-slate-300/70 to-slate-500/60";
 const GUNMETAL = "from-zinc-400/60 to-slate-700/70";
 const SILVER = "from-stone-300/60 to-zinc-500/60";
 const OBSIDIAN = "from-slate-500/60 to-neutral-800/70";
+const easeSmooth = [0.22, 1, 0.36, 1] as const;
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0 },
+} as const;
 
 const MODULES = [
   {
@@ -126,8 +131,8 @@ function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 rounded-full glass px-3 py-1.5 text-xs"
+            transition={{ duration: 0.6, ease: easeSmooth }}
+            className="inline-flex transform-gpu items-center gap-2 rounded-full glass px-3 py-1.5 text-xs"
           >
             <Sparkles className="h-3.5 w-3.5 text-[color:var(--glow-fuchsia)]" />
             <span className="text-muted-foreground">
@@ -136,39 +141,40 @@ function Hero() {
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.02]"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            transition={{ duration: 0.8, ease: easeSmooth }}
+            className="mt-6 transform-gpu text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight leading-[1.02]"
           >
-            See how{" "}
-            <span className="text-gradient">language models</span>
+            See how <span className="text-gradient">language models</span>
             <br /> actually think.
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="mt-6 max-w-xl text-lg text-muted-foreground leading-relaxed"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            transition={{ duration: 0.8, delay: 0.1, ease: easeSmooth }}
+            className="mt-6 max-w-xl transform-gpu text-lg text-muted-foreground leading-relaxed"
           >
-            From raw tokens to attention heads, every concept is a playable,
-            3D-rendered exploration. No black boxes — just intuition, geometry,
-            and gentle math.
+            From raw tokens to attention heads, every concept is a playable, 3D-rendered
+            exploration. No black boxes — just intuition, geometry, and gentle math.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.18 }}
-            className="mt-8 flex flex-wrap items-center gap-3"
+            initial="hidden"
+            animate="visible"
+            variants={fadeUp}
+            transition={{ duration: 0.8, delay: 0.18, ease: easeSmooth }}
+            className="mt-8 flex transform-gpu flex-wrap items-center gap-3"
           >
             <Link
               to="/learn/tokenization"
-              className="group inline-flex items-center gap-2 rounded-2xl bg-aurora px-5 py-3 text-sm font-medium text-white shadow-[0_10px_40px_-10px_oklch(0.66_0.21_285/0.9)] hover:shadow-[0_14px_60px_-10px_oklch(0.66_0.21_285/1)] transition-all"
+              className="group inline-flex items-center gap-2 rounded-2xl bg-aurora px-5 py-3 text-sm font-medium text-white border border-white/5 hover:border-white/20 shadow-lg shadow-black/30 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ease-[var(--ease-smooth)]"
             >
               Begin your journey
-              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="h-4 w-4 transform-gpu transition-transform duration-300 ease-[var(--ease-smooth)] group-hover:translate-x-1" />
             </Link>
             <Link
               to="/curriculum"
@@ -182,7 +188,7 @@ function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1, delay: 0.4 }}
-            className="mt-12 grid grid-cols-3 gap-6 max-w-md"
+            className="mt-12 grid max-w-md transform-gpu grid-cols-3 gap-6"
           >
             {[
               { k: "15", v: "Modules" },
@@ -190,9 +196,7 @@ function Hero() {
               { k: "100%", v: "Interactive" },
             ].map((s) => (
               <div key={s.v}>
-                <div className="text-3xl font-semibold tracking-tight text-gradient">
-                  {s.k}
-                </div>
+                <div className="text-3xl font-semibold tracking-tight text-gradient">{s.k}</div>
                 <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground mt-1">
                   {s.v}
                 </div>
@@ -204,8 +208,8 @@ function Hero() {
         <motion.div
           initial={{ opacity: 0, scale: 0.96 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative aspect-square w-full max-w-[620px] mx-auto"
+          transition={{ duration: 1, ease: easeSmooth }}
+          className="relative mx-auto aspect-square w-full max-w-[620px] transform-gpu"
         >
           <div className="absolute inset-0 rounded-full bg-aurora opacity-30 blur-3xl" />
           <div className="relative h-full w-full rounded-[2.5rem] glass-strong overflow-hidden ring-glow">
@@ -233,8 +237,7 @@ function Modules() {
         eyebrow="The curriculum"
         title={
           <>
-            Every concept,{" "}
-            <span className="text-gradient">made tangible.</span>
+            Every concept, <span className="text-gradient">made tangible.</span>
           </>
         }
         description="Six core modules and nine deep-dives. Each one combines a 3D scene, a written explainer, and an interactive demo you can break."
@@ -247,7 +250,8 @@ function Modules() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.5, delay: i * 0.05 }}
+            transition={{ duration: 0.5, delay: i * 0.05, ease: easeSmooth }}
+            className="transform-gpu"
           >
             <Link
               to={m.to}
@@ -261,15 +265,13 @@ function Modules() {
               >
                 <m.icon className="h-5 w-5 text-white/90" strokeWidth={2.1} />
               </div>
-              <h3 className="relative mt-5 text-xl font-semibold tracking-tight">
-                {m.title}
-              </h3>
+              <h3 className="relative mt-5 text-xl font-semibold tracking-tight">{m.title}</h3>
               <p className="relative mt-2 text-sm text-muted-foreground leading-relaxed">
                 {m.desc}
               </p>
               <div className="relative mt-5 inline-flex items-center gap-1.5 text-sm text-foreground/80 group-hover:text-foreground">
                 Explore
-                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                <ArrowRight className="h-3.5 w-3.5 transform-gpu transition-transform duration-300 ease-[var(--ease-smooth)] group-hover:translate-x-1" />
               </div>
             </Link>
           </motion.div>
@@ -294,9 +296,9 @@ function Manifesto() {
             <span className="text-gradient">Seeing it move teaches you intuition.</span>
           </h2>
           <p className="mt-5 max-w-2xl text-muted-foreground leading-relaxed">
-            Latent is built on a simple belief: every important idea in modern
-            AI has a beautiful geometric or dynamic form. If you can rotate it,
-            poke it, and break it, you'll understand it.
+            Latent is built on a simple belief: every important idea in modern AI has a beautiful
+            geometric or dynamic form. If you can rotate it, poke it, and break it, you'll
+            understand it.
           </p>
         </div>
       </div>

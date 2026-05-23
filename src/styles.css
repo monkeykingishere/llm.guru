@@ -77,10 +77,10 @@
 
   /* Tokens kept as names, retoned to graphite/silver/steel.
      These map to the legacy "glow-*" / "aurora" classes used across pages. */
-  --glow-violet: oklch(0.78 0.025 235);   /* soft silver-steel */
-  --glow-cyan:   oklch(0.82 0.022 220);   /* cool platinum */
-  --glow-fuchsia: oklch(0.86 0.018 250);  /* near-white silver */
-  --glow-amber:  oklch(0.82 0.04 85);     /* muted warm brass — sparingly */
+  --glow-violet: oklch(0.78 0.025 235); /* soft silver-steel */
+  --glow-cyan: oklch(0.82 0.022 220); /* cool platinum */
+  --glow-fuchsia: oklch(0.86 0.018 250); /* near-white silver */
+  --glow-amber: oklch(0.82 0.04 85); /* muted warm brass — sparingly */
 
   /* Subtle, low-saturation gradients */
   --gradient-aurora: linear-gradient(
@@ -89,36 +89,18 @@
     oklch(0.74 0.02 235) 50%,
     oklch(0.58 0.015 240) 100%
   );
-  --gradient-mesh: radial-gradient(
-      at 18% 18%,
-      oklch(0.55 0.02 240 / 0.18) 0px,
-      transparent 55%
-    ),
-    radial-gradient(
-      at 82% 28%,
-      oklch(0.7 0.015 230 / 0.10) 0px,
-      transparent 55%
-    ),
-    radial-gradient(
-      at 60% 92%,
-      oklch(0.5 0.02 245 / 0.14) 0px,
-      transparent 60%
-    );
-  --gradient-surface: linear-gradient(
-    145deg,
-    oklch(1 0 0 / 0.045),
-    oklch(1 0 0 / 0.012)
-  );
+  --gradient-mesh:
+    radial-gradient(at 18% 18%, oklch(0.55 0.02 240 / 0.18) 0px, transparent 55%),
+    radial-gradient(at 82% 28%, oklch(0.7 0.015 230 / 0.1) 0px, transparent 55%),
+    radial-gradient(at 60% 92%, oklch(0.5 0.02 245 / 0.14) 0px, transparent 60%);
+  --gradient-surface: linear-gradient(145deg, oklch(1 0 0 / 0.045), oklch(1 0 0 / 0.012));
 
   /* Cinematic depth shadows */
   --shadow-glass:
-    0 1px 0 0 oklch(1 0 0 / 0.06) inset,
-    0 0 0 1px oklch(1 0 0 / 0.04),
-    0 12px 32px -16px oklch(0 0 0 / 0.55),
-    0 32px 80px -32px oklch(0 0 0 / 0.7);
+    0 1px 0 0 oklch(1 0 0 / 0.06) inset, 0 0 0 1px oklch(1 0 0 / 0.04),
+    0 12px 32px -16px oklch(0 0 0 / 0.55), 0 32px 80px -32px oklch(0 0 0 / 0.7);
   --shadow-elev:
-    0 1px 0 0 oklch(1 0 0 / 0.08) inset,
-    0 20px 60px -24px oklch(0 0 0 / 0.7),
+    0 1px 0 0 oklch(1 0 0 / 0.08) inset, 0 20px 60px -24px oklch(0 0 0 / 0.7),
     0 50px 120px -40px oklch(0 0 0 / 0.6);
   --shadow-glow: 0 0 50px -12px oklch(0.78 0.025 235 / 0.35);
   --shadow-glow-fuchsia: 0 0 50px -12px oklch(0.86 0.018 250 / 0.28);
@@ -126,6 +108,9 @@
   /* Motion */
   --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-back: cubic-bezier(0.34, 1.4, 0.64, 1);
+  --duration-fast: 160ms;
+  --duration-medium: 320ms;
+  --duration-slow: 560ms;
 
   --chart-1: oklch(0.78 0.025 235);
   --chart-2: oklch(0.82 0.022 220);
@@ -145,6 +130,7 @@
   html {
     color-scheme: dark;
     scroll-behavior: smooth;
+    text-rendering: optimizeLegibility;
   }
   body {
     background-color: var(--color-background);
@@ -155,16 +141,8 @@
     overflow-x: hidden;
     /* layered cinematic background */
     background-image:
-      radial-gradient(
-        1200px 600px at 80% -10%,
-        oklch(0.28 0.01 240 / 0.55),
-        transparent 60%
-      ),
-      radial-gradient(
-        900px 500px at -10% 10%,
-        oklch(0.22 0.008 245 / 0.5),
-        transparent 60%
-      ),
+      radial-gradient(1200px 600px at 80% -10%, oklch(0.28 0.01 240 / 0.55), transparent 60%),
+      radial-gradient(900px 500px at -10% 10%, oklch(0.22 0.008 245 / 0.5), transparent 60%),
       linear-gradient(180deg, oklch(0.13 0.005 260), oklch(0.11 0.004 260));
     background-attachment: fixed;
   }
@@ -183,11 +161,7 @@
     box-shadow: var(--shadow-glass);
   }
   .glass-strong {
-    background: linear-gradient(
-      145deg,
-      oklch(1 0 0 / 0.07),
-      oklch(1 0 0 / 0.02)
-    );
+    background: linear-gradient(145deg, oklch(1 0 0 / 0.07), oklch(1 0 0 / 0.02));
     backdrop-filter: blur(30px) saturate(140%);
     border: 1px solid oklch(1 0 0 / 0.09);
     box-shadow: var(--shadow-elev);
@@ -222,10 +196,8 @@
     box-shadow: var(--shadow-glow-fuchsia);
   }
   .grid-bg {
-    background-image: linear-gradient(
-        oklch(1 0 0 / 0.025) 1px,
-        transparent 1px
-      ),
+    background-image:
+      linear-gradient(oklch(1 0 0 / 0.025) 1px, transparent 1px),
       linear-gradient(90deg, oklch(1 0 0 / 0.025) 1px, transparent 1px);
     background-size: 56px 56px;
     mask-image: radial-gradient(ellipse at center, black 30%, transparent 78%);
@@ -246,12 +218,7 @@
     animation: pulseGlow 3.4s ease-in-out infinite;
   }
   .animate-shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      oklch(1 0 0 / 0.05),
-      transparent
-    );
+    background: linear-gradient(90deg, transparent, oklch(1 0 0 / 0.05), transparent);
     background-size: 200% 100%;
     animation: shimmer 2.5s linear infinite;
   }
@@ -262,8 +229,11 @@
   }
   .tilt-card {
     transform-style: preserve-3d;
-    transition: transform 600ms var(--ease-smooth),
-      box-shadow 600ms var(--ease-smooth);
+    transition:
+      transform var(--duration-slow) var(--ease-smooth),
+      box-shadow var(--duration-slow) var(--ease-smooth);
+  }
+  .tilt-card:where(:hover, :focus-within) {
     will-change: transform;
   }
   .tilt-card:hover {
@@ -271,9 +241,12 @@
     box-shadow: var(--shadow-elev);
   }
   .depth-hover {
-    transition: transform 500ms var(--ease-smooth),
-      box-shadow 500ms var(--ease-smooth),
-      border-color 500ms var(--ease-smooth);
+    transition:
+      transform var(--duration-slow) var(--ease-smooth),
+      box-shadow var(--duration-slow) var(--ease-smooth),
+      border-color var(--duration-slow) var(--ease-smooth);
+  }
+  .depth-hover:where(:hover, :focus-within) {
     will-change: transform;
   }
   .depth-hover:hover {
@@ -289,18 +262,25 @@
     content: "";
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-      115deg,
-      transparent 30%,
-      oklch(1 0 0 / 0.06) 50%,
-      transparent 70%
-    );
+    background: linear-gradient(115deg, transparent 30%, oklch(1 0 0 / 0.06) 50%, transparent 70%);
     transform: translateX(-100%);
     transition: transform 900ms var(--ease-smooth);
+    will-change: transform;
     pointer-events: none;
   }
   .sheen:hover::after {
     transform: translateX(100%);
+  }
+}
+
+@media (hover: none), (pointer: coarse), (max-width: 767px) {
+  body {
+    background-attachment: scroll;
+  }
+
+  .depth-hover,
+  .tilt-card {
+    will-change: auto;
   }
 }
 

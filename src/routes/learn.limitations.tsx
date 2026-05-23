@@ -8,7 +8,11 @@ export const Route = createFileRoute("/learn/limitations")({
   head: () => ({
     meta: [
       { title: "Limitations — Latent" },
-      { name: "description", content: "Hallucinations, arithmetic, knowledge cutoffs and the rest. The honest list — with interactive examples." },
+      {
+        name: "description",
+        content:
+          "Hallucinations, arithmetic, knowledge cutoffs and the rest. The honest list — with interactive examples.",
+      },
       { property: "og:title", content: "Limitations" },
       { property: "og:description", content: "An honest tour of where LLMs still fall short." },
     ],
@@ -57,7 +61,8 @@ const CASES = [
     id: "reason",
     icon: Brain,
     title: "Brittle reasoning",
-    prompt: "If a bat and ball cost $1.10 and the bat costs $1 more than the ball, how much is the ball?",
+    prompt:
+      "If a bat and ball cost $1.10 and the bat costs $1 more than the ball, how much is the ball?",
     bad: "10 cents.",
     good: "5 cents. (Bat is $1.05, ball is $0.05.) Most humans get this wrong too — and so do small LLMs unless asked to think step by step.",
     why: "Without an explicit chain of thought, the model jumps to the lexically obvious answer.",
@@ -98,7 +103,11 @@ function Page() {
                   <div className="font-medium">{c.title}</div>
                   <div className="text-xs text-muted-foreground mt-0.5 font-mono">{c.prompt}</div>
                 </div>
-                <span className={`text-xs text-muted-foreground transition-transform ${isOpen ? "rotate-90" : ""}`}>›</span>
+                <span
+                  className={`text-xs text-muted-foreground transition-transform ${isOpen ? "rotate-90" : ""}`}
+                >
+                  ›
+                </span>
               </button>
               <motion.div
                 initial={false}
@@ -108,15 +117,20 @@ function Page() {
               >
                 <div className="px-5 pb-5 grid gap-3 sm:grid-cols-2">
                   <div className="rounded-xl bg-rose-500/[0.06] border border-rose-500/20 p-4">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-rose-300/90">Naive output</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-rose-300/90">
+                      Naive output
+                    </div>
                     <p className="mt-1.5 text-sm leading-relaxed">{c.bad}</p>
                   </div>
                   <div className="rounded-xl bg-emerald-500/[0.06] border border-emerald-500/20 p-4">
-                    <div className="text-[10px] uppercase tracking-[0.18em] text-emerald-300/90">Honest output</div>
+                    <div className="text-[10px] uppercase tracking-[0.18em] text-emerald-300/90">
+                      Honest output
+                    </div>
                     <p className="mt-1.5 text-sm leading-relaxed">{c.good}</p>
                   </div>
                   <p className="sm:col-span-2 text-xs text-muted-foreground leading-relaxed">
-                    <span className="text-foreground font-medium">Why it happens — </span>{c.why}
+                    <span className="text-foreground font-medium">Why it happens — </span>
+                    {c.why}
                   </p>
                 </div>
               </motion.div>
@@ -128,8 +142,9 @@ function Page() {
       <div className="mt-12 glass-strong rounded-3xl p-8 flex items-start gap-4">
         <Goal className="h-5 w-5 text-aurora mt-1" />
         <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
-          Every limitation here has a workaround: retrieval for knowledge, tools for math, chain-of-thought for reasoning, evals for bias.
-          A great AI product is not a great model — it's a system that knows when to ask the model and when not to.
+          Every limitation here has a workaround: retrieval for knowledge, tools for math,
+          chain-of-thought for reasoning, evals for bias. A great AI product is not a great model —
+          it's a system that knows when to ask the model and when not to.
         </p>
       </div>
     </ModuleLayout>

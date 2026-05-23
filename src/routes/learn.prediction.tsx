@@ -30,23 +30,143 @@ const SEQUENCES: Sequence[] = [
   {
     prompt: "The cat sat on the",
     steps: [
-      { chosen: " mat", candidates: [[" mat", 0.62], [" floor", 0.14], [" chair", 0.09], [" couch", 0.07], [" roof", 0.04], [" table", 0.04]] },
-      { chosen: " and", candidates: [[" and", 0.48], [" while", 0.18], [",", 0.12], [".", 0.1], [" near", 0.07], [" then", 0.05]] },
-      { chosen: " watched", candidates: [[" watched", 0.35], [" stared", 0.22], [" purred", 0.18], [" slept", 0.13], [" waited", 0.07], [" listened", 0.05]] },
-      { chosen: " the", candidates: [[" the", 0.71], [" a", 0.12], [" some", 0.06], [" silently", 0.05], [" carefully", 0.04], [" quietly", 0.02]] },
-      { chosen: " birds", candidates: [[" birds", 0.38], [" world", 0.21], [" rain", 0.15], [" sunset", 0.11], [" mouse", 0.09], [" stars", 0.06]] },
-      { chosen: ".", candidates: [[".", 0.55], [" outside", 0.18], [" carefully", 0.12], [",", 0.08], [" intently", 0.05], [" peacefully", 0.02]] },
+      {
+        chosen: " mat",
+        candidates: [
+          [" mat", 0.62],
+          [" floor", 0.14],
+          [" chair", 0.09],
+          [" couch", 0.07],
+          [" roof", 0.04],
+          [" table", 0.04],
+        ],
+      },
+      {
+        chosen: " and",
+        candidates: [
+          [" and", 0.48],
+          [" while", 0.18],
+          [",", 0.12],
+          [".", 0.1],
+          [" near", 0.07],
+          [" then", 0.05],
+        ],
+      },
+      {
+        chosen: " watched",
+        candidates: [
+          [" watched", 0.35],
+          [" stared", 0.22],
+          [" purred", 0.18],
+          [" slept", 0.13],
+          [" waited", 0.07],
+          [" listened", 0.05],
+        ],
+      },
+      {
+        chosen: " the",
+        candidates: [
+          [" the", 0.71],
+          [" a", 0.12],
+          [" some", 0.06],
+          [" silently", 0.05],
+          [" carefully", 0.04],
+          [" quietly", 0.02],
+        ],
+      },
+      {
+        chosen: " birds",
+        candidates: [
+          [" birds", 0.38],
+          [" world", 0.21],
+          [" rain", 0.15],
+          [" sunset", 0.11],
+          [" mouse", 0.09],
+          [" stars", 0.06],
+        ],
+      },
+      {
+        chosen: ".",
+        candidates: [
+          [".", 0.55],
+          [" outside", 0.18],
+          [" carefully", 0.12],
+          [",", 0.08],
+          [" intently", 0.05],
+          [" peacefully", 0.02],
+        ],
+      },
     ],
   },
   {
     prompt: "Once upon a time, in a",
     steps: [
-      { chosen: " distant", candidates: [[" distant", 0.31], [" small", 0.21], [" land", 0.18], [" magical", 0.12], [" faraway", 0.1], [" quiet", 0.08]] },
-      { chosen: " kingdom", candidates: [[" kingdom", 0.45], [" village", 0.19], [" land", 0.17], [" forest", 0.1], [" galaxy", 0.06], [" realm", 0.03]] },
-      { chosen: " there", candidates: [[" there", 0.54], [",", 0.21], [" lived", 0.13], [" stood", 0.06], [" was", 0.04], [" reigned", 0.02]] },
-      { chosen: " lived", candidates: [[" lived", 0.62], [" was", 0.21], [" ruled", 0.08], [" dwelt", 0.05], [" reigned", 0.03], [" stood", 0.01]] },
-      { chosen: " a", candidates: [[" a", 0.74], [" an", 0.12], [" the", 0.08], [" two", 0.03], [" many", 0.02], [" three", 0.01]] },
-      { chosen: " young", candidates: [[" young", 0.27], [" brave", 0.22], [" wise", 0.17], [" kind", 0.15], [" lonely", 0.12], [" curious", 0.07]] },
+      {
+        chosen: " distant",
+        candidates: [
+          [" distant", 0.31],
+          [" small", 0.21],
+          [" land", 0.18],
+          [" magical", 0.12],
+          [" faraway", 0.1],
+          [" quiet", 0.08],
+        ],
+      },
+      {
+        chosen: " kingdom",
+        candidates: [
+          [" kingdom", 0.45],
+          [" village", 0.19],
+          [" land", 0.17],
+          [" forest", 0.1],
+          [" galaxy", 0.06],
+          [" realm", 0.03],
+        ],
+      },
+      {
+        chosen: " there",
+        candidates: [
+          [" there", 0.54],
+          [",", 0.21],
+          [" lived", 0.13],
+          [" stood", 0.06],
+          [" was", 0.04],
+          [" reigned", 0.02],
+        ],
+      },
+      {
+        chosen: " lived",
+        candidates: [
+          [" lived", 0.62],
+          [" was", 0.21],
+          [" ruled", 0.08],
+          [" dwelt", 0.05],
+          [" reigned", 0.03],
+          [" stood", 0.01],
+        ],
+      },
+      {
+        chosen: " a",
+        candidates: [
+          [" a", 0.74],
+          [" an", 0.12],
+          [" the", 0.08],
+          [" two", 0.03],
+          [" many", 0.02],
+          [" three", 0.01],
+        ],
+      },
+      {
+        chosen: " young",
+        candidates: [
+          [" young", 0.27],
+          [" brave", 0.22],
+          [" wise", 0.17],
+          [" kind", 0.15],
+          [" lonely", 0.12],
+          [" curious", 0.07],
+        ],
+      },
     ],
   },
 ];
@@ -82,7 +202,11 @@ function Page() {
   }, [playing, step, maxStep]);
 
   const generated = useMemo(
-    () => seq.steps.slice(0, step).map((s) => s.chosen).join(""),
+    () =>
+      seq.steps
+        .slice(0, step)
+        .map((s) => s.chosen)
+        .join(""),
     [seq, step],
   );
 
@@ -131,9 +255,7 @@ function Page() {
 
         <div className="grid gap-5 lg:grid-cols-[1.1fr,1fr]">
           <div className="glass-strong rounded-3xl p-6 min-h-[260px]">
-            <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Output
-            </div>
+            <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Output</div>
             <div className="mt-3 font-mono text-2xl leading-relaxed">
               <span className="text-foreground/70">{seq.prompt}</span>
               <AnimatePresence>
@@ -195,9 +317,7 @@ function Page() {
             <div className="mt-5">
               <div className="flex items-center justify-between text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 <span>Temperature</span>
-                <span className="font-mono text-gradient text-sm">
-                  {temp.toFixed(2)}
-                </span>
+                <span className="font-mono text-gradient text-sm">{temp.toFixed(2)}</span>
               </div>
               <input
                 type="range"
@@ -226,9 +346,7 @@ function Page() {
                   .map(([token, p], i) => (
                     <div key={token + i} className="space-y-1">
                       <div className="flex items-center justify-between text-sm">
-                        <span className="font-mono">
-                          {token.replace(/ /g, "·")}
-                        </span>
+                        <span className="font-mono">{token.replace(/ /g, "·")}</span>
                         <span className="text-xs text-muted-foreground tabular-nums">
                           {(p * 100).toFixed(1)}%
                         </span>
@@ -256,24 +374,22 @@ function Page() {
           <div className="glass rounded-2xl p-5">
             <div className="text-sm font-medium">Greedy vs sampling</div>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-              At temperature 0, the model always picks the top token — safe but
-              repetitive. Higher temperatures flatten the distribution and
-              invite creativity (and mistakes).
+              At temperature 0, the model always picks the top token — safe but repetitive. Higher
+              temperatures flatten the distribution and invite creativity (and mistakes).
             </p>
           </div>
           <div className="glass rounded-2xl p-5">
             <div className="text-sm font-medium">Autoregression</div>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-              Each generated token becomes part of the input for the next
-              prediction. The model is, in effect, talking to itself.
+              Each generated token becomes part of the input for the next prediction. The model is,
+              in effect, talking to itself.
             </p>
           </div>
           <div className="glass rounded-2xl p-5">
             <div className="text-sm font-medium">Top-k & top-p</div>
             <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-              Production samplers usually restrict choices to the top-k tokens
-              or the smallest set whose probabilities sum to p. This trims the
-              long tail of nonsense.
+              Production samplers usually restrict choices to the top-k tokens or the smallest set
+              whose probabilities sum to p. This trims the long tail of nonsense.
             </p>
           </div>
         </div>

@@ -25,12 +25,61 @@ export const Route = createFileRoute("/learn/tokenization")({
 
 // Lightweight BPE-style demo tokenizer (educational, not real GPT BPE)
 const COMMON = [
-  " the", " and", " of", " to", " a", " in", " is", " it", " you", " that",
-  " he", " was", " for", " on", " are", " with", " as", " I", " his", " they",
-  "the", "ing", "tion", "ed ", "er ", "ly ", "ous", "ate", "ent", "ion",
-  " be", " by", " not", " or", " an", " we", " all", " can", " out", " up",
-  "GPT", "LLM", "AI", "model", " token", " word", " text", "Hello", " hello",
-  "world", "language", "neural", "network", "attention", "transformer",
+  " the",
+  " and",
+  " of",
+  " to",
+  " a",
+  " in",
+  " is",
+  " it",
+  " you",
+  " that",
+  " he",
+  " was",
+  " for",
+  " on",
+  " are",
+  " with",
+  " as",
+  " I",
+  " his",
+  " they",
+  "the",
+  "ing",
+  "tion",
+  "ed ",
+  "er ",
+  "ly ",
+  "ous",
+  "ate",
+  "ent",
+  "ion",
+  " be",
+  " by",
+  " not",
+  " or",
+  " an",
+  " we",
+  " all",
+  " can",
+  " out",
+  " up",
+  "GPT",
+  "LLM",
+  "AI",
+  "model",
+  " token",
+  " word",
+  " text",
+  "Hello",
+  " hello",
+  "world",
+  "language",
+  "neural",
+  "network",
+  "attention",
+  "transformer",
 ];
 
 function tokenize(input: string): string[] {
@@ -144,9 +193,7 @@ function Page() {
                       }}
                       className={`inline-flex items-center rounded-lg bg-gradient-to-br ${color} px-2 py-1 font-mono text-sm text-white shadow-sm`}
                     >
-                      <span className="whitespace-pre">
-                        {t.replace(/ /g, "·")}
-                      </span>
+                      <span className="whitespace-pre">{t.replace(/ /g, "·")}</span>
                     </motion.span>
                   );
                 })}
@@ -163,10 +210,9 @@ function Page() {
                 Why it matters
               </div>
               <p className="mt-2 text-sm text-foreground/80 leading-relaxed">
-                Pricing, context limits, and even latency are measured in
-                tokens. A word like <span className="font-mono">"unbelievable"</span>{" "}
-                may cost 3 tokens, while <span className="font-mono">"the"</span>{" "}
-                is just 1.
+                Pricing, context limits, and even latency are measured in tokens. A word like{" "}
+                <span className="font-mono">"unbelievable"</span> may cost 3 tokens, while{" "}
+                <span className="font-mono">"the"</span> is just 1.
               </p>
             </div>
           </div>
@@ -194,12 +240,8 @@ function Page() {
 function Stat({ label, value }: { label: string; value: number | string }) {
   return (
     <div className="glass rounded-2xl p-5">
-      <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-        {label}
-      </div>
-      <div className="mt-1 text-4xl font-semibold tracking-tight text-gradient">
-        {value}
-      </div>
+      <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
+      <div className="mt-1 text-4xl font-semibold tracking-tight text-gradient">{value}</div>
     </div>
   );
 }
@@ -208,9 +250,7 @@ function Insight({ title, body }: { title: string; body: string }) {
   return (
     <div className="glass rounded-2xl p-5">
       <div className="text-sm font-medium">{title}</div>
-      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-        {body}
-      </p>
+      <p className="mt-2 text-sm text-muted-foreground leading-relaxed">{body}</p>
     </div>
   );
 }

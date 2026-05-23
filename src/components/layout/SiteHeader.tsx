@@ -1,10 +1,11 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { Brain, Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const NAV = [
   { to: "/", label: "Home" },
+  { to: "/learn/introduction", label: "Introduction" },
   { to: "/learn/tokenization", label: "Tokenization" },
   { to: "/learn/embeddings", label: "Embeddings" },
   { to: "/learn/attention", label: "Attention" },
@@ -15,26 +16,42 @@ const NAV = [
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const scrolledRef = useRef(false);
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
+    let frame = 0;
+    const updateScrolled = () => {
+      frame = 0;
+      const next = window.scrollY > 12;
+      if (next !== scrolledRef.current) {
+        scrolledRef.current = next;
+        setScrolled(next);
+      }
+    };
+    const onScroll = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateScrolled);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame) window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   useEffect(() => setOpen(false), [pathname]);
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
+      className={`fixed inset-x-0 top-0 z-50 transition-[padding] duration-500 ease-[var(--ease-smooth)] ${
         scrolled ? "py-3" : "py-5"
       }`}
     >
       <div className="mx-auto max-w-7xl px-4">
         <div
-          className={`flex items-center justify-between rounded-2xl px-4 py-3 transition-all duration-500 ${
+          className={`flex items-center justify-between rounded-2xl px-4 py-3 transition-[background-color,border-color,box-shadow,backdrop-filter] duration-500 ease-[var(--ease-smooth)] ${
             scrolled ? "glass-strong" : "bg-transparent"
           }`}
         >
@@ -50,7 +67,7 @@ export function SiteHeader() {
                 LLMGuru
               </span> */}
               <span className="text-[15px] uppercase tracking-[0.18em] text-muted-foreground">
-                 LLMGuru
+                LLMGuru
               </span>
             </div>
           </Link>
@@ -58,23 +75,25 @@ export function SiteHeader() {
           <nav className="hidden md:flex items-center gap-1">
             {NAV.map((item) => {
               const active =
-                pathname === item.to ||
-                (item.to !== "/" && pathname.startsWith(item.to));
+                pathname === item.to || (item.to !== "/" && pathname.startsWith(item.to));
               return (
                 <Link
                   key={item.to}
                   to={item.to}
                   className={`relative px-3.5 py-2 text-sm rounded-xl transition-colors ${
-                    active
-                      ? "text-foreground"
-                      : "text-muted-foreground hover:text-foreground"
+                    active ? "text-foreground" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
                   {active && (
                     <motion.span
                       layoutId="nav-pill"
                       className="absolute inset-0 rounded-xl bg-white/8 ring-1 ring-white/10"
-                      transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 420,
+                        damping: 38,
+                        mass: 0.8,
+                      }}
                     />
                   )}
                   <span className="relative">{item.label}</span>
@@ -86,7 +105,7 @@ export function SiteHeader() {
           <div className="flex items-center gap-2">
             <Link
               to="/learn/tokenization"
-              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-aurora px-4 py-2 text-sm font-medium text-white shadow-[0_8px_30px_-10px_oklch(0.66_0.21_285/0.8)] hover:shadow-[0_12px_40px_-10px_oklch(0.66_0.21_285/1)] transition-shadow"
+              className="hidden sm:inline-flex items-center justify-center rounded-xl bg-aurora px-4 py-2 text-sm font-medium text-white border border-white/5 hover:border-white/20 shadow-md shadow-black/25 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ease-[var(--ease-smooth)]"
             >
               Start learning
             </Link>
@@ -106,6 +125,7 @@ export function SiteHeader() {
               initial={{ opacity: 0, y: -8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
               className="md:hidden mt-2 glass-strong rounded-2xl p-2"
             >
               {NAV.map((item) => (

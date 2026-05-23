@@ -8,7 +8,11 @@ export const Route = createFileRoute("/learn/context-window")({
   head: () => ({
     meta: [
       { title: "Context Window — Latent" },
-      { name: "description", content: "Why models forget, what the KV-cache really costs, and how techniques like RAG and sliding windows extend memory." },
+      {
+        name: "description",
+        content:
+          "Why models forget, what the KV-cache really costs, and how techniques like RAG and sliding windows extend memory.",
+      },
       { property: "og:title", content: "Context Window" },
       { property: "og:description", content: "Visualize the memory limits of a language model." },
     ],
@@ -72,7 +76,10 @@ function Page() {
           </div>
 
           {/* Token grid */}
-          <div className="mt-6 grid grid-cols-32 gap-[3px]" style={{ gridTemplateColumns: "repeat(32, minmax(0,1fr))" }}>
+          <div
+            className="mt-6 grid grid-cols-32 gap-[3px]"
+            style={{ gridTemplateColumns: "repeat(32, minmax(0,1fr))" }}
+          >
             {Array.from({ length: 32 * 6 }).map((_, i) => {
               const frac = i / (32 * 6);
               const filled = frac < used / ctx;
@@ -89,8 +96,8 @@ function Page() {
 
           {overflow && (
             <p className="mt-4 text-sm text-rose-300">
-              ⚠ The prompt no longer fits. The model will truncate — and the
-              dropped tokens vanish from memory entirely.
+              ⚠ The prompt no longer fits. The model will truncate — and the dropped tokens vanish
+              from memory entirely.
             </p>
           )}
 
@@ -138,8 +145,8 @@ function Page() {
           </div>
           <h3 className="mt-3 text-xl font-semibold tracking-tight">KV-cache memory</h3>
           <p className="mt-2 text-sm text-muted-foreground leading-relaxed">
-            Attention needs to remember the keys and values of every past token.
-            Memory scales with <span className="font-mono">layers × dim × ctx</span>.
+            Attention needs to remember the keys and values of every past token. Memory scales with{" "}
+            <span className="font-mono">layers × dim × ctx</span>.
           </p>
 
           <div className="mt-6 space-y-4">
@@ -185,9 +192,21 @@ function Page() {
       {/* Strategies */}
       <div className="mt-12 grid gap-4 md:grid-cols-3">
         {[
-          { icon: GitBranch, title: "Sliding window", body: "Keep only the last N tokens; old ones fall off the edge. Cheap, lossy." },
-          { icon: Database, title: "Retrieval (RAG)", body: "Fetch relevant chunks from a vector store and inject them. Effectively unbounded memory." },
-          { icon: ScrollText, title: "Summarization", body: "Compress old turns into a running summary. Trades fidelity for survival." },
+          {
+            icon: GitBranch,
+            title: "Sliding window",
+            body: "Keep only the last N tokens; old ones fall off the edge. Cheap, lossy.",
+          },
+          {
+            icon: Database,
+            title: "Retrieval (RAG)",
+            body: "Fetch relevant chunks from a vector store and inject them. Effectively unbounded memory.",
+          },
+          {
+            icon: ScrollText,
+            title: "Summarization",
+            body: "Compress old turns into a running summary. Trades fidelity for survival.",
+          },
         ].map((s) => (
           <div key={s.title} className="glass rounded-2xl p-5">
             <div className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-white/[0.06] ring-1 ring-white/10">

@@ -78,12 +78,7 @@ function Page() {
                           v >= 0
                             ? `oklch(${0.4 + intensity * 0.45} ${0.1 + intensity * 0.2} 285)`
                             : `oklch(${0.4 + (1 - intensity) * 0.45} ${0.1 + (1 - intensity) * 0.2} 330)`,
-                        opacity:
-                          highlightDim === null
-                            ? 1
-                            : highlightDim === d
-                              ? 1
-                              : 0.25,
+                        opacity: highlightDim === null ? 1 : highlightDim === d ? 1 : 0.25,
                         transition: "opacity .25s",
                       }}
                     />
@@ -99,7 +94,14 @@ function Page() {
 
           <div className="space-y-4">
             <Slider label="Sequence length" value={seqLen} min={8} max={64} onChange={setSeqLen} />
-            <Slider label="Model dimension" value={dModel} min={16} max={96} step={4} onChange={setDModel} />
+            <Slider
+              label="Model dimension"
+              value={dModel}
+              min={16}
+              max={96}
+              step={4}
+              onChange={setDModel}
+            />
             <div className="glass rounded-2xl p-5">
               <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
                 The formula
@@ -109,11 +111,9 @@ function Page() {
                 <div>PE(p, 2i+1) = cos(p / 10000^(2i/d))</div>
               </div>
               <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-                Low-frequency waves capture coarse position, high-frequency
-                waves capture fine position. Their combination gives every
-                position a unique fingerprint — and the relative distance
-                between any two positions stays expressible as a linear
-                rotation.
+                Low-frequency waves capture coarse position, high-frequency waves capture fine
+                position. Their combination gives every position a unique fingerprint — and the
+                relative distance between any two positions stays expressible as a linear rotation.
               </p>
             </div>
           </div>
@@ -141,9 +141,7 @@ function Slider({
   return (
     <div className="glass rounded-2xl p-5">
       <div className="flex items-center justify-between">
-        <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-          {label}
-        </div>
+        <div className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{label}</div>
         <div className="text-sm font-mono text-gradient">{value}</div>
       </div>
       <input

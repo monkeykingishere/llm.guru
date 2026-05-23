@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import type { ReactNode } from "react";
 
+const easeSmooth = [0.22, 1, 0.36, 1] as const;
+
 export function SectionHeader({
   eyebrow,
   title,
@@ -13,15 +15,14 @@ export function SectionHeader({
   align?: "left" | "center";
 }) {
   return (
-    <div
-      className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}
-    >
+    <div className={`max-w-3xl ${align === "center" ? "mx-auto text-center" : ""}`}>
       {eyebrow && (
         <motion.div
           initial={{ opacity: 0, y: 6 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          className={`inline-flex items-center gap-2 rounded-full glass px-3 py-1 text-xs uppercase tracking-[0.18em] text-muted-foreground ${
+          transition={{ duration: 0.46, ease: easeSmooth }}
+          className={`inline-flex transform-gpu items-center gap-2 rounded-full glass px-3 py-1 text-xs uppercase tracking-[0.18em] text-muted-foreground ${
             align === "center" ? "mx-auto" : ""
           }`}
         >
@@ -33,8 +34,8 @@ export function SectionHeader({
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-        className="mt-4 text-4xl sm:text-5xl font-semibold tracking-tight text-balance"
+        transition={{ duration: 0.6, ease: easeSmooth }}
+        className="mt-4 transform-gpu text-4xl sm:text-5xl font-semibold tracking-tight text-balance"
       >
         {title}
       </motion.h2>
@@ -43,8 +44,8 @@ export function SectionHeader({
           initial={{ opacity: 0, y: 10 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, delay: 0.05 }}
-          className="mt-4 text-lg text-muted-foreground leading-relaxed"
+          transition={{ duration: 0.6, delay: 0.05, ease: easeSmooth }}
+          className="mt-4 transform-gpu text-lg text-muted-foreground leading-relaxed"
         >
           {description}
         </motion.p>

@@ -1,9 +1,10 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Float, OrbitControls, Sphere } from "@react-three/drei";
+import { useReducedMotion } from "framer-motion";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
-function ParticleField() {
+function ParticleField({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<THREE.Points>(null!);
   const { positions, colors } = useMemo(() => {
     const N = 1800;
@@ -30,7 +31,7 @@ function ParticleField() {
   }, []);
 
   useFrame((state, dt) => {
-    if (!ref.current) return;
+    if (!ref.current || reducedMotion) return;
     ref.current.rotation.y += dt * 0.06;
     ref.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.15) * 0.18;
   });
@@ -38,10 +39,7 @@ function ParticleField() {
   return (
     <points ref={ref}>
       <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          args={[positions, 3]}
-        />
+        <bufferAttribute attach="attributes-position" args={[positions, 3]} />
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
@@ -57,15 +55,19 @@ function ParticleField() {
   );
 }
 
-function CoreOrb() {
+function CoreOrb({ reducedMotion }: { reducedMotion: boolean }) {
   const ref = useRef<THREE.Mesh>(null!);
   useFrame((s) => {
-    if (!ref.current) return;
+    if (!ref.current || reducedMotion) return;
     ref.current.rotation.y = s.clock.elapsedTime * 0.25;
     ref.current.rotation.x = s.clock.elapsedTime * 0.12;
   });
   return (
-    <Float speed={1.2} rotationIntensity={0.4} floatIntensity={0.6}>
+    <Float
+      speed={reducedMotion ? 0 : 1.2}
+      rotationIntensity={reducedMotion ? 0 : 0.4}
+      floatIntensity={reducedMotion ? 0 : 0.6}
+    >
       <Sphere ref={ref} args={[1.1, 64, 64]}>
         <meshStandardMaterial
           color="#1a1240"
@@ -77,34 +79,41 @@ function CoreOrb() {
         />
       </Sphere>
       <Sphere args={[1.4, 32, 32]}>
-        <meshBasicMaterial
-          color="#7c5cff"
-          transparent
-          opacity={0.06}
-          side={THREE.BackSide}
-        />
+        <meshBasicMaterial color="#7c5cff" transparent opacity={0.06} side={THREE.BackSide} />
       </Sphere>
     </Float>
   );
 }
 
 export function HeroScene() {
+  const reducedMotion = useReducedMotion() ?? false;
+
   return (
     <Canvas
       dpr={[1, 2]}
       camera={{ position: [0, 0, 6.5], fov: 50 }}
-      gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+      gl={{
+        alpha: true,
+        antialias: true,
+        depth: true,
+        failIfMajorPerformanceCaveat: false,
+        powerPreference: "high-performance",
+        stencil: false,
+      }}
+      performance={{ min: 0.7, max: 1, debounce: 250 }}
     >
       <ambientLight intensity={0.4} />
       <pointLight position={[5, 5, 5]} intensity={1.2} color="#a78bfa" />
       <pointLight position={[-5, -3, -5]} intensity={1} color="#ec4899" />
-      <CoreOrb />
-      <ParticleField />
+      <CoreOrb reducedMotion={reducedMotion} />
+      <ParticleField reducedMotion={reducedMotion} />
       <OrbitControls
         enableZoom={false}
         enablePan={false}
-        autoRotate
+        autoRotate={!reducedMotion}
         autoRotateSpeed={0.4}
+        dampingFactor={0.06}
+        enableDamping
         rotateSpeed={0.4}
       />
     </Canvas>

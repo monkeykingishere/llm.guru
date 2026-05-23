@@ -156,13 +156,9 @@ function Page() {
                         animate={{ opacity: 1 }}
                         className="aspect-square rounded-md relative overflow-hidden cursor-pointer"
                         style={{
-                          background: `oklch(${0.2 + v * 0.55} ${0.05 + v * 0.2} ${
-                            285 - v * 50
-                          })`,
+                          background: `oklch(${0.2 + v * 0.55} ${0.05 + v * 0.2} ${285 - v * 50})`,
                           boxShadow:
-                            v > 0.3
-                              ? `0 0 ${v * 24}px oklch(0.66 0.21 285 / ${v})`
-                              : undefined,
+                            v > 0.3 ? `0 0 ${v * 24}px oklch(0.66 0.21 285 / ${v})` : undefined,
                           transition: "background .3s, box-shadow .3s",
                         }}
                       >
@@ -177,9 +173,8 @@ function Page() {
             </div>
 
             <div className="mt-6 text-xs text-muted-foreground">
-              Each row is a token <em>asking</em>: "who should I pay attention
-              to?" Rows sum to 1 — the brighter the cell, the stronger the
-              connection.
+              Each row is a token <em>asking</em>: "who should I pay attention to?" Rows sum to 1 —
+              the brighter the cell, the stronger the connection.
             </div>
           </div>
 
@@ -190,13 +185,11 @@ function Page() {
               </div>
               <p className="mt-2 text-sm text-foreground/80 leading-relaxed">
                 Each token projects itself into three vectors: a{" "}
-                <span className="text-gradient font-medium">Query</span> (what
-                am I looking for?), a{" "}
-                <span className="text-gradient font-medium">Key</span> (what do
-                I represent?), and a{" "}
-                <span className="text-gradient font-medium">Value</span> (what
-                do I contribute?). Attention is the dot product of Queries and
-                Keys, softmaxed, then used to weight the Values.
+                <span className="text-gradient font-medium">Query</span> (what am I looking for?), a{" "}
+                <span className="text-gradient font-medium">Key</span> (what do I represent?), and a{" "}
+                <span className="text-gradient font-medium">Value</span> (what do I contribute?).
+                Attention is the dot product of Queries and Keys, softmaxed, then used to weight the
+                Values.
               </p>
             </div>
             <div className="glass rounded-2xl p-5">
@@ -204,10 +197,9 @@ function Page() {
                 Multi-head
               </div>
               <p className="mt-2 text-sm text-foreground/80 leading-relaxed">
-                Real models run this in parallel across dozens of heads. Each
-                head learns a different specialty: nearby syntax, long-range
-                co-reference, semantic roles, and more. Click between heads
-                above to see different patterns emerge.
+                Real models run this in parallel across dozens of heads. Each head learns a
+                different specialty: nearby syntax, long-range co-reference, semantic roles, and
+                more. Click between heads above to see different patterns emerge.
               </p>
             </div>
           </div>

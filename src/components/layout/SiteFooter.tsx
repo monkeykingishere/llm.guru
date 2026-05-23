@@ -12,13 +12,11 @@ export function SiteFooter() {
               <div className="h-9 w-9 rounded-xl bg-aurora grid place-items-center">
                 <Brain className="h-5 w-5 text-white" strokeWidth={2.5} />
               </div>
-              <span className="font-semibold tracking-tight text-lg">
-                LLMGuru
-              </span>
+              <span className="font-semibold tracking-tight text-lg">LLMGuru</span>
             </div>
             <p className="mt-4 max-w-md text-sm text-muted-foreground leading-relaxed">
-              An interactive atlas of how large language models actually work —
-              from raw tokens to attention, embeddings, and emergent behavior.
+              An interactive atlas of how large language models actually work — from raw tokens to
+              attention, embeddings, and emergent behavior.
             </p>
             <div className="mt-6 inline-flex items-center gap-2 text-xs text-muted-foreground">
               <Sparkles className="h-3.5 w-3.5" />
@@ -26,54 +24,35 @@ export function SiteFooter() {
             </div>
           </div>
           <div>
-            <h4 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Modules
-            </h4>
+            <h4 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Modules</h4>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <Link
-                  to="/learn/tokenization"
-                  className="text-foreground/80 hover:text-foreground"
-                >
+                <Link to="/learn/tokenization" className="text-foreground/80 hover:text-foreground">
                   Tokenization
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/learn/embeddings"
-                  className="text-foreground/80 hover:text-foreground"
-                >
+                <Link to="/learn/embeddings" className="text-foreground/80 hover:text-foreground">
                   Embeddings
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/learn/attention"
-                  className="text-foreground/80 hover:text-foreground"
-                >
+                <Link to="/learn/attention" className="text-foreground/80 hover:text-foreground">
                   Attention
                 </Link>
               </li>
               <li>
-                <Link
-                  to="/learn/transformer"
-                  className="text-foreground/80 hover:text-foreground"
-                >
+                <Link to="/learn/transformer" className="text-foreground/80 hover:text-foreground">
                   Transformer
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
-              Project
-            </h4>
+            <h4 className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Project</h4>
             <ul className="mt-4 space-y-2.5 text-sm">
               <li>
-                <Link
-                  to="/curriculum"
-                  className="text-foreground/80 hover:text-foreground"
-                >
+                <Link to="/curriculum" className="text-foreground/80 hover:text-foreground">
                   Curriculum
                 </Link>
               </li>

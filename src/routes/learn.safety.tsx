@@ -8,9 +8,16 @@ export const Route = createFileRoute("/learn/safety")({
   head: () => ({
     meta: [
       { title: "Safety & Ethics — Latent" },
-      { name: "description", content: "Alignment, red-teaming, and the trust budget. Tune the safety dial and watch a model's behavior change in real time." },
+      {
+        name: "description",
+        content:
+          "Alignment, red-teaming, and the trust budget. Tune the safety dial and watch a model's behavior change in real time.",
+      },
       { property: "og:title", content: "Safety & Ethics" },
-      { property: "og:description", content: "Building systems that deserve the trust they ask for." },
+      {
+        property: "og:description",
+        content: "Building systems that deserve the trust they ask for.",
+      },
     ],
   }),
   component: Page,
@@ -24,10 +31,26 @@ const PROMPTS = [
 ];
 
 const PILLARS = [
-  { icon: Scale, t: "Fairness", d: "Evaluate behavior across demographics. Track disparate impact before, not after, launch." },
-  { icon: Lock, t: "Privacy", d: "Minimize what enters context. Redact PII. Never train on conversations without consent." },
-  { icon: Eye, t: "Transparency", d: "Tell users they're talking to an AI, what it can do, and how to dispute its output." },
-  { icon: AlertOctagon, t: "Red-teaming", d: "Adversarial testing isn't optional. Pay people to break your model before strangers do." },
+  {
+    icon: Scale,
+    t: "Fairness",
+    d: "Evaluate behavior across demographics. Track disparate impact before, not after, launch.",
+  },
+  {
+    icon: Lock,
+    t: "Privacy",
+    d: "Minimize what enters context. Redact PII. Never train on conversations without consent.",
+  },
+  {
+    icon: Eye,
+    t: "Transparency",
+    d: "Tell users they're talking to an AI, what it can do, and how to dispute its output.",
+  },
+  {
+    icon: AlertOctagon,
+    t: "Red-teaming",
+    d: "Adversarial testing isn't optional. Pay people to break your model before strangers do.",
+  },
 ];
 
 function Page() {
@@ -52,7 +75,9 @@ function Page() {
           <div className="flex items-center gap-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
             <ShieldCheck className="h-3.5 w-3.5 text-aurora" /> Safety threshold simulator
           </div>
-          <h3 className="mt-3 text-xl font-semibold tracking-tight">Move the dial. Watch the trade-off.</h3>
+          <h3 className="mt-3 text-xl font-semibold tracking-tight">
+            Move the dial. Watch the trade-off.
+          </h3>
 
           <div className="mt-6">
             <div className="flex items-center justify-between text-xs text-muted-foreground">
@@ -83,9 +108,16 @@ function Page() {
                       : "border-white/10 hover:border-white/20 hover:bg-white/[0.03]"
                   }`}
                 >
-                  <div className="h-2 w-2 rounded-full" style={{ background: `oklch(${0.85 - p.risk * 0.4} ${0.05 + p.risk * 0.2} ${25 + (1 - p.risk) * 100})` }} />
+                  <div
+                    className="h-2 w-2 rounded-full"
+                    style={{
+                      background: `oklch(${0.85 - p.risk * 0.4} ${0.05 + p.risk * 0.2} ${25 + (1 - p.risk) * 100})`,
+                    }}
+                  />
                   <span className="text-sm flex-1">{p.p}</span>
-                  <span className="font-mono text-[11px] text-muted-foreground">risk {p.risk.toFixed(2)}</span>
+                  <span className="font-mono text-[11px] text-muted-foreground">
+                    risk {p.risk.toFixed(2)}
+                  </span>
                 </button>
               );
             })}
@@ -102,17 +134,23 @@ function Page() {
                 : "bg-emerald-500/[0.06] border-emerald-500/20"
             }`}
           >
-            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">Model response</div>
+            <div className="text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Model response
+            </div>
             <p className="mt-1.5 text-sm leading-relaxed">
               {blocked
                 ? "I can't help with that request. Here's why and what I can do instead…"
                 : "Here's a draft response — I'll flag any uncertain claims and cite sources where possible."}
             </p>
             {falsePositive && (
-              <p className="mt-3 text-xs text-amber-300">⚠ False positive — a harmless request was refused.</p>
+              <p className="mt-3 text-xs text-amber-300">
+                ⚠ False positive — a harmless request was refused.
+              </p>
             )}
             {falseNegative && (
-              <p className="mt-3 text-xs text-rose-300">⚠ False negative — a high-risk request slipped through.</p>
+              <p className="mt-3 text-xs text-rose-300">
+                ⚠ False negative — a high-risk request slipped through.
+              </p>
             )}
           </motion.div>
         </div>
@@ -142,10 +180,13 @@ function Page() {
 
       <div className="mt-12 glass-strong rounded-3xl p-8">
         <h3 className="text-2xl font-semibold tracking-tight max-w-3xl">
-          Alignment is <span className="text-gradient">not a feature you ship</span> — it's a relationship you maintain.
+          Alignment is <span className="text-gradient">not a feature you ship</span> — it's a
+          relationship you maintain.
         </h3>
         <p className="mt-4 text-sm text-muted-foreground leading-relaxed max-w-3xl">
-          Models change. Users change. The world changes. The teams that earn long-term trust are the ones who keep red-teaming after launch, publish their evals, and treat every incident as a curriculum lesson — not a PR problem.
+          Models change. Users change. The world changes. The teams that earn long-term trust are
+          the ones who keep red-teaming after launch, publish their evals, and treat every incident
+          as a curriculum lesson — not a PR problem.
         </p>
       </div>
     </ModuleLayout>

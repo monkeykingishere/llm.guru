@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { Html, OrbitControls } from "@react-three/drei";
-import { Suspense, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
@@ -110,13 +110,13 @@ function WordPoint({
   useFrame((s) => {
     if (!ref.current) return;
     const target = selected ? 0.14 : active ? 0.1 : 0.07;
-    ref.current.scale.setScalar(
-      THREE.MathUtils.lerp(ref.current.scale.x, target, 0.15),
+    ref.current.scale.setScalar(THREE.MathUtils.lerp(ref.current.scale.x, target, 0.15));
+    const e = (ref.current.material as THREE.MeshStandardMaterial).emissiveIntensity;
+    (ref.current.material as THREE.MeshStandardMaterial).emissiveIntensity = THREE.MathUtils.lerp(
+      e,
+      selected ? 2.4 : active ? 1.4 : 0.6,
+      0.1,
     );
-    const e = (ref.current.material as THREE.MeshStandardMaterial)
-      .emissiveIntensity;
-    (ref.current.material as THREE.MeshStandardMaterial).emissiveIntensity =
-      THREE.MathUtils.lerp(e, selected ? 2.4 : active ? 1.4 : 0.6, 0.1);
     const t = s.clock.elapsedTime;
     ref.current.position.y = position[1] + Math.sin(t * 1.2 + position[0]) * 0.03;
   });
@@ -132,12 +132,7 @@ function WordPoint({
           roughness={0.4}
         />
       </mesh>
-      <Html
-        center
-        distanceFactor={8}
-        position={[0, 0.18, 0]}
-        style={{ pointerEvents: "none" }}
-      >
+      <Html center distanceFactor={8} position={[0, 0.18, 0]} style={{ pointerEvents: "none" }}>
         <div
           className={`px-2 py-0.5 rounded-md font-mono text-[11px] whitespace-nowrap transition-opacity ${
             selected || active ? "opacity-100" : "opacity-60"
@@ -157,30 +152,35 @@ function WordPoint({
 }
 
 function Connections({ selectedIdx }: { selectedIdx: number | null }) {
-  if (selectedIdx === null) return null;
-  const sel = WORDS[selectedIdx];
-  const sameCluster = WORDS.filter(
-    (w, i) => i !== selectedIdx && w.cluster === sel.cluster,
+  const lines = useMemo(() => {
+    if (selectedIdx === null) return [];
+    const sel = WORDS[selectedIdx];
+    return WORDS.filter((w, i) => i !== selectedIdx && w.cluster === sel.cluster).map((w) => ({
+      geometry: new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(...sel.pos),
+        new THREE.Vector3(...w.pos),
+      ]),
+      color: CLUSTERS[sel.cluster].color,
+    }));
+  }, [selectedIdx]);
+
+  useEffect(
+    () => () => {
+      lines.forEach((line) => line.geometry.dispose());
+    },
+    [lines],
   );
+
+  if (selectedIdx === null) return null;
+
   return (
     <group>
-      {sameCluster.map((w, i) => {
-        const pts = [
-          new THREE.Vector3(...sel.pos),
-          new THREE.Vector3(...w.pos),
-        ];
-        const geo = new THREE.BufferGeometry().setFromPoints(pts);
-        return (
-          <line key={i}>
-            <primitive object={geo} attach="geometry" />
-            <lineBasicMaterial
-              color={CLUSTERS[sel.cluster].color}
-              transparent
-              opacity={0.45}
-            />
-          </line>
-        );
-      })}
+      {lines.map((line, i) => (
+        <line key={i}>
+          <primitive object={line.geometry} attach="geometry" />
+          <lineBasicMaterial color={line.color} transparent opacity={0.45} />
+        </line>
+      ))}
     </group>
   );
 }
@@ -240,6 +240,8 @@ function Scene({
         enablePan={false}
         autoRotate
         autoRotateSpeed={0.35}
+        dampingFactor={0.06}
+        enableDamping
         maxDistance={12}
         minDistance={4}
       />
@@ -282,13 +284,16 @@ function Page() {
               <Canvas
                 dpr={[1, 2]}
                 camera={{ position: [5, 3, 6], fov: 50 }}
-                gl={{ antialias: true, alpha: true }}
+                gl={{
+                  alpha: true,
+                  antialias: true,
+                  depth: true,
+                  powerPreference: "high-performance",
+                  stencil: false,
+                }}
+                performance={{ min: 0.7, max: 1, debounce: 250 }}
               >
-                <Scene
-                  selected={selected}
-                  setSelected={setSelected}
-                  highlightCluster={highlight}
-                />
+                <Scene selected={selected} setSelected={setSelected} highlightCluster={highlight} />
               </Canvas>
             </Suspense>
             <div className="absolute left-4 top-4 flex flex-wrap gap-1.5 max-w-[80%]">
@@ -299,10 +304,7 @@ function Page() {
                   onMouseLeave={() => setHighlight(null)}
                   className="inline-flex items-center gap-1.5 rounded-full glass px-2.5 py-1 text-[11px] text-foreground/80 hover:text-foreground transition-colors"
                 >
-                  <span
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ background: c.color }}
-                  />
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: c.color }} />
                   {c.name}
                 </button>
               ))}
@@ -364,11 +366,10 @@ function Page() {
                 Why it works
               </div>
               <p className="mt-2 text-sm text-foreground/80 leading-relaxed">
-                During training, the model nudges similar words closer and
-                dissimilar ones apart. The result: arithmetic on meaning. The
-                classic example —{" "}
-                <span className="font-mono">king − man + woman ≈ queen</span> —
-                is a real consequence of this geometry.
+                During training, the model nudges similar words closer and dissimilar ones apart.
+                The result: arithmetic on meaning. The classic example —{" "}
+                <span className="font-mono">king − man + woman ≈ queen</span> — is a real
+                consequence of this geometry.
               </p>
             </div>
           </div>
