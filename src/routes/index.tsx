@@ -44,55 +44,64 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+// Restrained graphite/steel accents — no neon, no pink/purple gradients.
+const STEEL = "from-slate-400/70 to-slate-600/70";
+const PLATINUM = "from-zinc-300/70 to-zinc-500/70";
+const GRAPHITE = "from-neutral-400/60 to-neutral-700/60";
+const STEEL_BLUE = "from-slate-300/70 to-slate-500/60";
+const GUNMETAL = "from-zinc-400/60 to-slate-700/70";
+const SILVER = "from-stone-300/60 to-zinc-500/60";
+const OBSIDIAN = "from-slate-500/60 to-neutral-800/70";
+
 const MODULES = [
   {
     to: "/learn/tokenization",
     icon: Binary,
     title: "Tokenization",
     desc: "Watch how raw text shatters into the discrete units that LLMs actually see.",
-    accent: "from-violet-500 to-fuchsia-500",
+    accent: STEEL,
   },
   {
     to: "/learn/embeddings",
     icon: Telescope,
     title: "Embeddings",
     desc: "Fly through a 3D semantic space where meaning has geometry.",
-    accent: "from-fuchsia-500 to-rose-500",
+    accent: PLATINUM,
   },
   {
     to: "/learn/attention",
     icon: Eye,
     title: "Attention",
     desc: "See which tokens influence which — the engine of context.",
-    accent: "from-sky-400 to-indigo-500",
+    accent: STEEL_BLUE,
   },
   {
     to: "/learn/transformer",
     icon: Layers,
     title: "Transformer",
     desc: "Step through every block of the architecture that changed everything.",
-    accent: "from-indigo-500 to-violet-500",
+    accent: GRAPHITE,
   },
   {
     to: "/learn/neural-network",
     icon: Network,
     title: "Neural Networks",
     desc: "Build intuition for how billions of parameters cooperate.",
-    accent: "from-amber-400 to-rose-500",
+    accent: GUNMETAL,
   },
   {
     to: "/learn/prediction",
     icon: Cpu,
     title: "Prediction",
     desc: "Watch a generation happen, token by token, distribution by distribution.",
-    accent: "from-emerald-400 to-sky-500",
+    accent: SILVER,
   },
   {
     to: "/learn/vision",
     icon: Eye,
     title: "Vision & Multimodal",
     desc: "Drop an image and watch a CNN strip it into the latent a transformer can read.",
-    accent: "from-cyan-400 to-violet-500",
+    accent: OBSIDIAN,
   },
 ] as const;
 
@@ -231,7 +240,7 @@ function Modules() {
         description="Six core modules and nine deep-dives. Each one combines a 3D scene, a written explainer, and an interactive demo you can break."
       />
 
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 perspective-1200">
         {MODULES.map((m, i) => (
           <motion.div
             key={m.title}
@@ -242,15 +251,15 @@ function Modules() {
           >
             <Link
               to={m.to}
-              className="group relative block h-full overflow-hidden rounded-3xl glass p-6 hover:bg-white/[0.05] transition-all duration-500 hover:-translate-y-1"
+              className="group relative block h-full overflow-hidden rounded-3xl glass depth-hover sheen p-6"
             >
               <div
-                className={`absolute -top-12 -right-12 h-40 w-40 rounded-full bg-gradient-to-br ${m.accent} opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-500`}
+                className={`absolute -top-16 -right-16 h-44 w-44 rounded-full bg-gradient-to-br ${m.accent} opacity-[0.18] blur-3xl group-hover:opacity-30 transition-opacity duration-700`}
               />
               <div
-                className={`relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${m.accent} shadow-lg`}
+                className={`relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${m.accent} ring-1 ring-white/10 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)]`}
               >
-                <m.icon className="h-5 w-5 text-white" strokeWidth={2.2} />
+                <m.icon className="h-5 w-5 text-white/90" strokeWidth={2.1} />
               </div>
               <h3 className="relative mt-5 text-xl font-semibold tracking-tight">
                 {m.title}
