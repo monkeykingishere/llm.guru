@@ -240,7 +240,7 @@ function Modules() {
         description="Six core modules and nine deep-dives. Each one combines a 3D scene, a written explainer, and an interactive demo you can break."
       />
 
-      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3 perspective-1200">
         {MODULES.map((m, i) => (
           <motion.div
             key={m.title}
@@ -251,15 +251,15 @@ function Modules() {
           >
             <Link
               to={m.to}
-              className="group relative block h-full overflow-hidden rounded-3xl glass p-6 hover:bg-white/[0.05] transition-all duration-500 hover:-translate-y-1"
+              className="group relative block h-full overflow-hidden rounded-3xl glass depth-hover sheen p-6"
             >
               <div
-                className={`absolute -top-12 -right-12 h-40 w-40 rounded-full bg-gradient-to-br ${m.accent} opacity-20 blur-2xl group-hover:opacity-40 transition-opacity duration-500`}
+                className={`absolute -top-16 -right-16 h-44 w-44 rounded-full bg-gradient-to-br ${m.accent} opacity-[0.18] blur-3xl group-hover:opacity-30 transition-opacity duration-700`}
               />
               <div
-                className={`relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${m.accent} shadow-lg`}
+                className={`relative inline-flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br ${m.accent} ring-1 ring-white/10 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.6)]`}
               >
-                <m.icon className="h-5 w-5 text-white" strokeWidth={2.2} />
+                <m.icon className="h-5 w-5 text-white/90" strokeWidth={2.1} />
               </div>
               <h3 className="relative mt-5 text-xl font-semibold tracking-tight">
                 {m.title}
