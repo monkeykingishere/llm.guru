@@ -221,7 +221,7 @@ function Hero() {
               Live · drag to orbit
             </div>
             <div className="absolute right-4 bottom-4 rounded-full glass px-2.5 py-1 text-[11px] text-muted-foreground">
-              latent.embedding.v3
+              attention.network.v3D
             </div>
           </div>
         </motion.div>
