@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Brain, MessageSquare, Sparkles, Zap, Bot, BookOpen } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
 
 export const Route = createFileRoute("/learn/introduction")({
@@ -89,7 +90,8 @@ function Page() {
   );
 
   return (
-    <ModuleLayout
+    <PageShell>
+      <ModuleLayout
       eyebrow="Module 01"
       title="A language model, demystified"
       description="An LLM is a function: text in, a probability distribution over the next token out. Everything else — chat, reasoning, code — is built on that one idea."
@@ -249,6 +251,7 @@ function Page() {
           numbers become meaning, and how meaning becomes the answer you read.
         </p>
       </div>
-    </ModuleLayout>
+      </ModuleLayout>
+    </PageShell>
   );
 }

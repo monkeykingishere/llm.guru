@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { Sparkles, Wand2, Layers, GraduationCap } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
 
 export const Route = createFileRoute("/learn/fine-tuning")({
@@ -79,7 +80,8 @@ function Page() {
   const cost = gpuHours * 2.5; // $/h H100
 
   return (
-    <ModuleLayout
+    <PageShell>
+      <ModuleLayout
       eyebrow="Module 12"
       title="Fine-Tuning, without breaking the base"
       description="Pre-training builds a generalist. Fine-tuning makes it yours — your tone, your tasks, your taxonomy. Pick the right method and the cost can fall by three orders of magnitude."
@@ -246,6 +248,7 @@ function Page() {
           teaches facts.
         </p>
       </div>
-    </ModuleLayout>
+      </ModuleLayout>
+    </PageShell>
   );
 }

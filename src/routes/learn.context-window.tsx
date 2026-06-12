@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { GitBranch, Database, ScrollText } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
 
 export const Route = createFileRoute("/learn/context-window")({
@@ -48,7 +49,8 @@ function Page() {
   const overflow = used > ctx;
 
   return (
-    <ModuleLayout
+    <PageShell>
+      <ModuleLayout
       eyebrow="Module 09"
       title="The shape of a model's memory"
       description="A model only sees what fits in its context window. Stretch it too far and the cost — in compute and in coherence — explodes."
@@ -217,6 +219,7 @@ function Page() {
           </div>
         ))}
       </div>
-    </ModuleLayout>
+      </ModuleLayout>
+    </PageShell>
   );
 }

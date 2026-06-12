@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { ShieldCheck, Lock, Scale, Eye, AlertOctagon } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
 
 export const Route = createFileRoute("/learn/safety")({
@@ -64,7 +65,8 @@ function Page() {
   const falseNegative = prompt.risk > 0.85 && !blocked;
 
   return (
-    <ModuleLayout
+    <PageShell>
+      <ModuleLayout
       eyebrow="Module 15"
       title="The trust budget"
       description="Safety is not a feature — it's a discipline. Every refusal has a cost; every compliance has a risk. Good systems calibrate that trade-off explicitly."
@@ -189,6 +191,7 @@ function Page() {
           as a curriculum lesson — not a PR problem.
         </p>
       </div>
-    </ModuleLayout>
+      </ModuleLayout>
+    </PageShell>
   );
 }

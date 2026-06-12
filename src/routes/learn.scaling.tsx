@@ -217,6 +217,7 @@ import {
   PieChart,
   Layers,
 } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
 import { SectionHeader } from "@/components/ui/SectionHeader";
 import "./learn.parameters-scaling.css";
@@ -375,7 +376,8 @@ function Component() {
   }, []);
 
   return (
-    <ModuleLayout
+    <PageShell>
+      <ModuleLayout
       eyebrow="Module 13"
       title="Parameters & Scaling"
       description="Interactive scaling calculator for top AI models with their cost and parameter size in 3D visualization."
@@ -1028,6 +1030,7 @@ function Component() {
           </motion.div>
         )}
       </AnimatePresence>
-    </ModuleLayout>
+      </ModuleLayout>
+    </PageShell>
   );
 }

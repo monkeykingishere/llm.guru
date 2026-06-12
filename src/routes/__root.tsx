@@ -86,6 +86,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      {
+        rel: "icon",
+        href: "/llmguru.svg",
+        type: "image/svg+xml",
+      },
+      {
+        rel: "manifest",
+        href: "/manifest.json",
+      },
     ],
   }),
   shellComponent: RootShell,

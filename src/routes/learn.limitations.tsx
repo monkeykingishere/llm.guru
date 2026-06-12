@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Goal, AlertTriangle, Calculator, Clock, Globe2, Brain } from "lucide-react";
+import { PageShell } from "@/components/layout/PageShell";
 import { ModuleLayout } from "@/components/modules/ModuleLayout";
 
 export const Route = createFileRoute("/learn/limitations")({
@@ -73,7 +74,8 @@ function Page() {
   const [open, setOpen] = useState<string>("halluc");
 
   return (
-    <ModuleLayout
+    <PageShell>
+      <ModuleLayout
       eyebrow="Module 14"
       title="The honest list"
       description="Knowing where a model breaks is more useful than knowing where it shines. Click any case to see the failure, the fix, and why it happens."
@@ -147,6 +149,7 @@ function Page() {
           it's a system that knows when to ask the model and when not to.
         </p>
       </div>
-    </ModuleLayout>
+      </ModuleLayout>
+    </PageShell>
   );
 }

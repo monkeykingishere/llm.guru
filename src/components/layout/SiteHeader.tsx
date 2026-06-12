@@ -1,5 +1,5 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Brain, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -59,7 +59,7 @@ export function SiteHeader() {
             <div className="relative">
               <div className="absolute inset-0 bg-aurora rounded-xl blur-md opacity-70 group-hover:opacity-100 transition-opacity" />
               <div className="relative h-9 w-9 rounded-xl bg-aurora flex items-center justify-center">
-                <Brain className="h-5 w-5 text-white" strokeWidth={2.5} />
+                <img src="/llmguru.svg" alt="LLM Guru Logo" className="h-8 w-10" />
               </div>
             </div>
             <div className="flex flex-col leading-none">
