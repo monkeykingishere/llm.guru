@@ -15,6 +15,7 @@ import { Route as LearnVisionRouteImport } from './routes/learn.vision'
 import { Route as LearnTransformerRouteImport } from './routes/learn.transformer'
 import { Route as LearnTrainingProcessRouteImport } from './routes/learn.training-process'
 import { Route as LearnTokenizationRouteImport } from './routes/learn.tokenization'
+import { Route as LearnTinyGeneratorRouteImport } from './routes/learn.tiny-generator'
 import { Route as LearnScalingRouteImport } from './routes/learn.scaling'
 import { Route as LearnSafetyRouteImport } from './routes/learn.safety'
 import { Route as LearnPredictionRouteImport } from './routes/learn.prediction'
@@ -55,6 +56,11 @@ const LearnTrainingProcessRoute = LearnTrainingProcessRouteImport.update({
 const LearnTokenizationRoute = LearnTokenizationRouteImport.update({
   id: '/learn/tokenization',
   path: '/learn/tokenization',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LearnTinyGeneratorRoute = LearnTinyGeneratorRouteImport.update({
+  id: '/learn/tiny-generator',
+  path: '/learn/tiny-generator',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LearnScalingRoute = LearnScalingRouteImport.update({
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/safety': typeof LearnSafetyRoute
   '/learn/scaling': typeof LearnScalingRoute
+  '/learn/tiny-generator': typeof LearnTinyGeneratorRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/safety': typeof LearnSafetyRoute
   '/learn/scaling': typeof LearnScalingRoute
+  '/learn/tiny-generator': typeof LearnTinyGeneratorRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
@@ -166,6 +174,7 @@ export interface FileRoutesById {
   '/learn/prediction': typeof LearnPredictionRoute
   '/learn/safety': typeof LearnSafetyRoute
   '/learn/scaling': typeof LearnScalingRoute
+  '/learn/tiny-generator': typeof LearnTinyGeneratorRoute
   '/learn/tokenization': typeof LearnTokenizationRoute
   '/learn/training-process': typeof LearnTrainingProcessRoute
   '/learn/transformer': typeof LearnTransformerRoute
@@ -187,6 +196,7 @@ export interface FileRouteTypes {
     | '/learn/prediction'
     | '/learn/safety'
     | '/learn/scaling'
+    | '/learn/tiny-generator'
     | '/learn/tokenization'
     | '/learn/training-process'
     | '/learn/transformer'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/learn/prediction'
     | '/learn/safety'
     | '/learn/scaling'
+    | '/learn/tiny-generator'
     | '/learn/tokenization'
     | '/learn/training-process'
     | '/learn/transformer'
@@ -225,6 +236,7 @@ export interface FileRouteTypes {
     | '/learn/prediction'
     | '/learn/safety'
     | '/learn/scaling'
+    | '/learn/tiny-generator'
     | '/learn/tokenization'
     | '/learn/training-process'
     | '/learn/transformer'
@@ -245,6 +257,7 @@ export interface RootRouteChildren {
   LearnPredictionRoute: typeof LearnPredictionRoute
   LearnSafetyRoute: typeof LearnSafetyRoute
   LearnScalingRoute: typeof LearnScalingRoute
+  LearnTinyGeneratorRoute: typeof LearnTinyGeneratorRoute
   LearnTokenizationRoute: typeof LearnTokenizationRoute
   LearnTrainingProcessRoute: typeof LearnTrainingProcessRoute
   LearnTransformerRoute: typeof LearnTransformerRoute
@@ -293,6 +306,13 @@ declare module '@tanstack/react-router' {
       path: '/learn/tokenization'
       fullPath: '/learn/tokenization'
       preLoaderRoute: typeof LearnTokenizationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/learn/tiny-generator': {
+      id: '/learn/tiny-generator'
+      path: '/learn/tiny-generator'
+      fullPath: '/learn/tiny-generator'
+      preLoaderRoute: typeof LearnTinyGeneratorRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/learn/scaling': {
@@ -389,6 +409,7 @@ const rootRouteChildren: RootRouteChildren = {
   LearnPredictionRoute: LearnPredictionRoute,
   LearnSafetyRoute: LearnSafetyRoute,
   LearnScalingRoute: LearnScalingRoute,
+  LearnTinyGeneratorRoute: LearnTinyGeneratorRoute,
   LearnTokenizationRoute: LearnTokenizationRoute,
   LearnTrainingProcessRoute: LearnTrainingProcessRoute,
   LearnTransformerRoute: LearnTransformerRoute,

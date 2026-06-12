@@ -108,6 +108,13 @@ const MODULES = [
     desc: "Drop an image and watch a CNN strip it into the latent a transformer can read.",
     accent: OBSIDIAN,
   },
+  {
+    to: "/learn/tiny-generator",
+    icon: Cpu,
+    title: "Tiny Text Generator",
+    desc: "Interact with a real transformer running in-browser TensorFlow.js inference.",
+    accent: SILVER,
+  },
 ] as const;
 
 function Index() {
@@ -175,6 +182,13 @@ function Hero() {
             >
               Begin your journey
               <ArrowRight className="h-4 w-4 transform-gpu transition-transform duration-300 ease-[var(--ease-smooth)] group-hover:translate-x-1" />
+            </Link>
+            <Link
+              to="/learn/tiny-generator"
+              className="group inline-flex items-center gap-2 rounded-2xl glass px-5 py-3 text-sm font-medium hover:bg-white/[0.06] transition-colors border border-white/5 hover:border-white/20 shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 ease-[var(--ease-smooth)]"
+            >
+              <Cpu className="h-4 w-4 text-[color:var(--glow-cyan)] animate-pulse" />
+              Try our Tiny Text Generator Model
             </Link>
             <Link
               to="/curriculum"
