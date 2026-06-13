@@ -756,9 +756,9 @@ export const ChessEngineLab: React.FC = () => {
             {/* ---------------------------------------------------- */}
             {/* LEFT PANEL: CHESSBOARD & CONTROLS */}
             {/* ---------------------------------------------------- */}
-            <div className="space-y-5 flex flex-col order-1 col-span-1">
-              <div className="glass-strong rounded-3xl p-5 border border-white/10">
-                <div className="flex items-center justify-between mb-3.5">
+            <div className="space-y-6 h-full flex flex-col order-1 col-span-1">
+              <div className="glass-strong rounded-3xl p-6 border border-white/10">
+                <div className="flex items-center justify-between mb-4">
                   <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-[0.18em] flex items-center gap-1.5">
                     <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse-glow" />
                     Interactive Chessboard
@@ -846,20 +846,20 @@ export const ChessEngineLab: React.FC = () => {
                   )}
                 </div>
 
-                <div className="mt-3.5 flex justify-between text-xs text-muted-foreground font-mono">
+                <div className="mt-4 flex justify-between text-xs text-muted-foreground font-mono">
                   <span>Turn: {boardState.turn === "w" ? "White" : "Black"}</span>
                   <span>FEN: {stateToFen(boardState).slice(0, 26)}...</span>
                 </div>
               </div>
 
               {/* Board Controls Card */}
-              <div className="glass rounded-3xl p-5 border border-white/5 space-y-4">
+              <div className="glass-strong rounded-3xl p-6 border border-white/10 space-y-5 flex-1 flex flex-col">
                 <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-[0.18em]">
                   Engine Controller
                 </div>
 
                 {/* Depth Slider */}
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Search Depth</span>
                     <span className="font-semibold text-amber-400 font-mono">
@@ -883,7 +883,7 @@ export const ChessEngineLab: React.FC = () => {
                 </div>
 
                 {/* Toggles */}
-                <div className="space-y-2.5 pt-2">
+                <div className="space-y-3 pt-3 border-t border-white/5">
                   <div className="flex items-center justify-between">
                     <label className="text-xs text-muted-foreground flex items-center gap-1.5 cursor-pointer">
                       <Zap className="h-3.5 w-3.5 text-blue-400" />
@@ -929,7 +929,7 @@ export const ChessEngineLab: React.FC = () => {
                 </div>
 
                 {/* Play / Thinking Controls */}
-                <div className="space-y-3 pt-3 border-t border-white/5">
+                <div className="space-y-3 pt-3 border-t border-white/5 mt-auto">
                   <div className="flex gap-2">
                     <button
                       onClick={handleStartThinking}
@@ -1007,9 +1007,9 @@ export const ChessEngineLab: React.FC = () => {
             {/* ---------------------------------------------------- */}
             {/* CENTER PANEL: INTERACTIVE SEARCH TREE (HERO) */}
             {/* ---------------------------------------------------- */}
-            <div className="glass-strong rounded-[2rem] border border-white/10 relative overflow-hidden flex flex-col h-[650px] min-w-0 order-3 md:order-3 lg:order-2 md:col-span-2 lg:col-span-1">
+            <div className="glass-strong rounded-3xl border border-white/10 relative overflow-hidden flex flex-col h-full min-h-[650px] min-w-0 order-3 md:order-3 lg:order-2 md:col-span-2 lg:col-span-1">
               {/* Toolbar */}
-              <div className="absolute top-4 left-4 right-4 z-10 flex items-center justify-between pointer-events-none">
+              <div className="absolute top-6 left-6 right-6 z-10 flex items-center justify-between pointer-events-none">
                 <div className="glass px-3 py-1.5 rounded-xl text-[10px] font-mono text-muted-foreground uppercase tracking-wider flex items-center gap-1.5 pointer-events-auto">
                   <MousePointer className="h-3.5 w-3.5 text-amber-400" />
                   Drag to pan · Scroll to zoom
@@ -1239,7 +1239,7 @@ export const ChessEngineLab: React.FC = () => {
 
               {/* Tooltip Overlay for Pruned Node */}
               {hoveredNode && hoveredNode.pruned && (
-                <div className="absolute bottom-4 left-4 right-4 bg-rose-950/90 border border-rose-800/30 rounded-xl p-3 text-xs text-rose-200 flex items-start gap-2 backdrop-blur-md shadow-xl animate-fade-in z-20">
+                <div className="absolute bottom-6 left-6 right-6 bg-rose-950/90 border border-rose-800/30 rounded-xl p-3 text-xs text-rose-200 flex items-start gap-2 backdrop-blur-md shadow-xl animate-fade-in z-20">
                   <Info className="h-4.5 w-4.5 text-rose-400 shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold text-rose-300">Pruned Branch ({hoveredNode.move}): </span>
@@ -1252,34 +1252,34 @@ export const ChessEngineLab: React.FC = () => {
             {/* ---------------------------------------------------- */}
             {/* RIGHT PANEL: ENGINE EVALUATION CENTER */}
             {/* ---------------------------------------------------- */}
-            <div className="space-y-5 flex flex-col order-2 md:order-2 lg:order-3 col-span-1">
+            <div className="space-y-6 h-full flex flex-col order-2 md:order-2 lg:order-3 col-span-1">
               {/* Telemetry Card */}
-              <div className="glass-strong rounded-3xl p-5 border border-white/10 space-y-4">
+              <div className="glass-strong rounded-3xl p-6 border border-white/10 space-y-5">
                 <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-[0.18em] flex items-center gap-1.5">
                   <TrendingUp className="h-3.5 w-3.5 text-emerald-400" />
                   Engine Telemetry
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 pt-2">
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                <div className="grid grid-cols-2 gap-4 pt-3 border-t border-white/5">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3">
                     <span className="text-[10px] text-muted-foreground font-mono block">Best Move</span>
                     <span className="text-sm font-semibold text-emerald-400 font-mono mt-0.5 block">
                       {searchResult.bestMove?.san || "-"}
                     </span>
                   </div>
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3">
                     <span className="text-[10px] text-muted-foreground font-mono block">Evaluation</span>
                     <span className="text-sm font-semibold text-foreground font-mono mt-0.5 block">
                       {searchResult.score > 0 ? `+${searchResult.score}` : searchResult.score}
                     </span>
                   </div>
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3">
                     <span className="text-[10px] text-muted-foreground font-mono block">Nodes Searched</span>
                     <span className="text-xs font-semibold text-foreground font-mono mt-0.5 block">
                       {isPlaying ? playbackIdx * 35 : searchResult.telemetry.nodesSearched}
                     </span>
                   </div>
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-2.5">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-3">
                     <span className="text-[10px] text-muted-foreground font-mono block">Speed (NPS)</span>
                     <span className="text-xs font-semibold text-foreground font-mono mt-0.5 block">
                       {estimatedNps.toLocaleString()}
@@ -1287,7 +1287,7 @@ export const ChessEngineLab: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="space-y-2 pt-2 border-t border-white/5">
+                <div className="space-y-3 pt-3 border-t border-white/5">
                   <div className="flex justify-between text-xs">
                     <span className="text-muted-foreground">Alpha-Beta Savings</span>
                     <span className="font-semibold text-blue-400 font-mono">
@@ -1304,13 +1304,13 @@ export const ChessEngineLab: React.FC = () => {
               </div>
 
               {/* Educational Mode Explanations */}
-              <div className="glass rounded-3xl p-5 border border-white/5 flex-1 flex flex-col">
-                <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-[0.18em] mb-3">
+              <div className="glass-strong rounded-3xl p-6 border border-white/10 flex-1 flex flex-col">
+                <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-[0.18em] mb-4">
                   How it works
                 </div>
                 
-                <div className="space-y-4 text-xs overflow-y-auto flex-1 max-h-[350px] pr-1">
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+                <div className="space-y-4 text-xs overflow-y-auto flex-1 max-h-[350px] lg:max-h-none pr-1">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
                     <h4 className="font-semibold text-amber-300 flex items-center gap-1.5">
                       Minimax Algorithm
                     </h4>
@@ -1319,7 +1319,7 @@ export const ChessEngineLab: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
                     <h4 className="font-semibold text-blue-300 flex items-center gap-1.5">
                       Alpha-Beta Pruning
                     </h4>
@@ -1328,7 +1328,7 @@ export const ChessEngineLab: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="bg-white/[0.02] border border-white/5 rounded-xl p-3">
+                  <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-4">
                     <h4 className="font-semibold text-emerald-300 flex items-center gap-1.5">
                       Evaluation Function
                     </h4>
@@ -1350,12 +1350,12 @@ export const ChessEngineLab: React.FC = () => {
             className="grid grid-cols-1 md:grid-cols-[300px,1fr] gap-6"
           >
             {/* Sidebar checklists */}
-            <div className="glass-strong rounded-3xl p-5 border border-white/10 space-y-4">
+            <div className="glass-strong rounded-3xl p-6 border border-white/10 space-y-5">
               <div className="text-[11px] font-mono text-muted-foreground uppercase tracking-[0.18em] flex items-center gap-1.5">
                 <Award className="h-4 w-4 text-emerald-400" />
                 Lesson Progress
               </div>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {LESSONS.map((l) => {
                   const isDone = completedLessons.has(l.id);
                   const isActive = activeLessonId === l.id;
@@ -1402,7 +1402,7 @@ export const ChessEngineLab: React.FC = () => {
 
             {/* Lesson Reader Card */}
             {activeLessonId && (
-              <div className="glass rounded-[2rem] p-8 border border-white/5 flex flex-col justify-between space-y-6">
+              <div className="glass-strong rounded-3xl p-6 md:p-8 border border-white/10 flex flex-col justify-between space-y-6">
                 {(() => {
                   const lesson = LESSONS.find((l) => l.id === activeLessonId)!;
                   const isDone = completedLessons.has(lesson.id);
