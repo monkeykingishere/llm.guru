@@ -109,9 +109,10 @@ export function SiteHeader() {
             >
               Start learning
             </Link>
+            {/* Mobile menu button hidden in favor of Mobile-Only Dynamic Island navigation */}
             <button
               onClick={() => setOpen((v) => !v)}
-              className="md:hidden h-9 w-9 grid place-items-center rounded-xl glass"
+              className="hidden h-9 w-9 place-items-center rounded-xl glass"
               aria-label="Toggle menu"
             >
               {open ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}

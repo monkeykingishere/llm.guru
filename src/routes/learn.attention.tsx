@@ -136,13 +136,78 @@ const STEP_STAGES: StepStage[] = [
 ];
 
 // ----------------------------------------------------
-// Sub-Components
+// Reusable 3D Glass Layered Card Component
 // ----------------------------------------------------
-const ArrowConnector: React.FC<{ active?: boolean }> = ({ active }) => {
+const Card3D: React.FC<{
+  className?: string;
+  active?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
+  children: React.ReactNode;
+  translateZ?: number;
+}> = ({ className, active, onMouseEnter, onMouseLeave, children, translateZ = 12 }) => {
   return (
-    <div className="flex md:flex-col items-center justify-center py-2 text-muted-foreground select-none">
-      <ArrowRight className={cn("hidden md:block h-5 w-5 transition-colors duration-300", active ? "text-blue-400" : "text-white/10")} />
-      <ChevronDown className={cn("block md:hidden h-5 w-5 transition-colors duration-300", active ? "text-blue-400" : "text-white/10")} />
+    <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      className={cn(
+        "relative transition-all duration-300 transform-gpu",
+        className
+      )}
+      style={{
+        transformStyle: "preserve-3d",
+      }}
+    >
+      {/* 3D Shadows */}
+      <div
+        className="absolute inset-0 bg-black/60 rounded-2xl filter blur-md pointer-events-none transition-all duration-300"
+        style={{
+          transform: "translateZ(-10px)",
+          opacity: active ? 0.75 : 0.35,
+        }}
+      />
+      {/* 3D Backplate */}
+      <div
+        className={cn(
+          "absolute inset-0 rounded-2xl border border-white/5 transition-all duration-300 bg-slate-950/80"
+        )}
+        style={{
+          transform: "translateZ(-3px)",
+          boxShadow: active ? "0 0 15px rgba(255,255,255,0.03)" : "none",
+        }}
+      />
+      {/* 3D Glass Front plate */}
+      <div
+        className={cn(
+          "relative rounded-2xl p-4 transition-all duration-300 border h-full flex flex-col justify-between",
+          active ? "border-white/15 bg-white/[0.04] shadow-2xl" : "border-white/10 bg-white/[0.01]"
+        )}
+        style={{
+          transform: `translateZ(${translateZ}px)`,
+        }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+};
+
+// Mobile connector path line helper
+const MobileConnector: React.FC<{ active?: boolean; color?: string }> = ({ active, color = "#3b82f6" }) => {
+  return (
+    <div className="h-6 flex items-center justify-center shrink-0">
+      <svg className="w-4 h-full">
+        <line
+          x1="8"
+          y1="0"
+          x2="8"
+          y2="24"
+          stroke={active ? color : "rgba(255,255,255,0.06)"}
+          strokeWidth="1.8"
+          className={active ? "animate-pulse" : ""}
+          strokeDasharray={active ? "4 4" : "none"}
+        />
+      </svg>
     </div>
   );
 };
@@ -152,25 +217,27 @@ function AttentionHero() {
   const [hoveredStage, setHoveredStage] = useState<string | null>(null);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
 
+  // Autoplay step looping
   useEffect(() => {
     if (hoveredStage !== null) return;
     const interval = setInterval(() => {
       setAutoStep((prev) => (prev + 1) % 5);
-    }, 2500);
+    }, 2800);
     return () => clearInterval(interval);
   }, [hoveredStage]);
 
   const activeStage = useMemo(() => {
     if (hoveredStage !== null) return hoveredStage;
-    const stages = ["qkv", "scores", "matrix", "weighted", "output"];
+    const stages = ["input", "qkv", "scores", "matrix", "output"];
     return stages[autoStep];
   }, [hoveredStage, autoStep]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = (e.clientX - rect.left) / rect.width - 0.5;
-    const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setTilt({ x: Number((y * -2.0).toFixed(2)), y: Number((x * 2.0).toFixed(2)) });
+    // Subtle 1-2 degrees rotateX/rotateY parallax tilt
+    const x = ((e.clientX - rect.left) / rect.width - 0.5) * 2.8;
+    const y = ((e.clientY - rect.top) / rect.height - 0.5) * -2.8;
+    setTilt({ x: Number(y.toFixed(2)), y: Number(x.toFixed(2)) });
   };
 
   const handleMouseLeave = () => {
@@ -178,21 +245,45 @@ function AttentionHero() {
     setHoveredStage(null);
   };
 
+  // Precalculated attention matrix cells based on "The cat sat on the mat"
+  const presetAttention = [
+    [0.6, 0.3, 0.1, 0.0, 0.0],
+    [0.1, 0.7, 0.2, 0.0, 0.0],
+    [0.0, 0.2, 0.6, 0.1, 0.1],
+    [0.0, 0.0, 0.1, 0.8, 0.1],
+    [0.0, 0.0, 0.1, 0.2, 0.7]
+  ];
+
   return (
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{
-        transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        transition: "transform 0.15s ease-out",
+        transform: `perspective(1200px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+        transition: "transform 0.18s ease-out",
+        transformStyle: "preserve-3d",
       }}
-      className="glass-strong rounded-3xl p-8 border border-white/10 relative overflow-hidden mb-8 shadow-2xl transition-all duration-300"
+      className="glass-strong rounded-3xl p-6 border border-white/10 relative overflow-hidden mb-8 shadow-2xl transition-all duration-300"
     >
+      {/* Inline styles for custom flowing dashes keyframe */}
+      <style>{`
+        @keyframes flow-dash {
+          to {
+            stroke-dashoffset: -20;
+          }
+        }
+        .animate-flow-dash {
+          stroke-dasharray: 6, 6;
+          animation: flow-dash 0.9s linear infinite;
+        }
+      `}</style>
+
       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.01] to-transparent pointer-events-none" />
       <div className="absolute inset-0 bg-mesh opacity-30 pointer-events-none" />
-      
-      <div className="flex items-center justify-between mb-6 border-b border-white/5 pb-3">
-        <div className="text-xs font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-1.5">
+
+      {/* Header telemetry banner */}
+      <div className="flex items-center justify-between mb-4 border-b border-white/5 pb-3">
+        <div className="text-[10px] font-mono text-muted-foreground uppercase tracking-widest flex items-center gap-1.5 font-bold">
           <span className="h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse" />
           Attention Pipeline Centerpiece
         </div>
@@ -201,150 +292,397 @@ function AttentionHero() {
         </span>
       </div>
 
-      <div className="flex flex-col md:flex-row items-center justify-between w-full max-w-4xl mx-auto gap-4 md:gap-6 pt-4">
-        {/* Node 1: Input */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider">Input</span>
-          <div className="bg-white/[0.01] border border-white/5 rounded-2xl p-4 flex flex-col gap-1 w-16 h-28 justify-center shadow-xl">
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className="h-2.5 bg-slate-800/80 border border-white/5 rounded-md" />
-            ))}
-          </div>
-        </div>
+      {/* DESKTOP PIPELINE GRAPH VIEW */}
+      <div className="hidden md:block relative w-full h-[360px] select-none z-10" style={{ transformStyle: "preserve-3d" }}>
+        
+        {/* SVG Bezier Connection Lines overlay */}
+        <svg className="absolute inset-0 w-full h-full pointer-events-none z-0" viewBox="0 0 1000 360">
+          <defs>
+            <filter id="line-glow" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-        {/* Arrow */}
-        <ArrowConnector active={activeStage === "qkv"} />
+          {/* Connection Lines (Desktop blueprint paths) */}
+          {[
+            // Input to Weights
+            { id: "in-wq", d: "M 145 180 C 170 180, 175 90, 200 90", active: activeStage === "input" || activeStage === "qkv" || activeStage === "query", color: "#f59e0b" },
+            { id: "in-wk", d: "M 145 180 C 170 180, 175 180, 200 180", active: activeStage === "input" || activeStage === "qkv" || activeStage === "key", color: "#f43f5e" },
+            { id: "in-wv", d: "M 145 180 C 170 180, 175 270, 200 270", active: activeStage === "input" || activeStage === "qkv" || activeStage === "value", color: "#10b981" },
 
-        {/* Node 2: Projections */}
-        <div className="flex flex-col items-center gap-2">
-          <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider">Projections</span>
-          <div className="flex flex-col gap-2 bg-white/[0.01] border border-white/5 rounded-2xl p-3 shadow-xl">
-            <div className={cn("text-[9px] font-mono px-2.5 py-0.5 rounded-md transition-colors border", 
-              activeStage === "qkv" ? "bg-amber-500/20 text-amber-300 border-amber-500/20" : "text-muted-foreground border-transparent")}>W_q</div>
-            <div className={cn("text-[9px] font-mono px-2.5 py-0.5 rounded-md transition-colors border", 
-              activeStage === "qkv" ? "bg-rose-500/20 text-rose-300 border-rose-500/20" : "text-muted-foreground border-transparent")}>W_k</div>
-            <div className={cn("text-[9px] font-mono px-2.5 py-0.5 rounded-md transition-colors border", 
-              activeStage === "qkv" ? "bg-emerald-500/20 text-emerald-300 border-emerald-500/20" : "text-muted-foreground border-transparent")}>W_v</div>
-          </div>
-        </div>
+            // Weights to Vectors
+            { id: "wq-q", d: "M 280 90 L 390 90", active: activeStage === "qkv" || activeStage === "query", color: "#f59e0b" },
+            { id: "wk-k", d: "M 280 180 L 390 180", active: activeStage === "qkv" || activeStage === "key", color: "#f43f5e" },
+            { id: "wv-v", d: "M 280 270 L 390 270", active: activeStage === "qkv" || activeStage === "value", color: "#10b981" },
 
-        {/* Arrow */}
-        <ArrowConnector active={activeStage === "qkv"} />
+            // Vectors to Matrix (Scoring)
+            { id: "q-mat", d: "M 490 90 C 540 90, 570 135, 620 135", active: activeStage === "scores" || activeStage === "matrix" || activeStage === "output" || activeStage === "query", color: "#3b82f6" },
+            { id: "k-mat", d: "M 490 180 C 540 180, 570 135, 620 135", active: activeStage === "scores" || activeStage === "matrix" || activeStage === "output" || activeStage === "key", color: "#3b82f6" },
 
-        {/* Node 3: Q, K, V Matrices */}
-        <div className="flex flex-col items-center gap-2 relative">
-          <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider">Q · K · V</span>
-          <div className="flex gap-2.5 items-center bg-white/[0.01] border border-white/5 rounded-2xl p-4 shadow-xl">
-            {/* Q Card */}
-            <div 
-              onMouseEnter={() => setHoveredStage("qkv")}
-              onMouseLeave={() => setHoveredStage(null)}
-              className={cn("w-10 h-16 rounded-xl flex flex-col justify-between p-2 border transition-all duration-300 cursor-help", 
-                activeStage === "qkv" || activeStage === "scores" ? "bg-amber-500/10 border-amber-500/30 scale-105" : "bg-white/[0.02] border-white/5 opacity-50")}
-            >
-              <span className="text-[9px] font-bold text-amber-300 font-mono">Q</span>
-              <div className="space-y-1">
-                <div className="h-1 bg-amber-400/50 rounded-sm w-full" />
-                <div className="h-1 bg-amber-400/50 rounded-sm w-4/5" />
-              </div>
+            // Matrix and V to Output Y
+            { id: "mat-out", d: "M 740 135 C 790 135, 810 180, 855 180", active: activeStage === "output", color: "#8b5cf6" },
+            { id: "v-out", d: "M 490 270 C 650 270, 750 180, 855 180", active: activeStage === "output" || activeStage === "value", color: "#10b981" }
+          ].map((path) => (
+            <g key={path.id}>
+              {/* Thin background line track */}
+              <path
+                d={path.d}
+                fill="none"
+                stroke="rgba(255,255,255,0.06)"
+                strokeWidth="1.5"
+                style={{ transition: "stroke 0.3s" }}
+              />
+              {/* Active flowing overlays */}
+              {path.active && (
+                <path
+                  d={path.d}
+                  fill="none"
+                  stroke={path.color}
+                  strokeWidth="2.2"
+                  filter="url(#line-glow)"
+                  className="animate-flow-dash"
+                  style={{ transition: "stroke 0.3s" }}
+                />
+              )}
+            </g>
+          ))}
+        </svg>
+
+        {/* Stage 1: Input Tokens (Center: x=80, y=180) */}
+        <div className="absolute left-[80px] top-[180px] -translate-x-1/2 -translate-y-1/2 w-[130px] h-[220px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "input"}
+            onMouseEnter={() => setHoveredStage("input")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider font-bold mb-2 block text-center">
+              Input Tokens
+            </span>
+            <div className="flex flex-col gap-1.5 flex-1 justify-center">
+              {["The", "cat", "sat", "on", "mat"].map((w, idx) => (
+                <div
+                  key={idx}
+                  className={cn(
+                    "text-[9px] font-mono py-1 rounded-md border text-center transition-all duration-300",
+                    activeStage === "input"
+                      ? "bg-blue-500/10 border-blue-500/30 text-blue-200"
+                      : "bg-slate-900/40 border-white/5 text-slate-400"
+                  )}
+                >
+                  {w}
+                </div>
+              ))}
             </div>
-
-            {/* K Card */}
-            <div 
-              onMouseEnter={() => setHoveredStage("scores")}
-              onMouseLeave={() => setHoveredStage(null)}
-              className={cn("w-10 h-16 rounded-xl flex flex-col justify-between p-2 border transition-all duration-300 cursor-help", 
-                activeStage === "qkv" || activeStage === "scores" ? "bg-rose-500/10 border-rose-500/30 scale-105" : "bg-white/[0.02] border-white/5 opacity-50")}
-            >
-              <span className="text-[9px] font-bold text-rose-300 font-mono">K</span>
-              <div className="space-y-1">
-                <div className="h-1 bg-rose-400/50 rounded-sm w-full" />
-                <div className="h-1 bg-rose-400/50 rounded-sm w-3/4" />
-              </div>
-            </div>
-
-            {/* V Card */}
-            <div 
-              onMouseEnter={() => setHoveredStage("weighted")}
-              onMouseLeave={() => setHoveredStage(null)}
-              className={cn("w-10 h-16 rounded-xl flex flex-col justify-between p-2 border transition-all duration-300 cursor-help", 
-                activeStage === "qkv" || activeStage === "weighted" ? "bg-emerald-500/10 border-emerald-500/30 scale-105" : "bg-white/[0.02] border-white/5 opacity-50")}
-            >
-              <span className="text-[9px] font-bold text-emerald-300 font-mono">V</span>
-              <div className="space-y-1">
-                <div className="h-1 bg-emerald-400/50 rounded-sm w-full" />
-                <div className="h-1 bg-emerald-400/50 rounded-sm w-5/6" />
-              </div>
-            </div>
-          </div>
+          </Card3D>
         </div>
 
-        {/* Arrow */}
-        <ArrowConnector active={activeStage === "scores" || activeStage === "matrix"} />
-
-        {/* Node 4: Attention Matrix Heatmap */}
-        <div 
-          onMouseEnter={() => setHoveredStage("matrix")}
-          onMouseLeave={() => setHoveredStage(null)}
-          className="flex flex-col items-center gap-2 cursor-help"
-        >
-          <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider">Attention Matrix</span>
-          <div className={cn("bg-white/[0.01] border rounded-2xl p-3.5 shadow-xl flex flex-col gap-1 transition-all duration-300",
-            activeStage === "matrix" || activeStage === "weighted" ? "border-blue-500/35 bg-blue-500/5 scale-105" : "border-white/5")}>
-            <div className="grid grid-cols-4 gap-1 w-14 h-14">
-              {Array.from({ length: 16 }).map((_, i) => {
-                const isBright = (i * 7) % 5 === 0;
-                return (
-                  <div key={i} className={cn("rounded-[2px] transition-colors duration-300",
-                    activeStage === "matrix" || activeStage === "weighted"
-                      ? isBright ? "bg-blue-400/70" : "bg-blue-900/20"
-                      : isBright ? "bg-slate-700/50" : "bg-slate-800/10"
-                  )} />
-                );
-              })}
+        {/* Stage 2: Weight Projections (Center: x=240) */}
+        {/* W_q (y=90) */}
+        <div className="absolute left-[240px] top-[90px] -translate-x-1/2 -translate-y-1/2 w-[80px] h-[75px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "query" || activeStage === "qkv"}
+            onMouseEnter={() => setHoveredStage("query")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <div className="text-center">
+              <span className="text-[10px] font-bold text-amber-300 font-mono block">W_q</span>
+              <span className="text-[8px] text-muted-foreground font-mono mt-0.5 block">Query Wt</span>
             </div>
-          </div>
+          </Card3D>
         </div>
 
-        {/* Arrow */}
-        <ArrowConnector active={activeStage === "weighted" || activeStage === "output"} />
-
-        {/* Node 5: Output */}
-        <div 
-          onMouseEnter={() => setHoveredStage("output")}
-          onMouseLeave={() => setHoveredStage(null)}
-          className="flex flex-col items-center gap-2 cursor-help"
-        >
-          <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider">Output (Y)</span>
-          <div className={cn("bg-white/[0.01] border rounded-2xl p-4 flex flex-col gap-1 w-16 h-28 justify-center shadow-xl transition-all duration-300",
-            activeStage === "output" ? "border-emerald-500/35 bg-emerald-500/5 scale-105" : "border-white/5")}>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <div key={i} className={cn("h-2.5 border rounded-md transition-all duration-300",
-                activeStage === "output" 
-                  ? "bg-emerald-500/30 border-emerald-500/40" 
-                  : "bg-slate-800/80 border-white/5"
-              )} />
-            ))}
-          </div>
+        {/* W_k (y=180) */}
+        <div className="absolute left-[240px] top-[180px] -translate-x-1/2 -translate-y-1/2 w-[80px] h-[75px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "key" || activeStage === "qkv"}
+            onMouseEnter={() => setHoveredStage("key")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <div className="text-center">
+              <span className="text-[10px] font-bold text-rose-300 font-mono block">W_k</span>
+              <span className="text-[8px] text-muted-foreground font-mono mt-0.5 block">Key Wt</span>
+            </div>
+          </Card3D>
         </div>
+
+        {/* W_v (y=270) */}
+        <div className="absolute left-[240px] top-[270px] -translate-x-1/2 -translate-y-1/2 w-[80px] h-[75px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "value" || activeStage === "qkv"}
+            onMouseEnter={() => setHoveredStage("value")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <div className="text-center">
+              <span className="text-[10px] font-bold text-emerald-300 font-mono block">W_v</span>
+              <span className="text-[8px] text-muted-foreground font-mono mt-0.5 block">Value Wt</span>
+            </div>
+          </Card3D>
+        </div>
+
+        {/* Stage 3: Q, K, V Vectors (Center: x=440) */}
+        {/* Q Card (y=90) */}
+        <div className="absolute left-[440px] top-[90px] -translate-x-1/2 -translate-y-1/2 w-[100px] h-[75px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "query" || activeStage === "qkv" || activeStage === "scores"}
+            onMouseEnter={() => setHoveredStage("query")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] font-bold text-amber-300 font-mono">Query (Q)</span>
+            </div>
+            <div className="space-y-1 flex-1 flex flex-col justify-center">
+              <div className="h-1 bg-amber-400/60 rounded-sm w-full" />
+              <div className="h-1 bg-amber-400/60 rounded-sm w-4/5" />
+            </div>
+          </Card3D>
+        </div>
+
+        {/* K Card (y=180) */}
+        <div className="absolute left-[440px] top-[180px] -translate-x-1/2 -translate-y-1/2 w-[100px] h-[75px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "key" || activeStage === "qkv" || activeStage === "scores"}
+            onMouseEnter={() => setHoveredStage("key")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] font-bold text-rose-300 font-mono">Key (K)</span>
+            </div>
+            <div className="space-y-1 flex-1 flex flex-col justify-center">
+              <div className="h-1 bg-rose-400/60 rounded-sm w-full" />
+              <div className="h-1 bg-rose-400/60 rounded-sm w-3/4" />
+            </div>
+          </Card3D>
+        </div>
+
+        {/* V Card (y=270) */}
+        <div className="absolute left-[440px] top-[270px] -translate-x-1/2 -translate-y-1/2 w-[100px] h-[75px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "value" || activeStage === "qkv" || activeStage === "output"}
+            onMouseEnter={() => setHoveredStage("value")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-[10px] font-bold text-emerald-300 font-mono">Value (V)</span>
+            </div>
+            <div className="space-y-1 flex-1 flex flex-col justify-center">
+              <div className="h-1 bg-emerald-400/60 rounded-sm w-full" />
+              <div className="h-1 bg-emerald-400/60 rounded-sm w-5/6" />
+            </div>
+          </Card3D>
+        </div>
+
+        {/* Stage 4: Attention Matrix (Center: x=680, y=135) */}
+        <div className="absolute left-[680px] top-[135px] -translate-x-1/2 -translate-y-1/2 w-[120px] h-[130px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "matrix" || activeStage === "scores"}
+            onMouseEnter={() => setHoveredStage("matrix")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <span className="text-[8px] font-mono text-muted-foreground uppercase text-center block mb-1 font-bold">
+              Q · Kᵀ Matrix
+            </span>
+            <div className="grid grid-cols-5 gap-1.5 flex-1 items-center">
+              {presetAttention.flat().map((v, i) => (
+                <div
+                  key={i}
+                  className="aspect-square rounded-[2px] transition-all duration-300"
+                  style={{
+                    background: activeStage === "matrix" || activeStage === "scores"
+                      ? `rgba(59, 130, 246, ${v * 0.9})`
+                      : `rgba(255, 255, 255, ${0.03 + v * 0.1})`,
+                    boxShadow: (activeStage === "matrix" && v > 0.5)
+                      ? "0 0 4px rgba(59, 130, 246, 0.4)"
+                      : "none",
+                  }}
+                />
+              ))}
+            </div>
+          </Card3D>
+        </div>
+
+        {/* Stage 5: Output Y (Center: x=920, y=180) */}
+        <div className="absolute left-[920px] top-[180px] -translate-x-1/2 -translate-y-1/2 w-[130px] h-[220px]" style={{ transformStyle: "preserve-3d" }}>
+          <Card3D
+            active={activeStage === "output"}
+            onMouseEnter={() => setHoveredStage("output")}
+            onMouseLeave={() => setHoveredStage(null)}
+            className="w-full h-full cursor-help"
+          >
+            <span className="text-[9px] font-mono uppercase text-muted-foreground tracking-wider font-bold mb-2 block text-center">
+              Output (Y)
+            </span>
+            <div className="flex flex-col gap-1.5 flex-1 justify-center">
+              {["The", "cat", "sat", "on", "mat"].map((w, idx) => (
+                <div
+                  key={idx}
+                  className={cn(
+                    "text-[9px] font-mono py-1 rounded-md border text-center transition-all duration-300",
+                    activeStage === "output"
+                      ? "bg-violet-500/20 border-violet-500/35 text-violet-200 shadow-sm"
+                      : "bg-slate-900/40 border-white/5 text-slate-400"
+                  )}
+                >
+                  {w}*
+                </div>
+              ))}
+            </div>
+          </Card3D>
+        </div>
+
       </div>
 
-      {/* Pipeline Explanation box */}
-      <div className="bg-slate-950/40 border border-white/5 rounded-2xl p-4 mt-6 text-center max-w-2xl mx-auto">
-        <span className="text-[9px] font-mono text-blue-400 uppercase tracking-widest block mb-1">
-          Current Pipeline Activity
+      {/* MOBILE PIPELINE VERTICAL ACCORDION VIEW */}
+      <div className="block md:hidden flex flex-col w-full gap-1 py-2 relative z-10">
+        
+        {/* Mobile Input Node */}
+        <div
+          onClick={() => setHoveredStage(hoveredStage === "input" ? null : "input")}
+          className={cn(
+            "w-full p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none",
+            activeStage === "input" ? "bg-white/[0.04] border-blue-500/30" : "bg-white/[0.01] border-white/5"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-[10px] text-blue-300 font-bold font-mono">1</div>
+              <span className="text-xs font-semibold text-white">Input Tokens</span>
+            </div>
+            <span className="text-[10px] text-muted-foreground font-mono">["The", "cat", ...]</span>
+          </div>
+          {activeStage === "input" && (
+            <p className="text-[11px] text-muted-foreground leading-normal mt-2 font-mono">
+              Tokens are mapped to raw embeddings coordinates before processing.
+            </p>
+          )}
+        </div>
+
+        <MobileConnector active={activeStage === "qkv"} color="#f59e0b" />
+
+        {/* Mobile Projections Node */}
+        <div
+          onClick={() => setHoveredStage(hoveredStage === "qkv" ? null : "qkv")}
+          className={cn(
+            "w-full p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none",
+            activeStage === "qkv" ? "bg-white/[0.04] border-amber-500/30" : "bg-white/[0.01] border-white/5"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-[10px] text-amber-300 font-bold font-mono">2</div>
+              <span className="text-xs font-semibold text-white">Linear Projections</span>
+            </div>
+            <span className="text-[10px] text-amber-400 font-mono">W_q, W_k, W_v</span>
+          </div>
+          {activeStage === "qkv" && (
+            <p className="text-[11px] text-muted-foreground leading-normal mt-2 font-mono">
+              Learned projection matrices weight embeddings to generate unique Query (Q), Key (K), and Value (V) representations.
+            </p>
+          )}
+        </div>
+
+        <MobileConnector active={activeStage === "scores"} color="#f43f5e" />
+
+        {/* Mobile Scoring Node */}
+        <div
+          onClick={() => setHoveredStage(hoveredStage === "scores" ? null : "scores")}
+          className={cn(
+            "w-full p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none",
+            activeStage === "scores" ? "bg-white/[0.04] border-rose-500/30" : "bg-white/[0.01] border-white/5"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 rounded-lg bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-[10px] text-rose-300 font-bold font-mono">3</div>
+              <span className="text-xs font-semibold text-white">Similarity Scoring</span>
+            </div>
+            <span className="text-[10px] text-rose-400 font-mono">Q · Kᵀ</span>
+          </div>
+          {activeStage === "scores" && (
+            <p className="text-[11px] text-muted-foreground leading-normal mt-2 font-mono">
+              Dots products calculated between Query vectors and Key vectors measure relative similarity scores.
+            </p>
+          )}
+        </div>
+
+        <MobileConnector active={activeStage === "matrix"} color="#3b82f6" />
+
+        {/* Mobile Attention Matrix Node */}
+        <div
+          onClick={() => setHoveredStage(hoveredStage === "matrix" ? null : "matrix")}
+          className={cn(
+            "w-full p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none",
+            activeStage === "matrix" ? "bg-white/[0.04] border-blue-500/30" : "bg-white/[0.01] border-white/5"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 rounded-lg bg-blue-500/10 border border-blue-500/20 flex items-center justify-center text-[10px] text-blue-300 font-bold font-mono">4</div>
+              <span className="text-xs font-semibold text-white">Attention Matrix</span>
+            </div>
+            <span className="text-[10px] text-blue-400 font-mono">Softmax Map</span>
+          </div>
+          {activeStage === "matrix" && (
+            <p className="text-[11px] text-muted-foreground leading-normal mt-2 font-mono">
+              Similarity scores are normalized via Softmax, producing a percentage distribution map of focus.
+            </p>
+          )}
+        </div>
+
+        <MobileConnector active={activeStage === "output"} color="#8b5cf6" />
+
+        {/* Mobile Output Node */}
+        <div
+          onClick={() => setHoveredStage(hoveredStage === "output" ? null : "output")}
+          className={cn(
+            "w-full p-3.5 rounded-2xl border transition-all duration-300 cursor-pointer select-none",
+            activeStage === "output" ? "bg-white/[0.04] border-violet-500/30" : "bg-white/[0.01] border-white/5"
+          )}
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="h-5 w-5 rounded-lg bg-violet-500/10 border border-violet-500/20 flex items-center justify-center text-[10px] text-violet-300 font-bold font-mono">5</div>
+              <span className="text-xs font-semibold text-white">Contextual Output</span>
+            </div>
+            <span className="text-[10px] text-violet-400 font-mono">Weights · V</span>
+          </div>
+          {activeStage === "output" && (
+            <p className="text-[11px] text-muted-foreground leading-normal mt-2 font-mono">
+              The attention weights scale the Value vectors to form context-enriched output representations.
+            </p>
+          )}
+        </div>
+
+      </div>
+
+      {/* Explanation Banner */}
+      <div className="bg-slate-950/40 border border-white/5 rounded-2xl p-4 mt-6 text-center max-w-2xl mx-auto z-10 relative">
+        <span className="text-[9px] font-mono text-blue-400 uppercase tracking-widest block mb-1.5 font-bold">
+          Active Pipeline stage
         </span>
-        <p className="text-xs text-slate-300 font-mono transition-all duration-300 leading-relaxed min-h-[32px]">
-          {activeStage === "qkv" && "Projections: Embeddings are projected into Queries (Q), Keys (K), and Values (V) using learned weight matrices."}
-          {activeStage === "scores" && "Scoring: Query vectors dot-product with Key vectors to calculate semantic similarity scores."}
-          {activeStage === "matrix" && "Attention distribution: Softmax normalizes scores into probability weights representing token focus."}
-          {activeStage === "weighted" && "Weighted Context: Attention matrix weights are multiplied by the Value vectors to collect information."}
-          {activeStage === "output" && "Output representation: Final contextual embeddings carry semantic weight from the entire sequence."}
+        <p className="text-xs text-slate-300 font-mono transition-all duration-300 leading-relaxed min-h-[36px]">
+          {activeStage === "input" && "Input Tokens: Sequence embeddings are generated to represent the tokens mathematically."}
+          {activeStage === "qkv" && "Linear Projections: Embeddings are multiplied by learned weight matrices to produce Query (Q), Key (K), and Value (V) vectors."}
+          {activeStage === "scores" && "Similarity Scoring: Query vectors match with Key vectors via dot product to calculate raw similarity coordinates."}
+          {activeStage === "matrix" && "Softmax Matrix: Similarity scores are scaled and normalized into a probability distribution representing attention weights."}
+          {activeStage === "output" && "Contextual Output: Attention weights scale the Value vectors (Weights · V) to construct the final context-enriched outputs."}
         </p>
       </div>
     </div>
   );
 }
+
 
 // ----------------------------------------------------
 // Page Component
@@ -354,7 +692,7 @@ export function Page() {
   const [sentIdx, setSentIdx] = useState(0);
   const [head, setHead] = useState(0);
   const [selectedTokenIdx, setSelectedTokenIdx] = useState<number>(0);
-  const [hoverRow, setHoverRow] = useState<number | null>(null);
+  const [hoveredCell, setHoveredCell] = useState<{ row: number; col: number } | null>(null);
   
   // Custom Playground Text
   const [playgroundText, setPlaygroundText] = useState("The king attacks the queen");
@@ -560,36 +898,36 @@ export function Page() {
 
                     <div className="grid grid-cols-3 gap-3">
                       {/* Q matrix representation */}
-                      <div className="glass-strong rounded-2xl p-4 border border-white/10 relative shadow-2xl flex flex-col justify-between h-28 transform perspective-[800px] rotateX(12deg) rotateY(-8deg) hover:translate-y-[-4px] transition-transform duration-300">
+                      <div className="glass-strong rounded-2xl p-4 border border-white/10 relative shadow-2xl flex flex-col justify-between min-h-[120px] h-auto transform perspective-[800px] rotateX(12deg) rotateY(-8deg) hover:translate-y-[-4px] transition-transform duration-300">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-semibold text-amber-300 font-mono">Query (Q)</span>
                           <span className="text-[8px] bg-amber-500/10 text-amber-300 px-1.5 py-0.2 rounded font-mono">Weight W_q</span>
                         </div>
-                        <div className="w-full bg-white/5 rounded h-1 overflow-hidden">
+                        <div className="w-full bg-white/5 rounded h-1 overflow-hidden my-2">
                           <div className="bg-amber-400 h-full w-4/5" />
                         </div>
                         <span className="text-[9px] text-muted-foreground font-mono leading-tight">What is token searching for?</span>
                       </div>
 
                       {/* K matrix representation */}
-                      <div className="glass-strong rounded-2xl p-4 border border-white/10 relative shadow-2xl flex flex-col justify-between h-28 transform perspective-[800px] rotateX(12deg) rotateY(-8deg) hover:translate-y-[-4px] transition-transform duration-300">
+                      <div className="glass-strong rounded-2xl p-4 border border-white/10 relative shadow-2xl flex flex-col justify-between min-h-[120px] h-auto transform perspective-[800px] rotateX(12deg) rotateY(-8deg) hover:translate-y-[-4px] transition-transform duration-300">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-semibold text-rose-300 font-mono">Key (K)</span>
                           <span className="text-[8px] bg-rose-500/10 text-rose-300 px-1.5 py-0.2 rounded font-mono">Weight W_k</span>
                         </div>
-                        <div className="w-full bg-white/5 rounded h-1 overflow-hidden">
+                        <div className="w-full bg-white/5 rounded h-1 overflow-hidden my-2">
                           <div className="bg-rose-400 h-full w-2/3" />
                         </div>
                         <span className="text-[9px] text-muted-foreground font-mono leading-tight">What features does it offer?</span>
                       </div>
 
                       {/* V matrix representation */}
-                      <div className="glass-strong rounded-2xl p-4 border border-white/10 relative shadow-2xl flex flex-col justify-between h-28 transform perspective-[800px] rotateX(12deg) rotateY(-8deg) hover:translate-y-[-4px] transition-transform duration-300">
+                      <div className="glass-strong rounded-2xl p-4 border border-white/10 relative shadow-2xl flex flex-col justify-between min-h-[120px] h-auto transform perspective-[800px] rotateX(12deg) rotateY(-8deg) hover:translate-y-[-4px] transition-transform duration-300">
                         <div className="flex justify-between items-center">
                           <span className="text-xs font-semibold text-emerald-300 font-mono">Value (V)</span>
                           <span className="text-[8px] bg-emerald-500/10 text-emerald-300 px-1.5 py-0.2 rounded font-mono">Weight W_v</span>
                         </div>
-                        <div className="w-full bg-white/5 rounded h-1 overflow-hidden">
+                        <div className="w-full bg-white/5 rounded h-1 overflow-hidden my-2">
                           <div className="bg-emerald-400 h-full w-5/6" />
                         </div>
                         <span className="text-[9px] text-muted-foreground font-mono leading-tight">Semantic info block</span>
@@ -625,7 +963,10 @@ export function Page() {
                         {tokens.map((t, i) => (
                           <div
                             key={i}
-                            className="text-[11px] font-mono text-muted-foreground text-center pb-1 select-none"
+                            className={cn(
+                              "text-[11px] font-mono text-center pb-1 select-none transition-colors duration-200",
+                              hoveredCell?.col === i ? "text-emerald-400 font-bold" : "text-muted-foreground"
+                            )}
                           >
                             {t}
                           </div>
@@ -634,30 +975,39 @@ export function Page() {
                           <div key={i} className="contents">
                             <div
                               className={cn(
-                                "pr-3 text-right text-[11px] font-mono whitespace-nowrap self-center transition-colors select-none",
-                                hoverRow === i ? "text-white font-bold" : "text-muted-foreground"
+                                "pr-3 text-right text-[11px] font-mono whitespace-nowrap self-center transition-colors duration-200 select-none",
+                                hoveredCell?.row === i ? "text-white font-bold" : "text-muted-foreground"
                               )}
                             >
                               {tokens[i]}
                             </div>
-                            {row.map((v, j) => (
-                              <motion.div
-                                key={j}
-                                onMouseEnter={() => setHoverRow(i)}
-                                onMouseLeave={() => setHoverRow(null)}
-                                className="aspect-square rounded-md relative overflow-hidden cursor-pointer"
-                                style={{
-                                  background: `oklch(${0.2 + v * 0.55} ${0.05 + v * 0.2} ${285 - v * 50})`,
-                                  boxShadow:
-                                    v > 0.35 ? `0 0 ${v * 16}px oklch(0.66 0.21 285 / ${v})` : undefined,
-                                  transition: "background .3s, box-shadow .3s",
-                                }}
-                              >
-                                <span className="absolute inset-0 grid place-items-center text-[10px] font-mono text-white/80 tabular-nums">
-                                  {v < 0.05 ? "" : v.toFixed(2)}
-                                </span>
-                              </motion.div>
-                            ))}
+                            {row.map((v, j) => {
+                              const isHovered = hoveredCell?.row === i && hoveredCell?.col === j;
+                              const isCrosshair = hoveredCell !== null && (hoveredCell.row === i || hoveredCell.col === j);
+                              return (
+                                <motion.div
+                                  key={j}
+                                  onMouseEnter={() => setHoveredCell({ row: i, col: j })}
+                                  onMouseLeave={() => setHoveredCell(null)}
+                                  className={cn(
+                                    "aspect-square rounded-md relative cursor-pointer transition-transform duration-200 select-none",
+                                    isHovered ? "scale-108 z-20 border border-white/50" : isCrosshair ? "border border-white/20 z-10" : "border border-transparent"
+                                  )}
+                                  style={{
+                                    background: `oklch(${0.2 + v * 0.55} ${0.05 + v * 0.2} ${285 - v * 50})`,
+                                    boxShadow:
+                                      v > 0.35 || isHovered
+                                        ? `0 0 ${isHovered ? 16 : v * 12}px oklch(0.66 0.21 285 / ${isHovered ? 0.9 : v})`
+                                        : undefined,
+                                    transition: "background .3s, box-shadow .3s, transform .2s",
+                                  }}
+                                >
+                                  <span className="absolute inset-0 grid place-items-center text-[10px] font-mono text-white/80 tabular-nums">
+                                    {v < 0.05 ? "" : v.toFixed(2)}
+                                  </span>
+                                </motion.div>
+                              );
+                            })}
                           </div>
                         ))}
                       </div>
@@ -961,7 +1311,10 @@ export function Page() {
                     {tokens.map((t, i) => (
                       <div
                         key={i}
-                        className="text-[10px] font-mono text-muted-foreground text-center pb-1 select-none"
+                        className={cn(
+                          "text-[10px] font-mono text-center pb-1 select-none transition-colors duration-200",
+                          hoveredCell?.col === i ? "text-amber-400 font-bold" : "text-muted-foreground"
+                        )}
                       >
                         {t}
                       </div>
@@ -970,30 +1323,39 @@ export function Page() {
                       <div key={i} className="contents">
                         <div
                           className={cn(
-                            "pr-3 text-right text-[10px] font-mono whitespace-nowrap self-center transition-colors select-none",
-                            hoverRow === i ? "text-white font-bold" : "text-muted-foreground"
+                            "pr-3 text-right text-[10px] font-mono whitespace-nowrap self-center transition-colors duration-200 select-none",
+                            hoveredCell?.row === i ? "text-white font-bold" : "text-muted-foreground"
                           )}
                         >
                           {tokens[i]}
                         </div>
-                        {row.map((v, j) => (
-                          <div
-                            key={j}
-                            onMouseEnter={() => setHoverRow(i)}
-                            onMouseLeave={() => setHoverRow(null)}
-                            className="aspect-square rounded-md relative overflow-hidden cursor-pointer"
-                            style={{
-                              background: `oklch(${0.2 + v * 0.55} ${0.05 + v * 0.2} ${285 - v * 50})`,
-                              boxShadow:
-                                v > 0.35 ? `0 0 ${v * 16}px oklch(0.66 0.21 285 / ${v})` : undefined,
-                              transition: "background .3s, box-shadow .3s",
-                            }}
-                          >
-                            <span className="absolute inset-0 grid place-items-center text-[9px] font-mono text-white/80 tabular-nums">
-                              {v < 0.05 ? "" : v.toFixed(2)}
-                            </span>
-                          </div>
-                        ))}
+                        {row.map((v, j) => {
+                          const isHovered = hoveredCell?.row === i && hoveredCell?.col === j;
+                          const isCrosshair = hoveredCell !== null && (hoveredCell.row === i || hoveredCell.col === j);
+                          return (
+                            <div
+                              key={j}
+                              onMouseEnter={() => setHoveredCell({ row: i, col: j })}
+                              onMouseLeave={() => setHoveredCell(null)}
+                              className={cn(
+                                "aspect-square rounded-md relative cursor-pointer transition-transform duration-200 select-none",
+                                isHovered ? "scale-108 z-20 border border-white/50" : isCrosshair ? "border border-white/20 z-10" : "border border-transparent"
+                              )}
+                              style={{
+                                background: `oklch(${0.2 + v * 0.55} ${0.05 + v * 0.2} ${285 - v * 50})`,
+                                boxShadow:
+                                  v > 0.35 || isHovered
+                                    ? `0 0 ${isHovered ? 16 : v * 12}px oklch(0.66 0.21 285 / ${isHovered ? 0.9 : v})`
+                                    : undefined,
+                                transition: "background .3s, box-shadow .3s, transform .2s",
+                              }}
+                            >
+                              <span className="absolute inset-0 grid place-items-center text-[9px] font-mono text-white/80 tabular-nums">
+                                {v < 0.05 ? "" : v.toFixed(2)}
+                              </span>
+                            </div>
+                          );
+                        })}
                       </div>
                     ))}
                   </div>
