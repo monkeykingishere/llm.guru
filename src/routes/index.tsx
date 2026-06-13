@@ -129,6 +129,75 @@ function Index() {
   );
 }
 
+const ChessPieceTeaser: React.FC<{ type: "n" | "k" | "r"; color: "w" | "b"; className?: string }> = ({
+  type,
+  color,
+  className,
+}) => {
+  const isWhite = color === "w";
+  const fillColor = isWhite ? "#f8fafc" : "#0f172a";
+  const strokeColor = isWhite ? "#475569" : "#cbd5e1";
+
+  switch (type) {
+    case "n":
+      return (
+        <svg viewBox="0 0 45 45" className={cn("w-full h-full drop-shadow-md", className)}>
+          <path
+            d="M 22,10 C 22,10 19,11 16,15 C 13,19 13,23 13,23 C 13,23 14,21 16,20 C 18,19 20,20 20,20 C 20,20 17,22 15,25 C 13,28 13,31 13,31 C 13,31 15,30 18,28 C 19,30 22,30 22,30 C 22,30 20,32 18,34 C 16,36 16,37 16,37 L 29,37 C 29,37 31,34 30,30 C 29,26 27,22 27,22 C 27,22 28,19 28,15 C 28,11 25,10 22,10 z"
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <circle cx="24" cy="16" r="2" fill={isWhite ? "#475569" : "#cbd5e1"} />
+          <path d="M 14,39 L 31,39" stroke={strokeColor} strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
+      );
+    case "r":
+      return (
+        <svg viewBox="0 0 45 45" className={cn("w-full h-full drop-shadow-md", className)}>
+          <path
+            d="M9 39h27v-3H9v3zm3-13h21v-4H12v4zm2.5-4l1.5-8h18l1.5 8h-21z"
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M12 12v4h4v-4h3v4h7v-4h3v4h4v-4h3v-3H9v3h3z"
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path d="M11 36h23v-3H11v3z" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" />
+        </svg>
+      );
+    case "k":
+      return (
+        <svg viewBox="0 0 45 45" className={cn("w-full h-full drop-shadow-md", className)}>
+          <path
+            d="M22.5 11.63V6M20 8h5M22.5 25c2.4 0 5-2 5-6 0-3.5-3-5.5-5-5.5s-5 2-5 5.5c0 4 2.6 6 5 6z"
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M11.5 30c1.5-1.5 4-2.5 6-3h10c2 .5 4.5 1.5 6 3 .75.75 1.5.75 1.5 0V20H10v10c0 .75.75.75 1.5 0z"
+            fill={fillColor}
+            stroke={strokeColor}
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path d="M11.5 33h22v-3h-22v3zm-2 4h26v-3h-26v3z" fill={fillColor} stroke={strokeColor} strokeWidth="1.5" />
+        </svg>
+      );
+    default:
+      return null;
+  }
+};
+
 function FeaturedLab() {
   const [ticker, setTicker] = useState(12840);
   useEffect(() => {
@@ -156,7 +225,7 @@ function FeaturedLab() {
       <div className="mt-12 relative overflow-hidden rounded-[2.5rem] glass-strong p-8 sm:p-12 border border-white/10 group tilt-card sheen">
         <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-aurora opacity-25 blur-3xl group-hover:opacity-40 transition-opacity duration-1000" />
         
-        <div className="grid gap-10 lg:grid-cols-[1fr,1.2fr] items-center relative z-10">
+        <div className="grid gap-10 lg:grid-cols-[1.25fr,0.75fr] items-center relative z-10">
           {/* Card description */}
           <div className="space-y-6">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 text-amber-300 px-3 py-1 text-xs font-mono uppercase tracking-[0.15em] border border-amber-500/20">
@@ -197,283 +266,94 @@ function FeaturedLab() {
           </div>
 
           {/* Interactive Teaser visuals */}
-          <div className="relative aspect-video lg:aspect-square w-full rounded-2xl glass border border-white/5 overflow-hidden flex flex-col p-4 space-y-4 shadow-2xl">
+          <div className="relative max-w-[280px] w-full mx-auto rounded-3xl glass border border-white/5 p-5 flex flex-col space-y-4 shadow-2xl justify-center items-center">
             {/* Header Telemetry Preview */}
-            <div className="flex items-center justify-between border-b border-white/5 pb-2 text-[10px] font-mono text-muted-foreground">
-              <span>ACTIVE: CHESS_ENGINE_SEARCH</span>
-              <span className="text-amber-400 animate-pulse">● LIVE TELEMETRY</span>
+            <div className="flex items-center justify-between border-b border-white/5 pb-2 text-[10px] font-mono text-muted-foreground w-full">
+              <span>ENGINE ANALYSIS</span>
+              <span className="text-amber-400 animate-pulse">● ACTIVE</span>
             </div>
 
-            {/* Content splits: mini-board and tree visualizer */}
-            <div className="flex-1 grid grid-cols-[120px,1fr] gap-4 min-h-0">
-              {/* Mini Board */}
-              <div className="flex flex-col justify-center">
-                <div className="aspect-square w-full rounded-lg overflow-hidden border border-white/10 grid grid-cols-8 grid-rows-8 bg-slate-900/60">
-                  {Array.from({ length: 64 }).map((_, i) => {
-                    const r = Math.floor(i / 8);
-                    const c = i % 8;
-                    const isDark = (r + c) % 2 === 1;
-                    
-                    // Put some pieces in the mini board for visual teaser
-                    let pieceChar = "";
-                    let isWhitePiece = true;
-                    if (i === 18) {
-                      pieceChar = "n";
-                      isWhitePiece = true;
-                    } // Nc6
-                    if (i === 2) {
-                      pieceChar = "k";
-                      isWhitePiece = false;
-                    } // Ke8
-                    if (i === 0) {
-                      pieceChar = "r";
-                      isWhitePiece = false;
-                    } // Ra8
-                    if (i === 60) {
-                      pieceChar = "k";
-                      isWhitePiece = true;
-                    } // Ke1
+            {/* Mini Board */}
+            <div className="aspect-square w-[190px] h-[190px] rounded-lg overflow-hidden border border-white/10 grid grid-cols-8 grid-rows-8 bg-slate-900/60 shadow-lg select-none">
+              {Array.from({ length: 64 }).map((_, i) => {
+                const r = Math.floor(i / 8);
+                const c = i % 8;
+                const isDark = (r + c) % 2 === 1;
+                
+                // Put some pieces in the mini board for visual teaser
+                let pieceChar: "n" | "k" | "r" | "" = "";
+                let isWhitePiece = true;
+                if (i === 18) {
+                  pieceChar = "n";
+                  isWhitePiece = true;
+                } // Nc6
+                if (i === 2) {
+                  pieceChar = "k";
+                  isWhitePiece = false;
+                } // Ke8
+                if (i === 0) {
+                  pieceChar = "r";
+                  isWhitePiece = false;
+                } // Ra8
+                if (i === 60) {
+                  pieceChar = "k";
+                  isWhitePiece = true;
+                } // Ke1
 
-                    return (
-                      <div
-                        key={i}
-                        className={cn(
-                          "aspect-square flex items-center justify-center text-[7px] font-bold select-none",
-                          isDark ? "bg-slate-800/80" : "bg-slate-700/10",
-                          i === 18 && "bg-amber-500/20",
-                        )}
-                      >
-                        {pieceChar && (
-                          <span className={isWhitePiece ? "text-slate-100" : "text-slate-950"}>
-                            {pieceChar.toUpperCase()}
-                          </span>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-                {/* Micro Telemetry values */}
-                <div className="mt-3 space-y-1.5 font-mono text-[9px]">
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Nodes:</span>
-                    <span className="text-foreground font-semibold">{ticker.toLocaleString()}</span>
+                return (
+                  <div
+                    key={i}
+                    className={cn(
+                      "aspect-square flex items-center justify-center",
+                      isDark ? "bg-slate-800/80" : "bg-slate-700/10",
+                      i === 18 && "bg-amber-500/20",
+                    )}
+                  >
+                    {pieceChar && (
+                      <ChessPieceTeaser
+                        type={pieceChar}
+                        color={isWhitePiece ? "w" : "b"}
+                        className="w-[75%] h-[75%]"
+                      />
+                    )}
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-muted-foreground">Eval:</span>
-                    <span className="text-emerald-400 font-semibold">+1.8</span>
-                  </div>
-                </div>
+                );
+              })}
+            </div>
+
+            {/* Decision branch summary */}
+            <div className="w-full space-y-2 font-mono text-[10px] pt-1.5 border-t border-white/5">
+              <div className="flex items-center justify-between text-muted-foreground pb-1">
+                <span>Calculated Move</span>
+                <span>Evaluation</span>
               </div>
-
-              {/* Tree Visualizer mock */}
-              <div className="relative rounded-lg bg-slate-950/40 border border-white/5 overflow-hidden p-2 flex items-center justify-center">
-                <svg viewBox="0 0 240 180" className="w-full h-full overflow-visible">
-                  {/* Connectors */}
-                  <path
-                    d="M 20 90 Q 70 90, 80 40"
-                    fill="none"
-                    stroke="rgba(245, 158, 11, 0.4)"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M 20 90 Q 70 90, 80 90"
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.06)"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M 20 90 Q 70 90, 80 140"
-                    fill="none"
-                    stroke="rgba(239, 68, 68, 0.15)"
-                    strokeWidth="1.5"
-                  />
-                  
-                  <path
-                    d="M 80 40 Q 130 40, 140 20"
-                    fill="none"
-                    stroke="rgba(245, 158, 11, 0.4)"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M 80 40 Q 130 40, 140 60"
-                    fill="none"
-                    stroke="rgba(255, 255, 255, 0.06)"
-                    strokeWidth="1.5"
-                  />
-                  
-                  {/* Root node */}
-                  <circle cx="20" cy="90" r="6" fill="#f8fafc" className="stroke-white/20" />
-                  <text
-                    x="20"
-                    y="103"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.4)"
-                    fontSize="7"
-                    fontFamily="monospace"
-                  >
-                    Root
-                  </text>
-                  
-                  {/* Ply 1 nodes */}
-                  <rect
-                    x="70"
-                    y="28"
-                    width="28"
-                    height="24"
-                    rx="4"
-                    fill="rgba(16, 185, 129, 0.1)"
-                    stroke="rgba(16, 185, 129, 0.4)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="84"
-                    y="38"
-                    textAnchor="middle"
-                    fill="#10b981"
-                    fontSize="7"
-                    fontFamily="monospace"
-                    fontWeight="bold"
-                  >
-                    Nf3
-                  </text>
-                  <text
-                    x="84"
-                    y="47"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.5)"
-                    fontSize="5.5"
-                    fontFamily="monospace"
-                  >
-                    +0.8
-                  </text>
-
-                  <rect
-                    x="70"
-                    y="78"
-                    width="28"
-                    height="24"
-                    rx="4"
-                    fill="rgba(30, 41, 59, 0.8)"
-                    stroke="rgba(255, 255, 255, 0.06)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="84"
-                    y="88"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.7)"
-                    fontSize="7"
-                    fontFamily="monospace"
-                  >
-                    d4
-                  </text>
-                  <text
-                    x="84"
-                    y="97"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.5)"
-                    fontSize="5.5"
-                    fontFamily="monospace"
-                  >
-                    +0.5
-                  </text>
-
-                  <rect
-                    x="70"
-                    y="128"
-                    width="28"
-                    height="24"
-                    rx="4"
-                    fill="rgba(239, 68, 68, 0.03)"
-                    stroke="rgba(239, 68, 68, 0.15)"
-                    strokeWidth="1"
-                    opacity="0.5"
-                  />
-                  <text
-                    x="84"
-                    y="138"
-                    textAnchor="middle"
-                    fill="rgba(239, 68, 68, 0.4)"
-                    fontSize="7"
-                    fontFamily="monospace"
-                  >
-                    e4
-                  </text>
-                  <text
-                    x="84"
-                    y="147"
-                    textAnchor="middle"
-                    fill="rgba(239, 68, 68, 0.3)"
-                    fontSize="5.5"
-                    fontFamily="monospace"
-                  >
-                    Pruned
-                  </text>
-                  
-                  {/* Ply 2 nodes */}
-                  <rect
-                    x="140"
-                    y="8"
-                    width="28"
-                    height="24"
-                    rx="4"
-                    fill="rgba(30, 41, 59, 0.8)"
-                    stroke="rgba(255, 255, 255, 0.06)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="154"
-                    y="18"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.7)"
-                    fontSize="7"
-                    fontFamily="monospace"
-                  >
-                    d5
-                  </text>
-                  <text
-                    x="154"
-                    y="27"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.5)"
-                    fontSize="5.5"
-                    fontFamily="monospace"
-                  >
-                    -0.2
-                  </text>
-
-                  <rect
-                    x="140"
-                    y="48"
-                    width="28"
-                    height="24"
-                    rx="4"
-                    fill="rgba(30, 41, 59, 0.8)"
-                    stroke="rgba(255, 255, 255, 0.06)"
-                    strokeWidth="1"
-                  />
-                  <text
-                    x="154"
-                    y="58"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.7)"
-                    fontSize="7"
-                    fontFamily="monospace"
-                  >
-                    Nf6
-                  </text>
-                  <text
-                    x="154"
-                    y="67"
-                    textAnchor="middle"
-                    fill="rgba(255,255,255,0.5)"
-                    fontSize="5.5"
-                    fontFamily="monospace"
-                  >
-                    -0.4
-                  </text>
-                </svg>
+              <div className="flex items-center justify-between text-emerald-400 font-semibold bg-white/[0.02] px-2 py-1.5 rounded-lg border border-white/5">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                  1. Nf3 (Best)
+                </span>
+                <span>+0.8</span>
               </div>
+              <div className="flex items-center justify-between text-foreground/80 px-2 py-1">
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                  2. d4
+                </span>
+                <span>+0.5</span>
+              </div>
+              <div className="flex items-center justify-between text-rose-500/60 px-2 py-1">
+                <span className="flex items-center gap-1.5">
+                  <span>🔒</span>
+                  3. e4 (Pruned)
+                </span>
+                <span className="line-through">--</span>
+              </div>
+            </div>
+            
+            {/* Micro Telemetry values */}
+            <div className="w-full pt-1.5 flex justify-between font-mono text-[9px] text-muted-foreground">
+              <span>Nodes: {ticker.toLocaleString()}</span>
+              <span>Speed: 14,200 NPS</span>
             </div>
           </div>
         </div>
