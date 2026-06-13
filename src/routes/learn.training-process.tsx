@@ -2190,7 +2190,7 @@ function Page() {
   // Configure transition settings to respect reduced motion accessibility
   const transitionConfig = useMemo(() => {
     if (prefersReducedMotion) return { duration: 0 };
-    return { duration: 0.3, ease: [0.25, 1, 0.5, 1] };
+    return { duration: 0.3, ease: [0.25, 1, 0.5, 1] as const };
   }, [prefersReducedMotion]);
 
   return (

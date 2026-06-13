@@ -843,7 +843,7 @@ export class TinyTransformer {
       },
     };
 
-    const weightsManifest = [
+    const weightsManifest: tf.io.WeightsManifestConfig = [
       {
         paths: ["weights.bin"],
         weights: [
@@ -1013,7 +1013,7 @@ export class TinyTransformer {
         scores = tf.tensor2d(maskedScoresData, [T, T]);
 
         // Softmax attention weights
-        const attnWeights = tf.softmax(scores, -1);
+        const attnWeights = tf.softmax(scores, -1) as tf.Tensor2D;
         const attnData = attnWeights.dataSync() as Float32Array;
 
         // Store attentions for visualization
@@ -1024,7 +1024,7 @@ export class TinyTransformer {
         attentions.push(attnMatrix);
 
         // Head output
-        const headOut = tf.matMul(attnWeights, vHead); // [T, headDim]
+        const headOut = tf.matMul(attnWeights, vHead) as tf.Tensor2D;
         headOutputs.push(headOut);
       }
 
