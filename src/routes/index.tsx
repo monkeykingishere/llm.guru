@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
-import { lazy, Suspense } from "react";
+import { useState, useEffect, lazy, Suspense } from "react";
 import {
   ArrowRight,
   Sparkles,
@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { PageShell } from "@/components/layout/PageShell";
 import { SectionHeader } from "@/components/ui/SectionHeader";
+import { cn } from "@/lib/utils";
 
 const HeroScene = lazy(() =>
   import("@/components/visualizations/HeroScene").then((m) => ({
@@ -121,9 +122,363 @@ function Index() {
   return (
     <PageShell>
       <Hero />
+      <FeaturedLab />
       <Modules />
       <Manifesto />
     </PageShell>
+  );
+}
+
+function FeaturedLab() {
+  const [ticker, setTicker] = useState(12840);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTicker((prev) => {
+        if (prev > 14500) return 12840;
+        return prev + Math.floor(Math.random() * 80) + 40;
+      });
+    }, 150);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative mx-auto max-w-7xl px-6 py-12">
+      <SectionHeader
+        eyebrow="Featured interactive lab"
+        title={
+          <>
+            Chess Engine <span className="text-gradient">Thinking Lab</span>
+          </>
+        }
+        description="See how engines evaluate millions of possibilities before choosing a move. Look directly into the search tree and watch minimax and alpha-beta pruning in action."
+      />
+
+      <div className="mt-12 relative overflow-hidden rounded-[2.5rem] glass-strong p-8 sm:p-12 border border-white/10 group tilt-card sheen">
+        <div className="absolute -top-32 -right-32 h-80 w-80 rounded-full bg-aurora opacity-25 blur-3xl group-hover:opacity-40 transition-opacity duration-1000" />
+        
+        <div className="grid gap-10 lg:grid-cols-[1fr,1.2fr] items-center relative z-10">
+          {/* Card description */}
+          <div className="space-y-6">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-500/10 text-amber-300 px-3 py-1 text-xs font-mono uppercase tracking-[0.15em] border border-amber-500/20">
+              <Sparkles className="h-3.5 w-3.5 fill-amber-300" /> Flagship Showcase
+            </span>
+            
+            <h3 className="text-3xl sm:text-4xl font-semibold tracking-tight leading-tight">
+              A Playable Window Into Algorithmic Thinking.
+            </h3>
+            
+            <p className="text-muted-foreground leading-relaxed">
+              Why treat chess AI as a black box? With the Thinking Lab, you can load tactical positions, play your own moves, and watch the Minimax tree build live. See exactly where Alpha-Beta Pruning slices away candidate replies to save computational power.
+            </p>
+
+            <ul className="space-y-3.5 text-sm text-foreground/80">
+              {[
+                "Interactive chessboard with live FEN library loading",
+                "Fully dynamic search tree layout with Bezier curves",
+                "Step-by-step thinking simulation and backtracking tracing",
+                "Alpha-Beta pruning toggles with visual lockout feedback",
+              ].map((item, idx) => (
+                <li key={idx} className="flex items-center gap-2.5">
+                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400" />
+                  {item}
+                </li>
+              ))}
+            </ul>
+
+            <div className="pt-4">
+              <Link
+                to="/learn/chess-engine"
+                className="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-r from-amber-500 to-amber-600 px-6 py-3.5 text-sm font-semibold text-slate-950 hover:from-amber-400 hover:to-amber-500 shadow-xl shadow-amber-950/20 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 animate-pulse-glow"
+              >
+                Explore Engine Thinking
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
+          {/* Interactive Teaser visuals */}
+          <div className="relative aspect-video lg:aspect-square w-full rounded-2xl glass border border-white/5 overflow-hidden flex flex-col p-4 space-y-4 shadow-2xl">
+            {/* Header Telemetry Preview */}
+            <div className="flex items-center justify-between border-b border-white/5 pb-2 text-[10px] font-mono text-muted-foreground">
+              <span>ACTIVE: CHESS_ENGINE_SEARCH</span>
+              <span className="text-amber-400 animate-pulse">● LIVE TELEMETRY</span>
+            </div>
+
+            {/* Content splits: mini-board and tree visualizer */}
+            <div className="flex-1 grid grid-cols-[120px,1fr] gap-4 min-h-0">
+              {/* Mini Board */}
+              <div className="flex flex-col justify-center">
+                <div className="aspect-square w-full rounded-lg overflow-hidden border border-white/10 grid grid-cols-8 grid-rows-8 bg-slate-900/60">
+                  {Array.from({ length: 64 }).map((_, i) => {
+                    const r = Math.floor(i / 8);
+                    const c = i % 8;
+                    const isDark = (r + c) % 2 === 1;
+                    
+                    // Put some pieces in the mini board for visual teaser
+                    let pieceChar = "";
+                    let isWhitePiece = true;
+                    if (i === 18) {
+                      pieceChar = "n";
+                      isWhitePiece = true;
+                    } // Nc6
+                    if (i === 2) {
+                      pieceChar = "k";
+                      isWhitePiece = false;
+                    } // Ke8
+                    if (i === 0) {
+                      pieceChar = "r";
+                      isWhitePiece = false;
+                    } // Ra8
+                    if (i === 60) {
+                      pieceChar = "k";
+                      isWhitePiece = true;
+                    } // Ke1
+
+                    return (
+                      <div
+                        key={i}
+                        className={cn(
+                          "aspect-square flex items-center justify-center text-[7px] font-bold select-none",
+                          isDark ? "bg-slate-800/80" : "bg-slate-700/10",
+                          i === 18 && "bg-amber-500/20",
+                        )}
+                      >
+                        {pieceChar && (
+                          <span className={isWhitePiece ? "text-slate-100" : "text-slate-950"}>
+                            {pieceChar.toUpperCase()}
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+                {/* Micro Telemetry values */}
+                <div className="mt-3 space-y-1.5 font-mono text-[9px]">
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Nodes:</span>
+                    <span className="text-foreground font-semibold">{ticker.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-muted-foreground">Eval:</span>
+                    <span className="text-emerald-400 font-semibold">+1.8</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Tree Visualizer mock */}
+              <div className="relative rounded-lg bg-slate-950/40 border border-white/5 overflow-hidden p-2 flex items-center justify-center">
+                <svg viewBox="0 0 240 180" className="w-full h-full overflow-visible">
+                  {/* Connectors */}
+                  <path
+                    d="M 20 90 Q 70 90, 80 40"
+                    fill="none"
+                    stroke="rgba(245, 158, 11, 0.4)"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M 20 90 Q 70 90, 80 90"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.06)"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M 20 90 Q 70 90, 80 140"
+                    fill="none"
+                    stroke="rgba(239, 68, 68, 0.15)"
+                    strokeWidth="1.5"
+                  />
+                  
+                  <path
+                    d="M 80 40 Q 130 40, 140 20"
+                    fill="none"
+                    stroke="rgba(245, 158, 11, 0.4)"
+                    strokeWidth="1.5"
+                  />
+                  <path
+                    d="M 80 40 Q 130 40, 140 60"
+                    fill="none"
+                    stroke="rgba(255, 255, 255, 0.06)"
+                    strokeWidth="1.5"
+                  />
+                  
+                  {/* Root node */}
+                  <circle cx="20" cy="90" r="6" fill="#f8fafc" className="stroke-white/20" />
+                  <text
+                    x="20"
+                    y="103"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.4)"
+                    fontSize="7"
+                    fontFamily="monospace"
+                  >
+                    Root
+                  </text>
+                  
+                  {/* Ply 1 nodes */}
+                  <rect
+                    x="70"
+                    y="28"
+                    width="28"
+                    height="24"
+                    rx="4"
+                    fill="rgba(16, 185, 129, 0.1)"
+                    stroke="rgba(16, 185, 129, 0.4)"
+                    strokeWidth="1"
+                  />
+                  <text
+                    x="84"
+                    y="38"
+                    textAnchor="middle"
+                    fill="#10b981"
+                    fontSize="7"
+                    fontFamily="monospace"
+                    fontWeight="bold"
+                  >
+                    Nf3
+                  </text>
+                  <text
+                    x="84"
+                    y="47"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.5)"
+                    fontSize="5.5"
+                    fontFamily="monospace"
+                  >
+                    +0.8
+                  </text>
+
+                  <rect
+                    x="70"
+                    y="78"
+                    width="28"
+                    height="24"
+                    rx="4"
+                    fill="rgba(30, 41, 59, 0.8)"
+                    stroke="rgba(255, 255, 255, 0.06)"
+                    strokeWidth="1"
+                  />
+                  <text
+                    x="84"
+                    y="88"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.7)"
+                    fontSize="7"
+                    fontFamily="monospace"
+                  >
+                    d4
+                  </text>
+                  <text
+                    x="84"
+                    y="97"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.5)"
+                    fontSize="5.5"
+                    fontFamily="monospace"
+                  >
+                    +0.5
+                  </text>
+
+                  <rect
+                    x="70"
+                    y="128"
+                    width="28"
+                    height="24"
+                    rx="4"
+                    fill="rgba(239, 68, 68, 0.03)"
+                    stroke="rgba(239, 68, 68, 0.15)"
+                    strokeWidth="1"
+                    opacity="0.5"
+                  />
+                  <text
+                    x="84"
+                    y="138"
+                    textAnchor="middle"
+                    fill="rgba(239, 68, 68, 0.4)"
+                    fontSize="7"
+                    fontFamily="monospace"
+                  >
+                    e4
+                  </text>
+                  <text
+                    x="84"
+                    y="147"
+                    textAnchor="middle"
+                    fill="rgba(239, 68, 68, 0.3)"
+                    fontSize="5.5"
+                    fontFamily="monospace"
+                  >
+                    Pruned
+                  </text>
+                  
+                  {/* Ply 2 nodes */}
+                  <rect
+                    x="140"
+                    y="8"
+                    width="28"
+                    height="24"
+                    rx="4"
+                    fill="rgba(30, 41, 59, 0.8)"
+                    stroke="rgba(255, 255, 255, 0.06)"
+                    strokeWidth="1"
+                  />
+                  <text
+                    x="154"
+                    y="18"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.7)"
+                    fontSize="7"
+                    fontFamily="monospace"
+                  >
+                    d5
+                  </text>
+                  <text
+                    x="154"
+                    y="27"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.5)"
+                    fontSize="5.5"
+                    fontFamily="monospace"
+                  >
+                    -0.2
+                  </text>
+
+                  <rect
+                    x="140"
+                    y="48"
+                    width="28"
+                    height="24"
+                    rx="4"
+                    fill="rgba(30, 41, 59, 0.8)"
+                    stroke="rgba(255, 255, 255, 0.06)"
+                    strokeWidth="1"
+                  />
+                  <text
+                    x="154"
+                    y="58"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.7)"
+                    fontSize="7"
+                    fontFamily="monospace"
+                  >
+                    Nf6
+                  </text>
+                  <text
+                    x="154"
+                    y="67"
+                    textAnchor="middle"
+                    fill="rgba(255,255,255,0.5)"
+                    fontSize="5.5"
+                    fontFamily="monospace"
+                  >
+                    -0.4
+                  </text>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 

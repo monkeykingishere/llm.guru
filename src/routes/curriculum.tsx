@@ -29,7 +29,7 @@ export const Route = createFileRoute("/curriculum")({
       {
         name: "description",
         content:
-          "The full Latent curriculum. Fifteen modules covering everything from tokenization to safety, with interactive 3D visualizations throughout.",
+          "The full Latent curriculum. Sixteen modules covering everything from tokenization to safety, with interactive 3D visualizations throughout.",
       },
       { property: "og:title", content: "Latent Curriculum" },
       {
@@ -171,6 +171,14 @@ const ITEMS: Item[] = [
     to: "/learn/safety",
     status: "ready",
   },
+  {
+    n: "16",
+    title: "How Chess Engines Think",
+    desc: "Explore search trees, minimax decision making, and alpha-beta pruning.",
+    icon: GitBranch,
+    to: "/learn/chess-engine",
+    status: "ready",
+  },
 ];
 
 function Page() {
@@ -185,7 +193,7 @@ function Page() {
             eyebrow="The full path"
             title={
               <>
-                Fifteen modules. <br />
+                Sixteen modules. <br />
                 <span className="text-gradient">One coherent picture.</span>
               </>
             }

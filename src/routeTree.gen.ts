@@ -26,6 +26,7 @@ import { Route as LearnIntroductionRouteImport } from './routes/learn.introducti
 import { Route as LearnFineTuningRouteImport } from './routes/learn.fine-tuning'
 import { Route as LearnEmbeddingsRouteImport } from './routes/learn.embeddings'
 import { Route as LearnContextWindowRouteImport } from './routes/learn.context-window'
+import { Route as LearnChessEngineRouteImport } from './routes/learn.chess-engine'
 import { Route as LearnAttentionRouteImport } from './routes/learn.attention'
 
 const CurriculumRoute = CurriculumRouteImport.update({
@@ -113,6 +114,11 @@ const LearnContextWindowRoute = LearnContextWindowRouteImport.update({
   path: '/learn/context-window',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LearnChessEngineRoute = LearnChessEngineRouteImport.update({
+  id: '/learn/chess-engine',
+  path: '/learn/chess-engine',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LearnAttentionRoute = LearnAttentionRouteImport.update({
   id: '/learn/attention',
   path: '/learn/attention',
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/curriculum': typeof CurriculumRoute
   '/learn/attention': typeof LearnAttentionRoute
+  '/learn/chess-engine': typeof LearnChessEngineRoute
   '/learn/context-window': typeof LearnContextWindowRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
   '/learn/fine-tuning': typeof LearnFineTuningRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/curriculum': typeof CurriculumRoute
   '/learn/attention': typeof LearnAttentionRoute
+  '/learn/chess-engine': typeof LearnChessEngineRoute
   '/learn/context-window': typeof LearnContextWindowRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
   '/learn/fine-tuning': typeof LearnFineTuningRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/curriculum': typeof CurriculumRoute
   '/learn/attention': typeof LearnAttentionRoute
+  '/learn/chess-engine': typeof LearnChessEngineRoute
   '/learn/context-window': typeof LearnContextWindowRoute
   '/learn/embeddings': typeof LearnEmbeddingsRoute
   '/learn/fine-tuning': typeof LearnFineTuningRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/'
     | '/curriculum'
     | '/learn/attention'
+    | '/learn/chess-engine'
     | '/learn/context-window'
     | '/learn/embeddings'
     | '/learn/fine-tuning'
@@ -206,6 +216,7 @@ export interface FileRouteTypes {
     | '/'
     | '/curriculum'
     | '/learn/attention'
+    | '/learn/chess-engine'
     | '/learn/context-window'
     | '/learn/embeddings'
     | '/learn/fine-tuning'
@@ -226,6 +237,7 @@ export interface FileRouteTypes {
     | '/'
     | '/curriculum'
     | '/learn/attention'
+    | '/learn/chess-engine'
     | '/learn/context-window'
     | '/learn/embeddings'
     | '/learn/fine-tuning'
@@ -247,6 +259,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CurriculumRoute: typeof CurriculumRoute
   LearnAttentionRoute: typeof LearnAttentionRoute
+  LearnChessEngineRoute: typeof LearnChessEngineRoute
   LearnContextWindowRoute: typeof LearnContextWindowRoute
   LearnEmbeddingsRoute: typeof LearnEmbeddingsRoute
   LearnFineTuningRoute: typeof LearnFineTuningRoute
@@ -385,6 +398,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LearnContextWindowRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/learn/chess-engine': {
+      id: '/learn/chess-engine'
+      path: '/learn/chess-engine'
+      fullPath: '/learn/chess-engine'
+      preLoaderRoute: typeof LearnChessEngineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/learn/attention': {
       id: '/learn/attention'
       path: '/learn/attention'
@@ -399,6 +419,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CurriculumRoute: CurriculumRoute,
   LearnAttentionRoute: LearnAttentionRoute,
+  LearnChessEngineRoute: LearnChessEngineRoute,
   LearnContextWindowRoute: LearnContextWindowRoute,
   LearnEmbeddingsRoute: LearnEmbeddingsRoute,
   LearnFineTuningRoute: LearnFineTuningRoute,
