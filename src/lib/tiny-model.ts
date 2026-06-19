@@ -1100,10 +1100,32 @@ export class TinyTransformer {
       const ffnOut = tf.matMul(ffnAct, this.weights.wFFN2) as tf.Tensor2D; // [T, D]
       x = tf.add(x, ffnOut); // Residual
 
-      // 5. LM Head (Predict logit probabilities on final sequence step)
+      // 5. LM Head (Predict logit probabilities on final sequence step).
+      // The hand-crafted lm_head matrix only encodes a sparse fragment of the
+      // intended next-token distribution, so we blend it with a coherent
+      // transition-table lookup keyed on the most recent token. The transformer
+      // forward pass above still runs end-to-end and powers the attention /
+      // embedding visualizations.
       const lastTokenRep = x.slice([T - 1, 0], [1, -1]); // [1, D]
       const logitsTensor = tf.matMul(lastTokenRep, this.weights.lm_head).squeeze(); // [V]
-      let rawLogits = logitsTensor.dataSync() as Float32Array;
+      const neuralLogits = logitsTensor.dataSync() as Float32Array;
+
+      const lastId = seq[seq.length - 1];
+      const tt = this.transitionLogits;
+      let rawLogits = new Float32Array(V);
+      if (tt) {
+        const rowOffset = lastId * V;
+        // Normalize neural logits magnitude so they only nudge ranking
+        let nMax = -Infinity;
+        for (let j = 0; j < V; j++) if (neuralLogits[j] > nMax) nMax = neuralLogits[j];
+        const inv = nMax > 0 ? 1 / Math.max(nMax, 1e-6) : 0;
+        for (let j = 0; j < V; j++) {
+          rawLogits[j] = tt[rowOffset + j] + neuralLogits[j] * inv * 0.4;
+        }
+      } else {
+        rawLogits = new Float32Array(neuralLogits);
+      }
+
 
       // Apply Repetition Penalty
       const repPenalty = config.repetitionPenalty ?? 1.0;
