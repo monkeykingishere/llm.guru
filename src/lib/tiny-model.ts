@@ -643,6 +643,11 @@ export class TinyTransformer {
   public backendName = "cpu";
   public onContextLostCallback?: () => void;
   public onContextRestoredCallback?: () => void;
+  // Precomputed coherent next-token logits: V * V row-major. Row i = logits over next token after token i.
+  private transitionLogits: Float32Array | null = null;
+
+  public onContextLostCallback?: () => void;
+  public onContextRestoredCallback?: () => void;
 
   private handleWebGLContextLost = (event: Event) => {
     event.preventDefault();
