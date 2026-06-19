@@ -1261,6 +1261,7 @@ export class TinyTransformer {
       this.weights[key].dispose();
     }
     this.weights = {};
+    this.transitionLogits = null;
     this.initialized = false;
   }
 }
