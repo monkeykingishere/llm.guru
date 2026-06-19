@@ -296,72 +296,100 @@ export const EMBEDDING_COORDS: [number, number][] = VOCAB.map((token, i) => {
   return [60 + rand(), -35 + rand2()];
 });
 
-// Coherent transition pairs to hand-design our transformer weights
+// Coherent transition pairs that drive next-token selection
 const TRANSITION_RULES: Record<string, string[]> = {
-  "<bos>": ["a", "attention", "tensorflow", "latent", "deep", "once", "explore"],
-  a: ["robot", "transformer", "visual", "semantic", "deep", "once", "distant"],
-  robot: ["must", "is", "runs", "makes", "and"],
-  must: ["obey", "obey", "not", "be"],
-  obey: ["the", "orders"],
-  the: [
-    "laws",
-    "browser",
-    "future",
-    "first",
-    "second",
-    "third",
-    "law",
-    "transformer",
-    "neural",
-    "attention",
-    "curriculum",
-    "prompt",
-    "input",
-    "output",
-    "memory",
-    "gpu",
-  ],
+  "<bos>": ["a", "attention", "tensorflow", "latent", "deep", "once", "explore", "the"],
+  a: ["robot", "transformer", "neural", "deep", "distant", "kingdom", "magical", "quiet", "prince", "princess", "dragon", "castle"],
+  robot: ["must", "is", "runs", "makes", "can", "obey"],
+  must: ["obey", "learn", "design", "run", "explore", "not"],
+  obey: ["the", "all", "every"],
+  the: ["laws", "browser", "future", "first", "second", "third", "law", "transformer", "neural", "attention", "curriculum", "prompt", "input", "output", "memory", "gpu", "castle", "kingdom", "dragon", "prince", "princess", "forest", "land", "models", "robot"],
   laws: ["of"],
-  of: ["robotics", "robotics", "learning", "intelligence", "llms"],
-  robotics: [".", "and"],
-  ".": ["<eos>"],
-  attention: ["is", "heads", "weights", "projection", "is"],
-  is: ["all", "a", "computed", "highly", "interactive", "designed"],
-  all: ["you", "tokens"],
-  you: ["need", "can"],
-  need: ["to"],
-  to: ["design", "generate", "learn", "play", "obey"],
-  design: ["transformer", "neural", "networks", "models"],
-  transformer: ["neural", "models", "architecture", "block", "layer", "networks"],
-  neural: ["networks", "network", "networks"],
-  networks: [".", "and"],
+  of: ["robotics", "learning", "intelligence", "llms", "attention", "the", "neural", "transformer"],
+  robotics: [".", "and", "is"],
+  ".": ["the", "and", "in", "a", "<eos>"],
+  ",": ["in", "there", "a", "but", "and", "the"],
+  "!": ["the", "and", "<eos>"],
+  "?": ["the", "and", "<eos>"],
+  attention: ["is", "heads", "weights", "projection", "layers"],
+  is: ["all", "a", "the", "deep", "computed", "interactive"],
+  all: ["you", "tokens", "the"],
+  you: ["need", "can", "explore", "design"],
+  need: ["to", "a", "the"],
+  to: ["design", "generate", "learn", "play", "obey", "explore", "run", "the", "a"],
+  design: ["transformer", "neural", "networks", "models", "a"],
+  transformer: ["neural", "models", "block", "layer", "networks", "is", "runs"],
+  neural: ["networks", "network", "models"],
+  networks: [".", "and", "in", "are"],
   tensorflow: ["js"],
-  js: ["runs", "accelerated", "in-browser"],
-  runs: ["deep", "in", "in-browser"],
-  deep: ["learning"],
-  learning: ["models", "makes", "neural", "processing", "runs"],
-  models: ["in", "on", "using"],
-  in: ["the", "browser", "real", "time"],
-  browser: [".", "and"],
-  latent: ["embeddings", "space", "vector"],
-  embeddings: ["fly", "project", "in"],
+  js: ["runs", "is", "in"],
+  runs: ["deep", "in", "on", "the"],
+  deep: ["learning", "neural"],
+  learning: ["models", "makes", "is", "in"],
+  models: ["in", "on", "using", "are", "and"],
+  in: ["the", "browser", "real", "a"],
+  browser: [".", "and", "using", "with"],
+  latent: ["embeddings", "space"],
+  embeddings: ["fly", "are", "in", "through"],
   fly: ["through"],
-  through: ["a"],
-  visual: ["semantic", "interactive", "atlas"],
-  semantic: ["space", "meaning"],
-  space: [".", "and"],
+  through: ["a", "the", "semantic", "latent"],
+  visual: ["semantic", "interactive", "atlas", "space"],
+  semantic: ["space", "meaning", "atlas"],
+  space: [".", "and", "is", "with"],
   once: ["upon"],
   upon: ["a"],
-  time: [",", "in"],
-  ",": ["in", "there", "a", "but"],
-  there: ["lived", "was"],
-  lived: ["a", "in"],
-  explore: ["parameters", "memory", "embeddings"],
-  parameters: ["in", "memory"],
-  gpu: ["webgl", "backend"],
-  webgl: ["backend"],
-  backend: ["accelerated", "status", "active"],
+  time: [",", "in", "the"],
+  there: ["lived", "was", "is"],
+  lived: ["a", "in", "the"],
+  explore: ["parameters", "memory", "embeddings", "the", "neural"],
+  parameters: ["in", "memory", "of", "and"],
+  gpu: ["webgl", "backend", "memory"],
+  webgl: ["backend", "and"],
+  backend: ["accelerated", "is", "runs"],
+  distant: ["kingdom", "village", "forest", "land"],
+  kingdom: [",", "there", "of", "with"],
+  village: [",", "there", "of"],
+  magical: ["land", "forest", "kingdom", "castle"],
+  land: ["of", ",", "there", "with"],
+  quiet: ["forest", "village", "kingdom"],
+  forest: [",", "with", "of", "there"],
+  prince: ["of", "and", "with"],
+  princess: ["of", "and", "with"],
+  king: ["of", "and"],
+  queen: ["of", "and"],
+  dragon: ["of", "and", "with"],
+  castle: ["of", "and", "with"],
+  first: ["law", "of", "the"],
+  second: ["law", "of"],
+  third: ["law", "of"],
+  law: ["of", ",", "."],
+  order: ["of", "to", "the"],
+  and: ["the", "a", "is", "must", "can", "runs"],
+  but: ["the", "a", "is", "not"],
+  or: ["the", "a"],
+  for: ["the", "a", "all"],
+  with: ["the", "a", "neural"],
+  by: ["the", "a", "neural", "deep"],
+  from: ["the", "a", "deep"],
+  on: ["the", "a"],
+  at: ["the", "a"],
+  not: ["the", "a", "be"],
+  accelerated: ["by", "on", "neural", "deep"],
+  artificial: ["intelligence", "neural"],
+  intelligence: ["is", "and", "in", "."],
+  future: ["of", "is", "."],
+  possible: [".", "with", "in"],
+  inside: ["the", "a"],
+  llmguru: ["is", "runs", "."],
+  curriculum: ["of", "is", "."],
+  llms: ["are", "is", "in", "with"],
+  work: ["with", "in", "on", "."],
+  break: ["the", "."],
+  can: ["learn", "run", "design", "explore", "be"],
 };
+
+// Pool used when a token has no explicit transition rule
+const DEFAULT_CONTINUATIONS = ["the", "a", "and", "of", "is", "in", "to", "with"];
 
 export interface SamplingConfig {
   temperature: number;
@@ -615,6 +643,11 @@ export class TinyTransformer {
   public backendName = "cpu";
   public onContextLostCallback?: () => void;
   public onContextRestoredCallback?: () => void;
+  // Precomputed coherent next-token logits: V * V row-major. Row i = logits over next token after token i.
+  private transitionLogits: Float32Array | null = null;
+
+
+
 
   private handleWebGLContextLost = (event: Event) => {
     event.preventDefault();
@@ -891,6 +924,35 @@ export class TinyTransformer {
 
     onProgress(90);
 
+    // Build coherent next-token logit lookup [V x V] from transition rules
+    this.transitionLogits = new Float32Array(V * V);
+    for (let i = 0; i < V; i++) {
+      const tok = VOCAB[i];
+      const rules = TRANSITION_RULES[tok] ?? DEFAULT_CONTINUATIONS;
+      // Small deterministic baseline noise so logits aren't perfectly flat outside the rule set
+      for (let j = 0; j < V; j++) {
+        this.transitionLogits[i * V + j] = Math.sin((i + 1) * (j + 1) * 0.013) * 0.25;
+      }
+      // Strong preference for rule-listed continuations, weighted by position in the list
+      for (let r = 0; r < rules.length; r++) {
+        const jdx = VOCAB.indexOf(rules[r]);
+        if (jdx === -1) continue;
+        this.transitionLogits[i * V + jdx] += 6.5 - r * 0.35;
+      }
+      // Suppress structural tokens unless explicitly listed
+      for (const special of ["<pad>", "<bos>", "<unk>"]) {
+        const sidx = VOCAB.indexOf(special);
+        if (sidx !== -1 && !rules.includes(special)) {
+          this.transitionLogits[i * V + sidx] -= 8.0;
+        }
+      }
+      // Mild <eos> suppression unless the rule explicitly invites it
+      const eosIdx = VOCAB.indexOf("<eos>");
+      if (eosIdx !== -1 && !rules.includes("<eos>")) {
+        this.transitionLogits[i * V + eosIdx] -= 4.0;
+      }
+    }
+
     // Warmup pass
     this.warmupPass();
 
@@ -1038,10 +1100,32 @@ export class TinyTransformer {
       const ffnOut = tf.matMul(ffnAct, this.weights.wFFN2) as tf.Tensor2D; // [T, D]
       x = tf.add(x, ffnOut); // Residual
 
-      // 5. LM Head (Predict logit probabilities on final sequence step)
+      // 5. LM Head (Predict logit probabilities on final sequence step).
+      // The hand-crafted lm_head matrix only encodes a sparse fragment of the
+      // intended next-token distribution, so we blend it with a coherent
+      // transition-table lookup keyed on the most recent token. The transformer
+      // forward pass above still runs end-to-end and powers the attention /
+      // embedding visualizations.
       const lastTokenRep = x.slice([T - 1, 0], [1, -1]); // [1, D]
       const logitsTensor = tf.matMul(lastTokenRep, this.weights.lm_head).squeeze(); // [V]
-      let rawLogits = logitsTensor.dataSync() as Float32Array;
+      const neuralLogits = logitsTensor.dataSync() as Float32Array;
+
+      const lastId = seq[seq.length - 1];
+      const tt = this.transitionLogits;
+      let rawLogits = new Float32Array(V);
+      if (tt) {
+        const rowOffset = lastId * V;
+        // Normalize neural logits magnitude so they only nudge ranking
+        let nMax = -Infinity;
+        for (let j = 0; j < V; j++) if (neuralLogits[j] > nMax) nMax = neuralLogits[j];
+        const inv = nMax > 0 ? 1 / Math.max(nMax, 1e-6) : 0;
+        for (let j = 0; j < V; j++) {
+          rawLogits[j] = tt[rowOffset + j] + neuralLogits[j] * inv * 0.4;
+        }
+      } else {
+        rawLogits = new Float32Array(neuralLogits);
+      }
+
 
       // Apply Repetition Penalty
       const repPenalty = config.repetitionPenalty ?? 1.0;
@@ -1177,6 +1261,7 @@ export class TinyTransformer {
       this.weights[key].dispose();
     }
     this.weights = {};
+    this.transitionLogits = null;
     this.initialized = false;
   }
 }
