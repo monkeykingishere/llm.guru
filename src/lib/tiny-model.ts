@@ -924,6 +924,35 @@ export class TinyTransformer {
 
     onProgress(90);
 
+    // Build coherent next-token logit lookup [V x V] from transition rules
+    this.transitionLogits = new Float32Array(V * V);
+    for (let i = 0; i < V; i++) {
+      const tok = VOCAB[i];
+      const rules = TRANSITION_RULES[tok] ?? DEFAULT_CONTINUATIONS;
+      // Small deterministic baseline noise so logits aren't perfectly flat outside the rule set
+      for (let j = 0; j < V; j++) {
+        this.transitionLogits[i * V + j] = Math.sin((i + 1) * (j + 1) * 0.013) * 0.25;
+      }
+      // Strong preference for rule-listed continuations, weighted by position in the list
+      for (let r = 0; r < rules.length; r++) {
+        const jdx = VOCAB.indexOf(rules[r]);
+        if (jdx === -1) continue;
+        this.transitionLogits[i * V + jdx] += 6.5 - r * 0.35;
+      }
+      // Suppress structural tokens unless explicitly listed
+      for (const special of ["<pad>", "<bos>", "<unk>"]) {
+        const sidx = VOCAB.indexOf(special);
+        if (sidx !== -1 && !rules.includes(special)) {
+          this.transitionLogits[i * V + sidx] -= 8.0;
+        }
+      }
+      // Mild <eos> suppression unless the rule explicitly invites it
+      const eosIdx = VOCAB.indexOf("<eos>");
+      if (eosIdx !== -1 && !rules.includes("<eos>")) {
+        this.transitionLogits[i * V + eosIdx] -= 4.0;
+      }
+    }
+
     // Warmup pass
     this.warmupPass();
 
